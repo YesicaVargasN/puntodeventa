@@ -35,21 +35,21 @@ if (!empty($_SESSION['active'])) {
 
       require_once "conexion.php";
       $username = $_POST['usuario'];
-      $nip = $_POST['clave'];
+      $nip =md5( $_POST['clave']);
   
      echo 'user'.$username;
      echo 'NIp'.$nip;
   
-      $sql="SELECT * FROM usuarios   WHERE email='".$username."' and password='".$nip."'";
+      $sql="SELECT * FROM usuario   WHERE usuario='".$username."' and clave='".$nip."'";
      echo $sql;
      $r = $conexion -> query($sql); 
      if($f = $r -> fetch_array())	
       {
-          if ($f['password']== $nip){
+          if ($f['clave']== $nip){
               session_start();
-              $_user = $f['idusuario'];	
+              $_user = $f['usuario'];	
               global  $_user;
-              $_SESSION['_user']=$f['idusuario'];			
+              $_SESSION['_user']=$f['usuario'];			
               header('location: sistema/');
               $_SESSION['rol'] = 1;
               $_SESSION['nombre'] = $f['nombre'];
