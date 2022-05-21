@@ -73,6 +73,9 @@ a {
 .text-gray {
   color: #8a8d93;
 }
+.text-white {
+  color: white;
+}
 
 .text-gray-dark {
   color: #6a6c70;
@@ -223,7 +226,7 @@ pre {
 
 .page-content {
   position: relative;
-  background: #22252a;
+  background: white; /*#22252a*/;
   min-height: 100vh;
   width: calc(100% - 280px);
   padding: 0;
@@ -236,8 +239,8 @@ pre {
 
 .page-header {
   padding: 20px 15px;
-  background: #2d3035;
-  color: #8a8d93;
+  background: white; /*#2d3035;*/
+  color: #2d3035/*#8a8d93*/;
   margin-bottom: 30px;
 }
 
@@ -386,7 +389,7 @@ i[class*='icon-'] {
 */
 nav.navbar {
   background: #2d3035;
-  color: #8a8d93;
+  color: white/*#8a8d93*/;
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #34373d;
@@ -733,6 +736,7 @@ nav#sidebar a {
 
 nav#sidebar a[aria-expanded="true"] {
   background: #34373d;
+  color: white;
 }
 
 
@@ -753,7 +757,7 @@ nav#sidebar .sidebar-header p {
 }
 
 nav#sidebar .sidebar-header h1 {
-  color: #8a8d93;
+  color: white/* #8a8d93*/;
 }
 
 nav#sidebar .sidebar-header p {
@@ -763,7 +767,7 @@ nav#sidebar .sidebar-header p {
 nav#sidebar span.heading {
   font-weight: 700;
   margin-left: 20px;
-  color: #494d53;
+  color:  #494d53*/;
   font-size: 1.2rem;
   margin-bottom: 15px;
 }
@@ -1852,7 +1856,8 @@ input[type='submit'] {
 
 form label {
   font-size: .9rem;
-  color: #8a8d93;
+  color: white; /*#8a8d93*/;
+
 }
 
 .checkbox-template,
@@ -2833,7 +2838,7 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #8a8d93;
+  color:white;/* #8a8d93;*/
   background-color: #fff;
 }
 
@@ -3050,6 +3055,7 @@ a.text-primary:focus, a.text-primary:hover {
 */
 .bg-primary {
   background-color: #f03406 !important;
+  color:white
 }
 
 a.bg-primary:focus, a.bg-primary:hover {
