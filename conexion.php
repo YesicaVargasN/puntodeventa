@@ -1,6 +1,7 @@
 <?php
 
 //PUNTO DE VENTA
+//ALGO
 
 date_default_timezone_set('Mexico/General');
 mb_internal_encoding('UTF-8');
