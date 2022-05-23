@@ -119,6 +119,22 @@
 			</div>
 		</a>
 
+		<a class="col-xl-3 col-md-6 mb-4" href="lista_factura.php">
+			<div class="card border-left-warning bg-white shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-nvo text-uppercase mb-1">Facturas</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Digitalizacion de facturas</div>
+						</div>
+						<div class="col-auto">
+							<i class="fas fa-solid fa-file-invoice fa-2x text-gray-300""></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+
 
 	 	<!--<div class="col-lg-6">
 			<div class="au-card m-b-30">
