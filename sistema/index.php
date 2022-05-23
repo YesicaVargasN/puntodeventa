@@ -16,7 +16,8 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Usuarios</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">Usuarios</div>
+							<!--text-gray-800-->
+							<div class="h5 mb-0 font-weight-bold">Usuarios</div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-user fa-2x text-gray-300"></i>
@@ -33,7 +34,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Clientes</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">clientes</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Clientes</div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-users fa-2x text-gray-300"></i>
@@ -85,7 +86,41 @@
 				</div>
 			</div>
 		</a>
-	<!-- 	<div class="col-lg-6">
+
+		<a class="col-xl-3 col-md-6 mb-4" href="ventas.php">
+			<div class="card border-left-warning bg-white shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Caja</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Caja</div>
+						</div>
+						<div class="col-auto">
+							<i class="fas fa-money-bill-alt fa-2x text-gray-300"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+
+		<a class="col-xl-3 col-md-6 mb-4" href="lista_proveedor.php">
+			<div class="card border-left-warning bg-white shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Proveedores</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Proveedores</div>
+						</div>
+						<div class="col-auto">
+							<i class="fas fa-male fa-2x text-gray-300"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+
+
+	 	<!--<div class="col-lg-6">
 			<div class="au-card m-b-30">
 				<div class="au-card-inner">
 					<h3 class="title-2 m-b-40">Productos con stock mínimo</h3>
@@ -100,8 +135,8 @@
 					<canvas id="polarChart"></canvas>
 				</div>
 			</div>
-		</div> -->
-	</div>
+		</div> 
+	</div>-->
 
 
 </div>
