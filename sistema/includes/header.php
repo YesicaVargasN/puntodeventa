@@ -133,6 +133,8 @@ if ($result_data > 0) {
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
 							<a class="collapse-item" href="lista_productos.php">Productos</a>
+							<a class="collapse-item" href="registro_medida.php">Unidades de Medidas</a>
+							<a class="collapse-item" href="lista_productos.php">Categorias/Departamentos</a>
 						</div>
 					</div>
 				</li>
@@ -162,6 +164,19 @@ if ($result_data > 0) {
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="registro_proveedor.php">Nuevo Proveedor</a>
 							<a class="collapse-item" href="lista_proveedor.php">Proveedores</a>
+						</div>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
+						<i class="fas fa-file-invoice"></i>
+						<span>Facturas</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseProveedor" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="registro_proveedor.php">Nuevo Factura</a>
+							<a class="collapse-item" href="lista_proveedor.php">Facturas</a>
 						</div>
 					</div>
 				</li>
