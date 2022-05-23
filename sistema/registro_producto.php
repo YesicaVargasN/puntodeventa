@@ -52,6 +52,11 @@
                <input type="text" placeholder="Ingrese código de barras" name="codigo" id="codigo" class="form-control">
              </div>
              <div class="form-group">
+               <label for="producto">Producto</label>
+               <input type="text" placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
+             </div>
+             
+             <div class="form-group">
                <label>Proveedor</label>
                <?php
                 $query_proveedor = mysqli_query($conexion, "SELECT codproveedor, proveedor FROM proveedor ORDER BY proveedor ASC");
@@ -73,16 +78,42 @@
                </select>
              </div>
              <div class="form-group">
-               <label for="producto">Producto</label>
-               <input type="text" placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
+               <label for="preciocosto">Precio Costo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="precioventa">
              </div>
+           
              <div class="form-group">
-               <label for="precio">Precio</label>
+               <label for="precio">Precio Venta</label>
                <input type="text" placeholder="Ingrese precio" class="form-control" name="precio" id="precio">
              </div>
              <div class="form-group">
+               <label for="preciomayoreo">Precio Mayoreo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo">
+             </div>
+
+             <div class="form-group">
                <label for="cantidad">Cantidad</label>
                <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad">
+             </div>
+
+             <div class="form-group">
+               <label>Unidad de Medida</label>
+             
+
+               <select id="medida" name="medida" class="form-control">
+              
+               </select>
+             </div>
+
+             <div class="form-group">
+               <label>Departamento</label>
+               <select id="departamento" name="departamento" class="form-control">
+               </select>
+             </div>
+             <div class="form-group">
+               <label>Categoria</label>
+               <select id="categoria" name="categoria" class="form-control">
+               </select>
              </div>
              <input type="submit" value="Guardar Producto" class="btn btn-primary">
            </form>

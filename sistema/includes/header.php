@@ -38,7 +38,7 @@ if ($result_data > 0) {
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Sistema de Venta Básico Gratis</title>
+	<title>Sistema de Venta</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="all,follow">
@@ -81,7 +81,7 @@ if ($result_data > 0) {
 					<!-- Sidebar Toggle Btn-->
 					<button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
 				</div>
-				<h4><?php echo fechaPeru(); ?></h4>
+				<h4><?php echo fechaMexico(); ?></h4>
 				<div class="right-menu list-inline no-margin-bottom">
 					<!-- Log out               -->
 					<div class="list-inline-item logout"> <a id="logout" href="salir.php" class="nav-link"> <span class="d-none d-sm-inline">Cerrar sessión </span><i class="icon-logout"></i></a></div>

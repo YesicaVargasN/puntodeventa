@@ -49,10 +49,16 @@ if (!empty($_SESSION['active'])) {
               session_start();
               $_user = $f['usuario'];	
               global  $_user;
-              $_SESSION['_user']=$f['usuario'];			
+             		
               header('location: sistema/');
-              $_SESSION['rol'] = 1;
-              $_SESSION['nombre'] = $f['nombre'];
+            
+              $_SESSION['active'] = true;
+              $_SESSION['idUser'] = $dato['idusuario'];
+              $_SESSION['nombre'] = $dato['nombre'];
+              $_SESSION['email'] = $dato['correo'];
+              $_SESSION['user'] = $dato['usuario'];
+              $_SESSION['rol'] = $dato['idrol'];
+              $_SESSION['rol_name'] = $dato['rol'];
               
           }
           else {
@@ -103,13 +109,13 @@ if (!empty($_SESSION['active'])) {
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                <img src="sistema/img/logo.png" class="img-thumbnail">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: white;">
+                <img src="sistema/img/logo.png" class="img-thumbnail" style="position: absolute;  top: 20%;  left: 20%;">
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Iniciar Sesión</h1>
+                    <h1 class="h4 text-white mb-4">Iniciar Sesión</h1>
                   </div>
                   <form class="user" method="POST">
                     <?php echo isset($alert) ? $alert : ""; ?>
