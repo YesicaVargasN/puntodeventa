@@ -88,7 +88,7 @@ if (!empty($_SESSION['active'])) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Vida Informatico</title>
+  <title>Comercializadora Aguira</title>
 
   <!-- Custom fonts for this template-->
   <link rel="stylesheet" href="sistema/vendor/bootstrap/css/bootstrap.min.css">
