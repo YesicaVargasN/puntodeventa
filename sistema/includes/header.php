@@ -107,17 +107,34 @@ if ($result_data > 0) {
 			<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 				<!-- Divider -->
 
-				<!-- Nav Item - Pages Collapse Menu -->
+				<?php if ($_SESSION['rol'] == 1) { ?>
+					<!-- Nav Item - Usuarios Collapse Menu -->
+					<li class="nav-item">
+						<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true">
+							<i class="fas fa-user"></i>
+							<span>Usuarios</span>
+							<i class="fas fa-angle-down fa-lg float-right"></i>
+						</a>
+						<div id="collapseUsuarios" class="collapse">
+							<div class="bg-white py-2 collapse-inner">
+								<a class="collapse-item" href="registro_usuario.php">Nuevo Usuario</a>
+								<a class="collapse-item" href="lista_usuarios.php">Usuarios</a>
+							</div>
+						</div>
+					</li>
+				<?php } ?>
+
+				<!-- Nav Item - Clientes Collapse Menu -->
 				<li class="nav-item">
-					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-						<i class="fas fa-fw fa-cog"></i>
-						<span>Ventas</span>
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseUtilities">
+						<i class="fas fa-users"></i>
+						<span>Clientes</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
-					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div id="collapseClientes" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
-							<a class="collapse-item" href="ventas.php">Ventas</a>
+							<a class="collapse-item" href="registro_cliente.php">Nuevo Clientes</a>
+							<a class="collapse-item" href="lista_cliente.php">Clientes</a>
 						</div>
 					</div>
 				</li>
@@ -137,24 +154,41 @@ if ($result_data > 0) {
 					</div>
 				</li>
 
-				<!-- Nav Item - Clientes Collapse Menu -->
+
+				<!-- Nav Item - Pages Collapse Menu -->
 				<li class="nav-item">
-					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="true" aria-controls="collapseUtilities">
-						<i class="fas fa-users"></i>
-						<span>Clientes</span>
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+						<i class="fas fa-dollar-sign"></i>
+						<span>Ventas</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
-					<div id="collapseClientes" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="registro_cliente.php">Nuevo Clientes</a>
-							<a class="collapse-item" href="lista_cliente.php">Clientes</a>
+							<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
+							<a class="collapse-item" href="ventas.php">Ventas</a>
 						</div>
 					</div>
 				</li>
+
+				<!-- Nav Item - Pages Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+						<i class="fas fa-money-bill-alt"></i>
+						<span>Caja</span>
+						<!--<i class="fas fa-angle-down fa-lg float-right"></i>-->
+					</a>
+				<!--	<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
+							<a class="collapse-item" href="ventas.php">Ventas</a>
+						</div>
+					</div>-->
+				</li>
+				
 				<!-- Nav Item - Utilities Collapse Menu -->
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
-						<i class="fas fa-hospital"></i>
+						<i class="fas fa-male"></i>
 						<span>Proveedor</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
@@ -165,22 +199,22 @@ if ($result_data > 0) {
 						</div>
 					</div>
 				</li>
-				<?php if ($_SESSION['rol'] == 1) { ?>
-					<!-- Nav Item - Usuarios Collapse Menu -->
-					<li class="nav-item">
-						<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true">
-							<i class="fas fa-user"></i>
-							<span>Usuarios</span>
-							<i class="fas fa-angle-down fa-lg float-right"></i>
-						</a>
-						<div id="collapseUsuarios" class="collapse">
-							<div class="bg-white py-2 collapse-inner">
-								<a class="collapse-item" href="registro_usuario.php">Nuevo Usuario</a>
-								<a class="collapse-item" href="lista_usuarios.php">Usuarios</a>
-							</div>
+
+				<!-- Nav Item - Utilities Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacturas" aria-expanded="true" aria-controls="collapseUtilities">
+						<i class="fas fa-file-invoice"></i>
+						<span>Facturas</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseFacturas" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="registro_factura.php">Nueva Factura</a>
+							<a class="collapse-item" href="lista_factura.php">Facturas</a>
 						</div>
-					</li>
-				<?php } ?>
+					</div>
+				</li>
+				
 				<li class="nav-item">
 					<a class="nav-link" href="configuracion.php" aria-expanded="true">
 						<i class="fas fa-tools"></i>
