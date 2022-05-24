@@ -9,6 +9,7 @@
 	<!-- Content Row -->
 	<div class="row">
 
+	<?php if ($_SESSION['rol'] == 1) { ?>
 		<!-- Earnings (Monthly) Card Example -->
 		<a class="col-xl-3 col-md-6 mb-4" href="lista_usuarios.php">
 			<div class="card border-left-primary shadow h-100 py-2 bg-white">
@@ -26,7 +27,7 @@
 				</div>
 			</div>
 		</a>
-
+		<?php } ?>
 		<!-- Earnings (Monthly) Card Example -->
 		<a class="col-xl-3 col-md-6 mb-4" href="lista_cliente.php">
 			<div class="card border-left-success shadow h-100 py-2 bg-white">
@@ -128,7 +129,7 @@
 							<div class="h5 mb-0 font-weight-bold text-gray-800">Digitalizacion de facturas</div>
 						</div>
 						<div class="col-auto">
-							<i class="fas fa-solid fa-file-invoice fa-2x text-gray-300""></i>
+							<i class="fas fa-solid fa-file-invoice fa-2x text-gray-300"></i>
 						</div>
 					</div>
 				</div>

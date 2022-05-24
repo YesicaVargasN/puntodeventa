@@ -10,7 +10,7 @@ if (!empty($_SESSION['active'])) {
   Ingrese su usuario y su clave
 </div>';
     } else {
-       require_once "conexion.php";
+      require_once "conexion.php";
       $user = mysqli_real_escape_string($conexion, $_POST['usuario']);
       $clave = md5(mysqli_real_escape_string($conexion, $_POST['clave']));
       $query = mysqli_query($conexion, "SELECT u.idusuario, u.nombre, u.correo,u.usuario,r.idrol,r.rol FROM usuario u INNER JOIN rol r ON u.rol = r.idrol WHERE u.usuario = '$user' AND u.clave = '$clave'");
@@ -33,7 +33,7 @@ if (!empty($_SESSION['active'])) {
         session_destroy();
       } 
 
-    /*  require_once "conexion.php";
+   /*   require_once "conexion.php";
       $username = $_POST['usuario'];
       $nip =md5( $_POST['clave']);
   
@@ -69,9 +69,8 @@ if (!empty($_SESSION['active'])) {
           }
       }
       else {
-      echo 'usuario incorrecto1';
-  
-      }*/
+      echo 'usuario incorrecto';
+  */
   
     }
   }
@@ -88,7 +87,7 @@ if (!empty($_SESSION['active'])) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Vida Informatico</title>
+  <title>Comercializadora Aguira</title>
 
   <!-- Custom fonts for this template-->
   <link rel="stylesheet" href="sistema/vendor/bootstrap/css/bootstrap.min.css">
