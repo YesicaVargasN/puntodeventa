@@ -133,7 +133,7 @@ if ($result_data > 0) {
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
 							<a class="collapse-item" href="lista_productos.php">Productos</a>
-							<a class="collapse-item" href="registro_medida.php">Unidades de Medidas</a>
+							<a class="collapse-item" href="lista_medida.php">Unidades de Medidas</a>
 							<a class="collapse-item" href="lista_cat.php">Categorias/Departamentos</a>
 						</div>
 					</div>

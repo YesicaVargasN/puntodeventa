@@ -10,11 +10,8 @@ if (!empty($_POST)) {
     } else {
         $medida = $_POST['medida'];
         $nombrecorto = $_POST['nombrecorto'];
-       
-      
-        
 
-        $query_insert = mysqli_query($conexion, "INSERT INTO cat_unidadmedida(unidadmedida,nombrecorto,activo) values ('$medida', '$nombrecorto', '1')");
+        $query_insert = mysqli_query($conexion, "INSERT INTO cat_unidadmedida(unidadmedida,activo, nombrecorto) values ('$medida', '1','$nombrecorto' )");
         if ($query_insert) {
             $alert = '<div class="alert alert-primary" role="alert">
                         Unidad de Medida Registrada
@@ -47,11 +44,11 @@ mysqli_close($conexion);
                     </div>
                     <div class="form-group">
                         <label for="nombrecorto">Nombre Corto</label>
-                        <input type="text" placeholder="Ingrese nombre un nombre corto" name="nombrecorto" id="contacnombrecortoto" class="form-control" onkeypress="mayus(this);">
+                        <input type="text" placeholder="Ingrese nombre un nombre corto" name="nombrecorto" id="nombrecorto" class="form-control" onkeypress="mayus(this);">
                     </div>
                    
                     <input type="submit" value="Guardar Medida" class="btn btn-primary">
-                    <a href="lista_proveedor.php" class="btn btn-danger">Regresar</a>
+                    <a href="lista_medida.php" class="btn btn-danger">Regresar</a>
                 </form>
             </div>
         </div>
