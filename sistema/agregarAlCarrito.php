@@ -42,39 +42,36 @@ session_start();
 
 // Buscar producto dentro del carrito
 $indice = false;
-for ($i = 0; $i < count($_SESSION["carrito"]); $i++) {
-   var_dump($_SESSION['carrito'][$i]);
-    
-    if ($_SESSION['carrito']['codigo']== $codigo ) {
+for ($i = 0; $i < count($_SESSION["carrito"]); $i++) {  
+    if ($_SESSION['carrito'][$i]['codigo']== $codigo ) {
         $indice = $i;
-       
-        echo 'entro'; break;
+        break;
     } 
 }
 
 
-echo $indice.'indice';
+
 
 // Si no existe, lo agregamos como nuevo
-if ($indice === false) {
+if ($indice === false and  $existencia >0) {
     //$producto->cantidad = 1;
     //$producto->total = $producto->precioVenta;
-   $productoarray= array('id' =>5,'codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
+   $productoarray= array('id' =>3,'codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
    
-
     array_push($_SESSION["carrito"], $productoarray );
 } else {
     // Si ya existe, se agrega la cantidad
     // Pero espera, tal vez ya no haya
-    $cantidadExistente = $_SESSION["carrito"][$indice]->$cantidad;
+    $cantidadExistente = $_SESSION["carrito"][$indice]['cantidad'];
+    echo   'cantidad'.$cantidadExistente;
     // si al sumarle uno supera lo que existe, no se agrega
     if ($cantidadExistente + 1 >$existencia) {
         header("Location: ./nueva_venta.php?status=5");
         exit;
     }
  
-    $_SESSION["carrito"][$indice]->cantidad++;
-    $_SESSION["carrito"][$indice]->total = $_SESSION["carrito"][$indice]->cantidad * $_SESSION["carrito"][$indice]->precioventa;
+    $_SESSION["carrito"][$indice]['cantidad']=$cantidadExistente+1;
+    $_SESSION["carrito"][$indice]['total'] = $_SESSION["carrito"][$indice]['cantidad'] * $_SESSION["carrito"][$indice]['precioventa'];
 }
 
-header("Location: ./nueva_venta.php");   
+//header("Location: ./nueva_venta.php");   
