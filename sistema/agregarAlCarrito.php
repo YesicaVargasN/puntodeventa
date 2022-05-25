@@ -52,7 +52,7 @@ for ($i = 0; $i < count($_SESSION["carrito"]); $i++) {
 if ($indice === false and  $existencia >0) {
     //$producto->cantidad = 1;
     //$producto->total = $producto->precioVenta;
-   $productoarray= array('id' =>3,'codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
+   $productoarray= array('codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
    
     array_push($_SESSION["carrito"], $productoarray );
 } else {

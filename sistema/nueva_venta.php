@@ -69,14 +69,15 @@ $granTotal = 0;
 			<tbody>
            
 				<?php
-                 
+                 $i=0;
                  foreach($_SESSION["carrito"] as $indice => $producto){ 
 						$granTotal += $producto['total'] ;
+						$i=$i+1;
 					?>
 
 
 				<tr>
-					<td><?php echo $producto['id']  ?></td>
+					<td><?php echo $i;  ?></td>
 					<td><?php echo $producto['codigo'] ?></td>
 					<td><?php echo $producto['descripcion'] ?></td>
 					<td><?php echo $producto['precioventa'] ?></td>
