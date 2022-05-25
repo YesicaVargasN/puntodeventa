@@ -29,7 +29,6 @@ if ($r -> num_rows >0)
                 {
                     header("Location: ./nueva_venta.php?status=5");
                 }
-
 			}
 		}
 		else
@@ -48,9 +47,6 @@ for ($i = 0; $i < count($_SESSION["carrito"]); $i++) {
         break;
     } 
 }
-
-
-
 
 // Si no existe, lo agregamos como nuevo
 if ($indice === false and  $existencia >0) {
