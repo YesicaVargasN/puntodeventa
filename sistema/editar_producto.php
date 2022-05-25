@@ -3,17 +3,22 @@ include_once "includes/header.php";
 include "../conexion.php";
 if (!empty($_POST)) {
   $alert = "";
-  if (empty($_POST['codigo']) || empty($_POST['producto']) || empty($_POST['precio'])) {
+ /* if (empty($_POST['codigo']) || empty($_POST['producto']) || empty($_POST['precio'])) {
     $alert = '<div class="alert alert-primary" role="alert">
               Todo los campos son requeridos
             </div>';
-  } else {
+  } else {+*/
     $codproducto = $_GET['id'];
     $proveedor = $_POST['proveedor'];
     $codigo = $_POST['codigo'];
     $producto = $_POST['producto'];
-    $precio = $_POST['precio'];
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= $proveedor,precio= $precio WHERE codproducto = $codproducto");
+    $precio = $_POST['preciocosto'];
+    $precioventa =$_POST['precioventa'];
+    $preciomayoreo = $_POST['preciomayoreo'];
+    $cantidad = $_POST['cantidad'];
+    $medida = $_POST['medida'];
+    $categoria = $_POST['categoria'];
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', precioventa = '$precioventa', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria' WHERE codproducto = $codproducto");
     if ($query_update) {
       $alert = '<div class="alert alert-primary" role="alert">
               Producto Modificado
@@ -24,7 +29,7 @@ if (!empty($_POST)) {
               </div>';
     }
   }
-}
+//}
 
 // Validar producto
 
@@ -35,14 +40,21 @@ if (empty($_REQUEST['id'])) {
   if (!is_numeric($id_producto)) {
     header("Location: lista_productos.php");
   }
-  $query_producto = mysqli_query($conexion, "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor FROM producto p INNER JOIN proveedor pr ON p.proveedor = pr.codproveedor WHERE p.codproducto = $id_producto");
+
+  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.precioventa, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento FROM producto p 
+  left JOIN proveedor pr ON p.proveedor = pr.codproveedor 
+  left join cat_departamento dpto on dpto.iddepartamento = p.categoria
+  left join cat_unidadmedida med on med.idunidadmedida = p.unidadmedida
+  WHERE p.codproducto = $id_producto";
+  //echo $sql;
+  $query_producto = mysqli_query($conexion, $sql);
   $result_producto = mysqli_num_rows($query_producto);
 
   if ($result_producto > 0) {
     $data_producto = mysqli_fetch_assoc($query_producto);
-  } else {
+  } /*else {
     header("Location: lista_productos.php");
-  }
+  }*/
 }
 ?>
 <!-- Begin Page Content -->
@@ -63,35 +75,103 @@ if (empty($_REQUEST['id'])) {
               <input type="text" placeholder="Ingrese código de barras" name="codigo" id="codigo" class="form-control" value="<?php echo $data_producto['codigo']; ?>">
             </div>
             <div class="form-group">
+              <label for="producto">Producto</label>
+              <input type="text" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
+            </div>
+            <div class="form-group">
               <label for="nombre">Proveedor</label>
               <?php $query_proveedor = mysqli_query($conexion, "SELECT * FROM proveedor ORDER BY proveedor ASC");
               $resultado_proveedor = mysqli_num_rows($query_proveedor);
-              mysqli_close($conexion);
+              
               ?>
               <select id="proveedor" name="proveedor" class="form-control">
-                <option value="<?php echo $data_producto['codproveedor']; ?>" selected><?php echo $data_producto['proveedor']; ?></option>
                 <?php
                 if ($resultado_proveedor > 0) {
                   while ($proveedor = mysqli_fetch_array($query_proveedor)) {
-                    // code...
+                    if($proveedor['codproveedor']==$data_producto['codproveedor']){
                 ?>
+                  <option value="<?php echo $data_producto['codproveedor']; ?>" selected><?php echo $data_producto['proveedor']; ?></option>
+
+                 <?php
+                      }else{
+                  ?>
                     <option value="<?php echo $proveedor['codproveedor']; ?>"><?php echo $proveedor['proveedor']; ?></option>
                 <?php
+                    }
                   }
                 }
                 ?>
               </select>
             </div>
             <div class="form-group">
-              <label for="producto">Producto</label>
-              <input type="text" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
-
+              <label for="precio">Precio  Costo</label>
+              <input type="number" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto" value="<?php echo $data_producto['precio']; ?>">
             </div>
             <div class="form-group">
-              <label for="precio">Precio</label>
-              <input type="text" placeholder="Ingrese precio" class="form-control" name="precio" id="precio" value="<?php echo $data_producto['precio']; ?>">
+               <label for="precio">Precio Venta</label>
+               <input type="number" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precioventa']; ?>">
+             </div>
+             <div class="form-group">
+               <label for="preciomayoreo">Precio Mayoreo</label>
+               <input type="number" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo" value="<?php echo $data_producto['preciomayoreo']; ?>">
+             </div>
+             <div class="form-group">
+               <label for="cantidad">Cantidad</label>
+               <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad" value="<?php echo $data_producto['existencia']; ?>">
+             </div>
+             <div class="form-group">
+               <label>Unidad de Medida</label>
+               <?php
+                $query_medida = mysqli_query($conexion, "SELECT idunidadmedida, nombrecorto FROM cat_unidadmedida");
+                $resultado_medida = mysqli_num_rows($query_medida);
+                ?>
 
-            </div>
+               <select id="medida" name="medida" class="form-control">
+                 <?php
+                  if ($resultado_medida > 0) {
+                    while ($medida = mysqli_fetch_array($query_medida)) {
+                      if($medida['idunidadmedida']==$data_producto['idunidadmedida']){
+                      // code...
+                  ?>
+                    <option value="<?php echo $data_producto['idunidadmedida']; ?>" selected><?php echo $data_producto['nombrecorto']; ?></option>
+                  <?php
+                      }else{
+                  ?>
+                     <option value="<?php echo $medida['idunidadmedida']; ?>"><?php echo $medida['nombrecorto']; ?></option>
+                 <?php
+                    }
+                  }
+                }
+                  ?>
+               </select>
+             </div>
+
+             <div class="form-group">
+               <label>Categoria</label>
+               <?php
+                $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY departamento ASC");
+                $resultado_dptos = mysqli_num_rows($query_dptos);
+                mysqli_close($conexion);
+                ?>
+
+               <select id="categoria" name="categoria" class="form-control">
+                 <?php
+                  if ($resultado_dptos > 0) {
+                    while ($dptos = mysqli_fetch_array($query_dptos)) {
+                      if($dptos['iddepartamento']==$data_producto['departamento']){
+                  ?>
+                    <option value="<?php echo $data_producto['iddepartamento']; ?>" selected><?php echo $data_producto['departamento']; ?></option>
+                    <?php
+                      }else{
+                  ?>
+                     <option value="<?php echo $dptos['iddepartamento']; ?>"><?php echo $dptos['departamento']; ?></option>
+                 <?php
+                      }
+                    }
+                  }
+                  ?>
+             </div>
+             <br><br><br>
             <input type="submit" value="Actualizar Producto" class="btn btn-primary">
           </form>
         </div>
