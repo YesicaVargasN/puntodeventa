@@ -16,6 +16,7 @@
 					<thead class="thead-dark">
 						<tr>
 							<th>ID</th>
+							<th>CODIGO</th>
 							<th>PRODUCTO</th>
 							<th>PRECIO</th>
 							<th>STOCK</th>
@@ -34,6 +35,7 @@
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['codproducto']; ?></td>
+									<td><?php echo $data['codigo']; ?></td>
 									<td><?php echo $data['descripcion']; ?></td>
 									<td><?php echo $data['precio']; ?></td>
 									<td><?php echo $data['existencia']; ?></td>
