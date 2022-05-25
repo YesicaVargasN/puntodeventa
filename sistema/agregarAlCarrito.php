@@ -70,4 +70,4 @@ if ($indice === false and  $existencia >0) {
     $_SESSION["carrito"][$indice]['total'] = $_SESSION["carrito"][$indice]['cantidad'] * $_SESSION["carrito"][$indice]['precioventa'];
 }
 
-//header("Location: ./nueva_venta.php");   
+header("Location: ./nueva_venta.php");   
