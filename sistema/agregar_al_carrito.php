@@ -6,7 +6,7 @@ if (!isset($_POST["codigo"])) {
 }
 if(!isset($_SESSION["carrito"])) $_SESSION["carrito"] = array();
 $granTotal = 0;
-
+$id=0;
 $codigo = $_POST["codigo"];
 $existencia=0;
 $precioventa=0;
@@ -24,7 +24,7 @@ if ($r -> num_rows >0)
                 $descripcion=$f['descripcion'];
                 $existencia=$f['existencia'];
                 $precioventa=$f['precioventa'];
-                
+                $id=$f['codproducto'];
                 if($existencia<1)
                 {
                     header("Location: ./nueva_venta.php?status=5");
@@ -52,7 +52,7 @@ for ($i = 0; $i < count($_SESSION["carrito"]); $i++) {
 if ($indice === false and  $existencia >0) {
     //$producto->cantidad = 1;
     //$producto->total = $producto->precioVenta;
-   $productoarray= array('codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
+   $productoarray= array('id' =>$id,'codigo' =>$codigo,'cantidad' =>1,'descripcion' =>$descripcion,'cantidad' =>1, 'precioventa' => $precioventa,'total' => $precioventa);
    
     array_push($_SESSION["carrito"], $productoarray );
 } else {
