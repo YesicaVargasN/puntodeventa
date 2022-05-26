@@ -48,15 +48,12 @@ mysqli_close($conexion);
                 Registro Factura
             </div>
             <div class="card">
-                <form action="" autocomplete="off" method="post" class="card-body p-2">
+                <form enctype="multipart/form-data" action="lista_factura.php" autocomplete="off" method="post" class="card-body p-2">
                     <?php echo isset($alert) ? $alert : ''; ?>
-                    <div class="form-group">
-                        <label for="nombre">NOMBRE</label>
-                        <input type="text" placeholder="Ingrese nombre" name="proveedor" id="nombre" class="form-control">
-                    </div>
+                    
                     <div class="form-group">
                         <label for="contacto">Archivo</label>
-                        <input type="file" placeholder="Ingrese nombre del contacto" name="contacto" id="contacto" class="form-control">
+                        <input type="file" placeholder="Ingrese nombre del contacto" name="archivo" id="archivo" class="form-control">
                     </div>
                    
                     <input type="submit" value="Guardar Factura" class="btn btn-primary">
