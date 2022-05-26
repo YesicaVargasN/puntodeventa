@@ -48,7 +48,7 @@ $granTotal = 0;
 			}
 		?>
 		<br>
-		<form method="post" action="agregarAlCarrito.php">
+		<form method="post" action="agregar_al_carrito.php">
 			<label for="codigo">Código de barras:</label>
 			<input autocomplete="off" autofocus class="form-control" name="codigo" required type="text" id="codigo" placeholder="Escribe el código">
 		</form>
@@ -57,7 +57,8 @@ $granTotal = 0;
 		<table class="table table-bordered  table-hover">
 			<thead class="thead-dark">
 				<tr>
-					<th>ID</th>
+					<th>#</th>
+					<th>Id</th>
 					<th>Código</th>
 					<th>Descripción</th>
 					<th>Precio de venta</th>
@@ -78,19 +79,20 @@ $granTotal = 0;
 
 				<tr>
 					<td><?php echo $i;  ?></td>
+					<td><?php echo $producto['id'] ?></td>
 					<td><?php echo $producto['codigo'] ?></td>
 					<td><?php echo $producto['descripcion'] ?></td>
 					<td><?php echo $producto['precioventa'] ?></td>
 					<td><?php echo $producto['cantidad'] ?></td>
 					<td><?php echo $producto['total'] ?></td>
-					<td><a class="btn btn-danger" href="<?php echo "quitarDelCarrito.php?indice=" . $indice?>"><i class="fa fa-trash"></i></a></td>
+					<td><a class="btn btn-danger" href="<?php echo "quitar_del_Carrito.php?indice=" . $indice?>"><i class="fa fa-trash"></i></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 		</table>
 		</div>
 		<h3>Total: <?php echo $granTotal; ?></h3>
-		<form action="./terminarVenta.php" method="POST">
+		<form action="./terminar_venta.php" method="POST">
 			<input name="total" type="hidden" value="<?php echo $granTotal;?>">
 			<button type="submit" class="btn btn-success">Terminar venta</button>
 			<a href="./cancelar_venta.php" class="btn btn-danger">Cancelar venta</a>
