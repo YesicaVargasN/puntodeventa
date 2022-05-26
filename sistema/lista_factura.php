@@ -16,20 +16,20 @@
 					<thead class="thead-dark">
 						<tr>
 							<th>ID</th>
-							<th>Factura (archiv)</th>
+							<th>Factura (archivo)</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM proveedor");
+						$query = mysqli_query($conexion, "SELECT * FROM archivos");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['codproveedor']; ?></td>
-									<td><?php echo $data['contacto']; ?></td>
+									<td><?php echo $data['id']; ?></td>
+									<td><?php echo $data['archivo']; ?></td>
 									
 								</tr>
 						<?php }

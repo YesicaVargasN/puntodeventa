@@ -175,8 +175,8 @@ if ($result_data > 0) {
 					</a>
 					<div id="collapseFactura" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="registro_proveedor.php">Nuevo Factura</a>
-							<a class="collapse-item" href="lista_proveedor.php">Facturas</a>
+							<a class="collapse-item" href="registro_factura.php">Nuevo Factura</a>
+							<a class="collapse-item" href="lista_factura.php">Facturas</a>
 						</div>
 					</div>
 				</li>
