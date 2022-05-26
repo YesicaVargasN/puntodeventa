@@ -45,7 +45,7 @@ mysqli_close($conexion);
     <div class="row">
         <div class="col-lg-6 m-auto">
             <div class="card-header bg-primary text-white">
-                Registro de Proveedor
+                Registro Factura
             </div>
             <div class="card">
                 <form action="" autocomplete="off" method="post" class="card-body p-2">
@@ -55,19 +55,12 @@ mysqli_close($conexion);
                         <input type="text" placeholder="Ingrese nombre" name="proveedor" id="nombre" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="contacto">RUC</label>
-                        <input type="text" placeholder="Ingrese nombre del contacto" name="contacto" id="contacto" class="form-control">
+                        <label for="contacto">Archivo</label>
+                        <input type="file" placeholder="Ingrese nombre del contacto" name="contacto" id="contacto" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="telefono">TELÉFONO</label>
-                        <input type="number" placeholder="Ingrese teléfono" name="telefono" id="telefono" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">DIRECIÓN</label>
-                        <input type="text" placeholder="Ingrese Direccion" name="direccion" id="direcion" class="form-control">
-                    </div>
-                    <input type="submit" value="Guardar Proveedor" class="btn btn-primary">
-                    <a href="lista_proveedor.php" class="btn btn-danger">Regresar</a>
+                   
+                    <input type="submit" value="Guardar Factura" class="btn btn-primary">
+                    <a href="lista_factura.php" class="btn btn-danger">Regresar</a>
                 </form>
             </div>
         </div>
