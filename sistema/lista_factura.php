@@ -15,7 +15,9 @@ if(isset($_FILES['archivo']['name'])){
 	if (move_uploaded_file($tmp, $subir_archivo)) {
 		//si se guarda en la carpeta hay que guardar en la bd
 		$numarchivo = narchivo(FALSE); 
-		$query_insert = mysqli_query($conexion, "INSERT INTO archivos(id,archivo,fecha,activo,narchivo) values ('', '$doc', '$fecha', '1','$numarchivo')");
+		$sql = "INSERT INTO archivos(archivo,fecha,activo,narchivo) values ('$doc', '$fecha', '1','$numarchivo')";
+		//echo $sql;	
+		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
             $alert = '<div class="alert alert-primary" role="alert">
                        Factura Registrado
@@ -29,10 +31,13 @@ if(isset($_FILES['archivo']['name'])){
 		//echo "El archivo es válido y se cargó correctamente.<br><br>";
 		//echo"<a href='".$subir_archivo."' target='_blank'><img src='".$subir_archivo."' width='150'></a>";
 	 else {
-		echo "La subida ha fallado";
+		$alert = '<div class="alert alert-danger" role="alert">
+		La subida ha fallado
+	 </div>';
+		
 	}
 		
-
+	echo $alert;
 }
 
 

@@ -53,7 +53,7 @@ mysqli_close($conexion);
                     
                     <div class="form-group">
                         <label for="contacto">Archivo</label>
-                        <input type="file" placeholder="Ingrese nombre del contacto" name="archivo" id="archivo" class="form-control">
+                        <input type="file" placeholder="Ingrese nombre del contacto" name="archivo" id="archivo" class="form-control" required>
                     </div>
                    
                     <input type="submit" value="Guardar Factura" class="btn btn-primary">

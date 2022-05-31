@@ -131,6 +131,7 @@ if ($result_data > 0) {
 					</a>
 					<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="lista_codigos.php">Crear código de barra</a>
 							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
 							<a class="collapse-item" href="lista_productos.php">Productos</a>
 							<a class="collapse-item" href="lista_medida.php">Unidades de Medidas</a>
