@@ -52,6 +52,13 @@
          <div class="card-body">
            <form action="" method="post" autocomplete="off">
              <?php echo isset($alert) ? $alert : ''; ?>
+
+              
+
+
+
+
+
              <div class="form-group">
                <label for="codigo">Código de Barras</label>
                <input type="text" placeholder="Ingrese código de barras" name="codigo" id="codigo" class="form-control">
