@@ -103,8 +103,8 @@ if ($_POST['action'] == 'addProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.$precioTotal.'</td>
+            <td class="textright">$'.$data['precio_venta'].'</td>
+            <td class="textright">$'.$precioTotal.'</td>
             <td>
                 <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -113,7 +113,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $total = round($sub_total, 2);
     $detalleTotales ='<tr>
         <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.$total.'</td>
+        <td class="textright">$'.$total.'</td>
     </tr>';
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
@@ -135,9 +135,9 @@ if ($_POST['action'] == 'searchForDetalle') {
     $token = md5($_SESSION['idUser']);
 
     $query = mysqli_query($conexion, "SELECT tmp.correlativo, tmp.token_user,
-      tmp.cantidad, tmp.precio_venta, p.codproducto, p.descripcion
+      SUM(tmp.cantidad) as cantidad, SUM(tmp.precio_venta) as precio_venta, p.codproducto, p.descripcion
       FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
-      where token_user = '$token'");
+      where token_user = '$token'  GROUP BY  p.codproducto ");
     $result = mysqli_num_rows($query);
 
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
@@ -164,8 +164,8 @@ if ($_POST['action'] == 'searchForDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.$precioTotal.'</td>
+            <td class="textright">$'.$data['precio_venta'].'</td>
+            <td class="textright">$'.$precioTotal.'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -176,7 +176,7 @@ if ($_POST['action'] == 'searchForDetalle') {
 
     $detalleTotales = '<tr>
         <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.$total.'</td>
+        <td class="textright">$'.$total.'</td>
     </tr>';
 
     $arrayData['detalle'] = $detalleTabla;
@@ -229,8 +229,8 @@ if ($_POST['action'] == 'delProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.$precioTotal.'</td>
+            <td class="textright">$'.$data['precio_venta'].'</td>
+            <td class="textright">$'.$precioTotal.'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');">Eliminar</a>
             </td>

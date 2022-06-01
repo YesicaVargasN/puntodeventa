@@ -9,17 +9,17 @@
     } else {
       $codigo = $_POST['codigo'];
       $proveedor = $_POST['proveedor'];
-      $producto = $_POST['producto'];
-      $precio = $_POST['preciocosto'];
+      $producto = $_POST['producto'];     
       $cantidad = $_POST['cantidad'];
       $usuario_id = $_SESSION['idUser'];
-      $precioventa = $_POST['precioventa'];
+      $preciocosto = $_POST['preciocosto'];
+      $precio = $_POST['precioventa'];
       $preciomayoreo = $_POST['preciomayoreo'];
       $unidadmedida = $_POST['medida'];
       $categoria = $_POST['categoria'];
 
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, precioventa, preciomayoreo, unidadmedida, categoria) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$precioventa', '$preciomayoreo', '$unidadmedida', '$categoria')");
+      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria')");
       if ($query_insert) {
         $alert = '<div class="alert alert-success" role="alert">
                 Producto Registrado
