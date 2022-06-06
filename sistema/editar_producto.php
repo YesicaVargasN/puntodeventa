@@ -11,14 +11,14 @@ if (!empty($_POST)) {
     $codproducto = $_GET['id'];
     $proveedor = $_POST['proveedor'];
     $codigo = $_POST['codigo'];
-    $producto = $_POST['producto'];
-    $precio = $_POST['preciocosto'];
-    $precioventa =$_POST['precioventa'];
+    $producto = $_POST['producto'];   
+    $preciocosto = $_POST['preciocosto'];
+    $precio = $_POST['precioventa'];
     $preciomayoreo = $_POST['preciomayoreo'];
     $cantidad = $_POST['cantidad'];
     $medida = $_POST['medida'];
     $categoria = $_POST['categoria'];
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', precioventa = '$precioventa', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria' WHERE codproducto = $codproducto");
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria' WHERE codproducto = $codproducto");
     if ($query_update) {
       $alert = '<div class="alert alert-primary" role="alert">
               Producto Modificado
@@ -41,7 +41,7 @@ if (empty($_REQUEST['id'])) {
     header("Location: lista_productos.php");
   }
 
-  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.precioventa, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento FROM producto p 
+  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento FROM producto p 
   left JOIN proveedor pr ON p.proveedor = pr.codproveedor 
   left join cat_departamento dpto on dpto.iddepartamento = p.categoria
   left join cat_unidadmedida med on med.idunidadmedida = p.unidadmedida
@@ -105,11 +105,11 @@ if (empty($_REQUEST['id'])) {
             </div>
             <div class="form-group">
               <label for="precio">Precio  Costo</label>
-              <input type="number" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto" value="<?php echo $data_producto['precio']; ?>">
+              <input type="number" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto" value="<?php echo $data_producto['preciocosto']; ?>">
             </div>
             <div class="form-group">
                <label for="precio">Precio Venta</label>
-               <input type="number" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precioventa']; ?>">
+               <input type="number" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precio']; ?>">
              </div>
              <div class="form-group">
                <label for="preciomayoreo">Precio Mayoreo</label>

@@ -63,7 +63,6 @@ $('.del_product').click(function(e) {
     type: 'POST',
     async: true,
     data: {action:action,producto:producto},
-
     success: function(response) {
     if (response != 0) {
       var info = JSON.parse(response);
@@ -285,11 +284,12 @@ $('#add_product_venta').click(function(e) {
       type: 'POST',
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
-      success: function(response) {
-        
+      success: function(response) {             
         if (response != 'error') {
+         
+        
           var info = JSON.parse(response);
-          $('#detalle_venta').html(info.detalle);
+          $('#detalle_venta').html(info.detalle);        
           $('#detalle_totales').html(info.totales);
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
@@ -521,10 +521,12 @@ function searchForDetalle(id) {
     data: {action:action,user:user},
     success: function(response) {
       if (response == 0) {
-        console.log('');
+      
       }else {
-        var info = JSON.parse(response);
+        var info = JSON.parse(response);      
         $('#detalle_venta').html(info.detalle);
+
+
         $('#detalle_totales').html(info.totales);
       }
       viewProcesar();
