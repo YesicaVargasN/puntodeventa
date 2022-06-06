@@ -9,8 +9,10 @@
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     Información Personal
-                </div>
+                </div>             
                 <div class="card-body">
+                    <br>
+                <div class='divResaltar '>
                     <div class="form-group">
                         <label>Nombre: <strong><?php echo $_SESSION['nombre']; ?></strong></label>
                     </div>
@@ -23,6 +25,7 @@
                     <div class="form-group">
                         <label>Usuario: <strong><?php echo $_SESSION['user']; ?></strong></label>
                     </div>
+                </div>
                     <ul class="list-group">
                         <li class="list-group-item active">Cambiar Contraseña</li>
                         <form action="" method=" post" name="frmChangePass" id="frmChangePass" class="p-3">

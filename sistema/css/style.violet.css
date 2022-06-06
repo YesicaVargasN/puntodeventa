@@ -3384,8 +3384,17 @@ pre code {
   background-color: #2d3035;
   border: 1px solid #34373d;
   border-radius: 0;
+  
 }
 
+.divResaltar {
+  background-color: #2d3035;
+ /* border: 1px solid #34373d;*/
+  border-radius: 0;
+  color:#aaa;
+  
+  
+}
 .card > .list-group:first-child .list-group-item:first-child {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
