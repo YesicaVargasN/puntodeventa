@@ -15,7 +15,7 @@
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>NOMBRE CÓDIGO</th>
+							<th>ID</th>
 							<th>NOMBRE PRODUCTO</th>
 							<th>CÓDIGO</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
@@ -32,7 +32,7 @@
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['numarchivo'].'_'.$data['nomimagen']; ?></td>
+									<td><?php echo $data['id'] ?></td>
 									<td><?php echo $data['producto']; ?></td>
 									<td><?php echo $data['codigo']; ?></td>
 										<?php if ($_SESSION['rol'] == 1) { ?>
