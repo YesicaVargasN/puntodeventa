@@ -50,47 +50,26 @@ mysqli_close($conexion);
 
             <!--GENERAR CODIGO DE BARRAS-->
             <div class="card">
+                <div id="respuesta"></div>
                 <form action="" autocomplete="off" method="post" class="card-body p-2">
                 <div class="form-group">
-                        <label for="nombre">Código del producto</label>
-                        <input type="text" id="data" placeholder="Ingresa un valor" class="form-control">
-                        <button type="button" id="generar_barcode" class="btn btn-primary">Generar código de barras</button>
-                        <div id="imagen"></div>
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+                    <label for="nombre">Nombre del producto</label>
+                    <input type="text" placeholder="Ingrese nombre" id="nombre" name="nombre" class="form-control">
                 </div>
-            </div>
-            
-            <script>
-                $("#generar_barcode").click(function() {
-                var data = $("#data").val();
-                $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
-                $("#data").val('');
-                });
-              </script>
+                <div class="form-group">
+                    <label for="nombre">Código del producto</label>
+                    <input type="text" id="data" name="data" placeholder="Ingresa un valor" class="form-control"> 
+                </div>
+                
+                <div id="imagen"></div>
+                
+                
+                <button type="button" id="generar_barcode" onclick="generar();" class="btn btn-primary">Generar código de barras</button>
+                
+                <button type="button" id="imprimir" onclick="imprimir();"  class="btn btn-primary">Imprimir</button>
 
-            <div class="card">
-                <form action="" autocomplete="off" method="post" class="card-body p-2">
-                    <?php echo isset($alert) ? $alert : ''; ?>
-                    <div class="form-group">
-                        <label for="nombre">NOMBRE</label>
-                        <input type="text" placeholder="Ingrese nombre" name="proveedor" id="nombre" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="contacto">RUC</label>
-                        <input type="text" placeholder="Ingrese nombre del contacto" name="contacto" id="contacto" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">TELÉFONO</label>
-                        <input type="number" placeholder="Ingrese teléfono" name="telefono" id="telefono" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">DIRECIÓN</label>
-                        <input type="text" placeholder="Ingrese Direccion" name="direccion" id="direcion" class="form-control">
-                    </div>
-                    <input type="submit" value="Guardar Proveedor" class="btn btn-primary">
-                    <a href="lista_proveedor.php" class="btn btn-danger">Regresar</a>
-                </form>
-            </div>
+                
+            </div>            
         </div>
     </div>
 
