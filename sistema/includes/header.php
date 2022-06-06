@@ -12,7 +12,7 @@ $razonSocial = '';
 $emailEmpresa = '';
 $telEmpresa = '';
 $dirEmpresa = '';
-/*
+
 $query_empresa = mysqli_query($conexion, "SELECT * FROM configuracion");
 $row_empresa = mysqli_num_rows($query_empresa);
 if ($row_empresa > 0) {
@@ -29,7 +29,7 @@ $query_data = mysqli_query($conexion, "CALL data();");
 $result_data = mysqli_num_rows($query_data);
 if ($result_data > 0) {
 	$data = mysqli_fetch_assoc($query_data);
-}*/
+}
 ?>
 
 <!DOCTYPE html>
