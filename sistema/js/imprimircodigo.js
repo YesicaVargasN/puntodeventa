@@ -1,10 +1,10 @@
 
 function generar(){
-    alert('entro');
+    //alert('entro');
     var data = $("#data").val();
     //var nombre = $("#nombre").val();
     $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
-    $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data}, function(result) { $("respuesta").html(result);} );
+    $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data});
     $("#data").val('');
    /////////////////////////////////////////// $("#nombre").val();
 }
