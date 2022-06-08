@@ -1,42 +1,6 @@
 <?php
 include_once "includes/header.php";
 include "../conexion.php";
-if (!empty($_POST)) {
-    $alert = "";
-    if (empty($_POST['proveedor']) || empty($_POST['contacto']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-        $alert = '<div class="alert alert-danger" role="alert">
-                        Todo los campos son obligatorios
-                    </div>';
-    } else {
-        $proveedor = $_POST['proveedor'];
-        $contacto = $_POST['contacto'];
-        $telefono = $_POST['telefono'];
-        $Direccion = $_POST['direccion'];
-        $usuario_id = $_SESSION['idUser'];
-        $query = mysqli_query($conexion, "SELECT * FROM proveedor where contacto = '$contacto'");
-        $result = mysqli_fetch_array($query);
-
-        if ($result > 0) {
-            $alert = '<div class="alert alert-danger" role="alert">
-                        El Ruc ya esta registrado
-                    </div>';
-        }else{
-        
-
-        $query_insert = mysqli_query($conexion, "INSERT INTO proveedor(proveedor,contacto,telefono,direccion,usuario_id) values ('$proveedor', '$contacto', '$telefono', '$Direccion','$usuario_id')");
-        if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                        Proveedor Registrado
-                    </div>';
-        } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar proveedor
-                    </div>';
-        }
-        }
-    }
-}
-mysqli_close($conexion);
 ?>
 
 <!-- Begin Page Content -->
@@ -64,16 +28,39 @@ mysqli_close($conexion);
                 <div id="imagen"></div>
                 
                 
-                <button type="button" id="generar_barcode" onclick="generar();" class="btn btn-primary">Generar código de barras</button>
+                <button type="button" id="generar_barcode" onclick="cb();" class="btn btn-primary">Generar código de barras</button>
                 
                 <button type="button" id="imprimir" onclick="imprimir();"  class="btn btn-primary">Imprimir</button>
-
                 
             </div>            
         </div>
     </div>
-
-
 </div>
+
+<!--<input type="text" id="data" placeholder="Ingresa un valor">
+  <button type="button" onclick='cb();' id="generar_barcode">Generar código de barras</button>
+  <div id="imagen"></div>-->
+
+<script>
+    function cb() {
+        var data = $("#data").val();
+        var nombre = $("#nombre").val();
+        $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
+        $("#data").val('');
+        $("#nombre").val('');
+        $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data, nombre:nombre }  )
+            .done(function( data ) {
+                console.log("Data Loaded: " + data );
+            }
+        );
+
+       /* $.post( "test.php", { name: "John", time: "2pm" })
+        .done(function( data ) {
+            alert( "Data Loaded: " + data );
+        });*/
+    }
+  </script>
+
+
 <!-- /.container-fluid -->
 <?php include_once "includes/footer.php"; ?>
