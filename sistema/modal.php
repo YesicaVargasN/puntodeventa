@@ -59,7 +59,8 @@ if ($_POST['action'] == 'addCliente') {
   $direccion = $_POST['dir_cliente'];
   $usuario_id = $_SESSION['idUser'];
 
-  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id')");
+  $sql="INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id')";
+   $query_insert = mysqli_query($conexion, $sql );
   if ($query_insert) {
     $codCliente = mysqli_insert_id($conexion);
     $msg = $codCliente;

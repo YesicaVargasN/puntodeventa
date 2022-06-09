@@ -38,7 +38,7 @@
 
                             </div>
                             <div id="div_registro_cliente" style="display: none;">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button id="add_cliente_venta" type="submit" name="add_cliente_venta" class="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </form>

@@ -152,6 +152,8 @@ $('#dni_cliente').keyup(function(e) {
 
 // crear cliente = Ventas
 $('#form_new_cliente_venta').submit(function(e) {
+ 
+  
   e.preventDefault();
   $.ajax({
     url: 'modal.php',
@@ -167,9 +169,11 @@ $('#form_new_cliente_venta').submit(function(e) {
         $('#tel_cliente').attr('disabled','disabled');
         $('#dir_cliente').attr('disabled','disabled');
         // ocultar boton Agregar
-        $('.btn_new_cliente').slideUp();
+        $('.btn_new_cliente').slideDown();
         //ocultar boton Guardar
-        $('#div_registro_cliente').slideDown();
+       $('#div_registro_cliente').slideUp();
+        console.log(response);
+        
       }
     },
     error: function(error) {
