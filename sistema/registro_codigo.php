@@ -13,6 +13,7 @@ include "../conexion.php";
             </div>
 
             <!--GENERAR CODIGO DE BARRAS-->
+            <form action='registro_codigo.php' method='GET'>
             <div class="card">
                 <div id="respuesta"></div>
                 <form action="" autocomplete="off" method="post" class="card-body p-2">
@@ -26,39 +27,58 @@ include "../conexion.php";
                 </div>
                 
                 <div id="imagen"></div>
-                
-                
+                <div class="form-group">
                 <button type="button" id="generar_barcode" onclick="cb();" class="btn btn-primary">Generar código de barras</button>
                 
-                <button type="button" id="imprimir" onclick="imprimir();"  class="btn btn-primary">Imprimir</button>
-                
-            </div>            
+                <button type="submit" id="imprimir"   class="btn btn-primary">Imprimir</button>
+                </div>
+            </div>   
+            </form>         
         </div>
     </div>
 </div>
 
-<!--<input type="text" id="data" placeholder="Ingresa un valor">
-  <button type="button" onclick='cb();' id="generar_barcode">Generar código de barras</button>
-  <div id="imagen"></div>-->
+<?php
+    
+  if(isset($_GET['data'])){
+        
+        $codigo = $_GET['data'];
+        echo "<center><iframe src='codigoimprimir.php?codigo=".$codigo."' style='width:50%; height:50%; border: 0px solid black;'></iframe></center>";
+    }
+
+?>
+
 
 <script>
     function cb() {
         var data = $("#data").val();
         var nombre = $("#nombre").val();
-        $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
-        $("#data").val('');
-        $("#nombre").val('');
+       // $("#data").val('');
+        //$("#nombre").val('');
         $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data, nombre:nombre }  )
             .done(function( data ) {
-                console.log("Data Loaded: " + data );
+                $("#respuesta").html(data);
+                //$("#imagen").html('<img src="codigosGenerados/'+text+'.png"/>');
             }
         );
 
-       /* $.post( "test.php", { name: "John", time: "2pm" })
-        .done(function( data ) {
-            alert( "Data Loaded: " + data );
+        $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
+
+
+     /*   $.ajax({
+            url: 'guardarImagen.php',
+            type: 'post',			
+            data: {text:data, nombre:nombre},
+            success: function(data){
+                $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
+
+            }
         });*/
+      
     }
+
+    
+
   </script>
 
 

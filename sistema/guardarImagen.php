@@ -5,20 +5,42 @@ include "barcode/barcode.php";
 $filepath = $_POST['filepath'];
 $text = $_POST['text'];
 $nombre = $_POST['nombre'];
-//barcode( $filepath, $text, $size, $orientation, $code_type, $print, $sizefactor );
-echo $nombre;
-barcode( $filepath, $text,'70','horizontal','code128',true,1);
 
-//guardar en la bd
-$query_insert = mysqli_query($conexion, "INSERT INTO codigobarras(codigo,producto) values ('$text', '$nombre')");
-if ($query_insert) {
-    $alert = '<div class="alert alert-primary" role="alert">
-                        Código Registrado.
-                    </div>';
-} else {
-    $alert = '<div class="alert alert-danger" role="alert">
-                        Error al guardar el codigo generado, favor de intentarlo nuevamente.
-                </div>';
+//VERIFICAMOS QUE NO EXISTA YA EL CODIGO DE BARRAS EN TABLA CODIGOS DE BARRA
+$sql = mysqli_query($conexion, "SELECT * FROM codigobarras WHERE codigo = $text");
+$result = mysqli_num_rows($sql);
+if ($result > 0) {
+
+    echo '<div class="alert alert-primary" role="alert">
+        ERROR: El código que intenta registrar, ya existe, favor de intentar con otro.
+    </div>';
+
+}else{
+
+     //AHORA VERIFICAMOS TABLA PRODUCTO
+    //VERIFICAMOS QUE NO EXISTA YA EL CODIGO DE BARRAS
+    $sql1 = mysqli_query($conexion, "SELECT * FROM producto WHERE codigo = $text");
+    $result1 = mysqli_num_rows($sql1);
+    if ($result1 > 0) {
+        echo '<div class="alert alert-primary" role="alert">
+            ERROR: El código que intenta registrar, ya existe, favor de intentar con otro.
+        </div>';
+    }else{
+        barcode( $filepath, $text,'70','horizontal','code128',true,1);
+
+        //guardar en la bd
+        $query_insert = mysqli_query($conexion, "INSERT INTO codigobarras(codigo,producto) values ('$text', '$nombre')");
+        if ($query_insert) {
+            echo '<div class="alert alert-primary" role="alert">
+                                Código Registrado.
+                            </div>';
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                                Error al guardar el codigo generado, favor de intentarlo nuevamente.
+                        </div>';
+        }
+    }
+   
 }
 
 mysqli_close($conexion);
