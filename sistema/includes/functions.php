@@ -1,5 +1,5 @@
 <?php
-	date_default_timezone_set('America/Mexico');
+	date_default_timezone_set('America/Monterrey');
 
 	function fechaMexico(){
 		$mes = array("","Enero",
@@ -17,5 +17,6 @@
 		return date('d')." de ". $mes[date('n')] . " de " . date('Y');
 	}
 
-
+	
+	
  ?>

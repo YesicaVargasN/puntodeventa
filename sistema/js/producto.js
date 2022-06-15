@@ -259,6 +259,22 @@ $('#txt_cod_pro').keyup(function(e) {
   }
 });
 
+
+
+
+// buscar producto = Ventas
+$('#txt_cod_pro').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {
+    console.log("entro al enter");
+    $('#add_product_venta').click(function(e) {});
+
+  }
+
+});
+
+
+
 // calcular el Total
 $('#txt_cant_producto').keyup(function(e) {
   e.preventDefault();
@@ -291,6 +307,7 @@ $('#add_product_venta').click(function(e) {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
+          $('#totalmodal').val(info.totalmodal);     
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
           $('#txt_descripcion').html('-');
@@ -345,6 +362,8 @@ $('#btn_facturar_venta').click(function(e) {
   if (rows > 0) {
     var action = 'procesarVenta';
     var codcliente = $('#idcliente').val();
+    var pagarcon = $('#pagar_con').val();
+   
     $.ajax({
       url: 'modal.php',
       type: 'POST',
@@ -353,8 +372,8 @@ $('#btn_facturar_venta').click(function(e) {
       success: function(response) {
       if (response != 0) {
         var info = JSON.parse(response);
-        //console.log(info);
-        generarPDF(info.codcliente,info.nofactura);
+        console.log(info);
+        generarPDF(info.codcliente,info.nofactura, pagarcon);
         location.reload();
       }else {
         console.log('no hay dato');
@@ -373,8 +392,8 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
-
-  generarPDF(codCliente,noFactura);
+  var pagarcon = $('#pagar_con').val();  
+  generarPDF(codCliente,noFactura, pagarcon);
 });
 
 // Cambiar contraseña
@@ -457,8 +476,8 @@ if (passNuevo.length < 5) {
 $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</p>');
 $('.alertChangePass').slideDown();
 }
-function generarPDF(cliente,factura) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
+function generarPDF(cliente,factura,pagocon) {
+  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon;
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
@@ -474,6 +493,7 @@ function del_product_detalle(correlativo) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
+        $('#totalmodal').val(info.totalmodal);       
         $('#txt_cod_producto').val('');
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -503,10 +523,10 @@ function del_product_detalle(correlativo) {
 // mostrar/ ocultar boton Procesar
 function viewProcesar() {
   if ($('#detalle_venta tr').length > 0){
-    $('#btn_facturar_venta').show();
+    $('#procesarVenta').show();
     $('#btn_anular_venta').show();
   }else {
-    $('#btn_facturar_venta').hide();
+    $('#procesarVenta').hide();
     $('#btn_anular_venta').hide();
   }
 }
@@ -521,11 +541,12 @@ function searchForDetalle(id) {
     data: {action:action,user:user},
     success: function(response) {
       if (response == 0) {
-        console.log('');
+        console.log(response);
       }else {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
+        $('#totalmodal').val(info.totalmodal);     
       }
       viewProcesar();
     },
@@ -778,5 +799,104 @@ if (document.getElementById("polarChart")) {
       console.log(error);
 
     }
+  });
+}
+
+
+function MASK(form, n, mask, format) {
+  if (format == "undefined") format = false;
+  if (format || NUM(n)) {
+    dec = 0, point = 0;
+    x = mask.indexOf(".")+1;
+    if (x) { dec = mask.length - x; }
+
+    if (dec) {
+      n = NUM(n, dec)+"";
+      x = n.indexOf(".")+1;
+      if (x) { point = n.length - x; } else { n += "."; }
+    } else {
+      n = NUM(n, 0)+"";
+    } 
+    for (var x = point; x < dec ; x++) {
+      n += "0";
+    }
+    x = n.length, y = mask.length, XMASK = "";
+    while ( x || y ) {
+      if ( x ) {
+        while ( y && "#0.".indexOf(mask.charAt(y-1)) == -1 ) {
+          if ( n.charAt(x-1) != "-")
+            XMASK = mask.charAt(y-1) + XMASK;
+          y--;
+        }
+        XMASK = n.charAt(x-1) + XMASK, x--;
+      } else if ( y && "$0".indexOf(mask.charAt(y-1))+1 ) {
+        XMASK = mask.charAt(y-1) + XMASK;
+      }
+      if ( y ) { y-- }
+    }
+  } else {
+     XMASK="";
+  }
+  if (form) { 
+    form.value = XMASK;
+    if (NUM(n)<0) {
+      form.style.color="#FF0000";
+    } else {
+      form.style.color="#000000";
+    }
+  }
+  return XMASK;
+}
+function NUM(s, dec) {
+  for (var s = s+"", num = "", x = 0 ; x < s.length ; x++) {
+    c = s.charAt(x);
+    if (".-+/*".indexOf(c)+1 || c != " " && !isNaN(c)) { num+=c; }
+  }
+  if (isNaN(num)) { num = eval(num); }
+  if (num == "")  { num=0; } else { num = parseFloat(num); }
+  if (dec != undefined) {
+    r=.5; if (num<0) r=-r;
+    e=Math.pow(10, (dec>0) ? dec : 0 );
+    return parseInt(num*e+r) / e;
+  } else {
+    return num;
+  }
+}
+
+
+
+  function pagarCon(e) {
+    e.preventDefault();
+    const total = document.getElementById("totalmodal").value;
+    const pagar_con = document.getElementById("pagar_con").value;
+    const cambio =pagar_con-total;
+    
+    
+    //if (e.which == 13) {
+          if (cambio > 0 ) {
+          document.getElementById("cambio").value = cambio;
+          $('.alertCambio').html('<p style="color : red;"></p>');
+          $('#btn_facturar_venta').slideDown();
+          // $("#procesarVenta").css("display", "block");
+      
+          } else {
+           $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
+           $('#btn_facturar_venta').slideUp();  
+          //  $("#procesarVenta").css("display", "none");   
+            document.getElementById('pagar_con').focus();
+            
+          }
+    //}
+
+   
+}
+
+function alertas(msg, icono) {
+  Swal.fire({
+    position: 'top-end',
+    icon: icono,
+    title: msg,
+    showConfirmButton: false,
+    timer: 3000
   });
 }

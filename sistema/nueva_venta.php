@@ -56,7 +56,8 @@
                     <label>Acciones</label>
                     <div id="acciones_venta" class="form-group">
                         <a href="#" class="btn btn-danger" id="btn_anular_venta">Anular</a>
-                        <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Generar Venta</a>
+                        <!-- <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Generar Venta</a> -->
+                        <a href="#" class="btn btn-primary" id="procesarVenta" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-save"></i> Generar Venta</a>
                     </div>
                 </div>
             </div>
@@ -108,6 +109,72 @@
 
 </div>
 <!-- /.container-fluid -->
+<!-- Modal -->
 
+<div id='modalpago'>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">Forma de Pago</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">      
+        <div>
+          <div class="card">
+              <div class="card-body">
+                  <form id="formulario" onsubmit="registrarCliVenta(event);" autocomplete="off">
+                      <div class="form-group">
+                          <!-- <div class="alert alert-info fw-bold text-center" role="alert">
+                              <label for="">Total</label>
+                              S/ : <span id="alert_total"></span>
+                          </div> -->
+                      </div>
+                      <div class="form-group">
+                          <label for="tipo">Tipo de Venta</label>
+                          <select id="tipo" class="form-control" name="tipo" required="">
+                              <option value="1">Efectivo</option>
+                              <option value="2">Tarjeta</option>
+                              <option value="2">Credito</option>
+                          </select>
+                      </div>
+                      <div class="row">
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="totalmodal" class="font-weight-bold">Total</label>
+                              <input id="totalmodal"  class="form-control" type="text" placeholder="Total" value="" disabled="">
+                          </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="pagar_con" class="font-weight-bold">Pagar con: </label>
+                                  <input id="pagar_con" class="form-control" type="text" placeholder="0.00" value="0.00" onkeyup="pagarCon(event)">
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label for="cambio" class="font-weight-bold">Cambio</label>
+  
+                                  <input id="cambio" class="form-control" type="number" placeholder="Cambio" value="0.00" disabled="">
+                              </div>
+                          </div>
+                      </div>                    
+              </div>
+          </div>
+      </div>
+        </div>
+        <div class="alert alertCambio"></div>
+        <div class="modal-footer">
+        <!-- /*<button class="btn btn-outline-primary " type="button" onclick="procesar(0)" id="procesarVenta" style="display: none;">Generar Venta</button>  */  -->
+         <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Terminar Venta</a>   
+         <!-- <button class="btn btn-outline-danger" type="button" onclick="anularVenta(event)" name="anularVenta">Anular</button> -->
+         <a href="#" class="btn btn-danger" id="btn_anular_venta">Anular</a>  
+        </div>
+      </div>
+    </div>
+  </div>
 
 <?php include_once "includes/footer.php"; ?>

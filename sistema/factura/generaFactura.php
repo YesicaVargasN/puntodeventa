@@ -5,19 +5,31 @@
 		header('location: ../');
 	}
 	include "../../conexion.php";
-	if(empty($_REQUEST['cl']) || empty($_REQUEST['f']))
+	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] )|| empty($_REQUEST['p']))
 	{
 		echo "No es posible generar la factura.";
 	}else{
 		$codCliente = $_REQUEST['cl'];
 		$noFactura = $_REQUEST['f'];
+		$pagocon = $_REQUEST['p'];
+		$tipo = 'Efectivo';//$_REQUEST['t'];
+		// if($_REQUEST['t']=='T')
+		// {
+		// 	$tipo = 'Tarjeta;';
+		// }
+		// else
+		// {
+		// 	$tipo = 'Efectivo:';
+		// };
+
+
 		$consulta = mysqli_query($conexion, "SELECT * FROM configuracion");
 		$resultado = mysqli_fetch_assoc($consulta);
 		$ventas = mysqli_query($conexion, "SELECT * FROM factura WHERE nofactura = $noFactura");
 		$result_venta = mysqli_fetch_assoc($ventas);
 		$clientes = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente = $codCliente");
 		$result_cliente = mysqli_fetch_assoc($clientes);
-		$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, d.cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto");
+		$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
 		require_once 'fpdf/fpdf.php';
 		$pdf = new FPDF('P', 'mm', array(80, 200));
 		$pdf->AddPage();
@@ -79,9 +91,17 @@
 			$pdf->Cell(15, 5, $importe, 0, 1, 'L');
 		}
 		$pdf->Ln();
-		$pdf->SetFont('Arial', 'B', 10);
+		$pdf->SetFont('Arial', 'B', 9);
 
-		$pdf->Cell(76, 5, 'Total: ' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');
+		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');
+		// $pdf->Cell(76, 5, 'Su Pago' . '             ', 0, 1, 'R');
+		$pdf->Cell(76, 5,  $tipo.': $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+		if( $tipo=='Efectivo')
+		{
+			$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
+		}
+			
+		
 		$pdf->Ln();
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(80, 5, utf8_decode("Gracias por su preferencia"), 0, 1, 'C');
