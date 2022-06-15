@@ -18,7 +18,13 @@ if (!empty($_POST)) {
     $cantidad = $_POST['cantidad'];
     $medida = $_POST['medida'];
     $categoria = $_POST['categoria'];
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria' WHERE codproducto = $codproducto");
+    if(isset($_POST['sec'])){
+      $sec = $_POST['sec'];
+    }else{
+      $sec = "";
+    }
+    
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec' WHERE codproducto = $codproducto");
     if ($query_update) {
       $alert = '<div class="alert alert-primary" role="alert">
               Producto Modificado
@@ -41,10 +47,11 @@ if (empty($_REQUEST['id'])) {
     header("Location: lista_productos.php");
   }
 
-  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento FROM producto p 
+  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento, cs.idseccion, cs.seccion FROM producto p 
   left JOIN proveedor pr ON p.proveedor = pr.codproveedor 
   left join cat_departamento dpto on dpto.iddepartamento = p.categoria
   left join cat_unidadmedida med on med.idunidadmedida = p.unidadmedida
+  left join cat_secciones cs on cs.idseccion = p.seccion
   WHERE p.codproducto = $id_producto";
   //echo $sql;
   $query_producto = mysqli_query($conexion, $sql);
@@ -151,14 +158,16 @@ if (empty($_REQUEST['id'])) {
                <?php
                 $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY departamento ASC");
                 $resultado_dptos = mysqli_num_rows($query_dptos);
-                mysqli_close($conexion);
+                
                 ?>
 
                <select id="categoria" name="categoria" class="form-control">
                  <?php
                   if ($resultado_dptos > 0) {
                     while ($dptos = mysqli_fetch_array($query_dptos)) {
-                      if($dptos['iddepartamento']==$data_producto['departamento']){
+                      echo 'iddepto '.$dptos['iddepartamento'];
+                      echo 'query '.$data_producto['departamento'];
+                      if($dptos['iddepartamento']==$data_producto['iddepartamento']){
                   ?>
                     <option value="<?php echo $data_producto['iddepartamento']; ?>" selected><?php echo $data_producto['departamento']; ?></option>
                     <?php
@@ -170,8 +179,46 @@ if (empty($_REQUEST['id'])) {
                     }
                   }
                   ?>
+                </select>
              </div>
-             <br><br><br>
+
+             <div class="form-group">
+            
+            <?php
+            $sql = "SELECT * FROM cat_secciones WHERE iddepartamento = ".$data_producto['iddepartamento']."";
+            echo $sql;
+            $query_medida = mysqli_query($conexion, $sql);
+            $resultado_medida = mysqli_num_rows($query_medida);
+            mysqli_close($conexion);
+            ?>
+
+            <?php
+              if ($resultado_medida > 0) {
+            ?>
+              <label>Sección del producto</label>  
+              <select id="sec" name="sec" class="form-control">
+
+                <?php
+                while ($secciones = mysqli_fetch_array($query_medida)) {
+                  if($secciones['idseccion']==$data_producto['idseccion']){
+                ?>
+                  <option value="<?php echo $data_producto['idseccion']; ?>" selected><?php echo $data_producto['seccion']; ?></option>
+                <?php
+                  }else{
+                ?>
+                  <option value="<?php echo $secciones['idseccion']; ?>"><?php echo $secciones['seccion']; ?></option>
+                <?php
+                  }
+                }
+                ?>
+                </select>
+            <?php
+              }
+            ?>
+            
+                </div>
+
+            
             <input type="submit" value="Actualizar Producto" class="btn btn-primary">
           </form>
         </div>

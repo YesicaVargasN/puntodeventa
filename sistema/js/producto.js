@@ -786,3 +786,5 @@ if (document.getElementById("polarChart")) {
     }
   });
 }
+
+

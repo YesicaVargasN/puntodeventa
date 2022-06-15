@@ -17,9 +17,15 @@
       $preciomayoreo = $_POST['preciomayoreo'];
       $unidadmedida = $_POST['medida'];
       $categoria = $_POST['categoria'];
+      if(isset($_POST['sec'])){
+        $sec = $_POST['sec'];
+      }else{
+        $sec = "";
+      }
+      
 
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria')");
+      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec')");
       if ($query_insert) {
         $alert = '<div class="alert alert-success" role="alert">
                 Producto Registrado
@@ -32,7 +38,22 @@
     }
   }
   ?>
+<script>
 
+function cargar_secciones(){
+
+let idcat = $('#categoria').val();
+$.ajax({
+  url: "cargar_secciones.php",
+  type: "post",
+  data: {idcat: idcat},
+  success: function(data){
+      $('#seccion').html(data+"\n");
+  }
+});
+
+}
+</script>
  <!-- Begin Page Content -->
  <div class="container-fluid">
 
@@ -135,10 +156,10 @@
                <?php
                 $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY departamento ASC");
                 $resultado_dptos = mysqli_num_rows($query_dptos);
-                mysqli_close($conexion);
+               
                 ?>
 
-               <select id="categoria" name="categoria" class="form-control">
+               <select id="categoria" name="categoria" onchange="cargar_secciones();" class="form-control">
                  <?php
                   if ($resultado_dptos > 0) {
                     while ($dptos = mysqli_fetch_array($query_dptos)) {
@@ -149,7 +170,12 @@
                     }
                   }
                   ?>
+              </select>
              </div>
+
+            
+
+             <div class="form-group" name='seccion' id='seccion'></div>
              
              <input type="submit" value="Guardar Producto" class="btn btn-primary">
            </form>
@@ -157,8 +183,6 @@
        </div>
      </div>
    </div>
-
-
  </div>
  <!-- /.container-fluid -->
  <?php include_once "includes/footer.php"; ?>

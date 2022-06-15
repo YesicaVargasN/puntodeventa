@@ -25,6 +25,8 @@ if (!empty($_SESSION['active'])) {
         $_SESSION['user'] = $dato['usuario'];
         $_SESSION['rol'] = $dato['idrol'];
         $_SESSION['rol_name'] = $dato['rol'];
+        $user = $dato['idusuario'];
+        global $user;
         header('location: sistema/');
       } else {
         $alert = '<div class="alert alert-danger" role="alert">
