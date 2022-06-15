@@ -66,11 +66,14 @@ if(isset($_FILES['archivo']['name'])){
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>Id</th>
-							<th>Proveedor</th>
-							<th>Total</th>
-							<th>Descripción</th>
-							<th>Factura (Archivo)</th>
+							<th>ID</th>
+							<th>PROVEEDOR</th>
+							<th>TOTAL</th>
+							<th>DESCRIPCIÓN</th>
+							<th>FACTURA (ARCHIVO)</th>
+							<?php if ($_SESSION['rol'] == 1) { ?>
+							<th>ACCIONES</th>
+							<?php } ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -86,10 +89,16 @@ if(isset($_FILES['archivo']['name'])){
 								<tr>
 									<td><?php echo $data['id']; ?></td>
 									<td style='width:200px;'><?php echo $data['nomproveedor']; ?></td>
-									<td style='width:150px;'><?php echo 'Total: '.$data['total']; ?></td>
+									<td style='width:150px;'><?php echo '$ '.$data['total']; ?></td>
 									<td><?php echo $data['descripcion']; ?></td>
 									<td><a href='descargar.php?nombre=<?php echo $data['narchivo'].'_'.$data['archivo']; ?>' target='_self' title='Haga click aqui para descargar'><?php echo $data['archivo']; ?></a></td>
-									
+									<?php if ($_SESSION['rol'] == 1) { ?>
+									<td>
+										<form action="eliminar_gastos.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
+											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+										</form>
+									</td>
+										<?php } ?>
 								</tr>
 						<?php }
 						} ?>
