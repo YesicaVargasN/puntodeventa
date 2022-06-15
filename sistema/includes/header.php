@@ -172,13 +172,13 @@ if ($result_data > 0) {
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFactura" aria-expanded="true" aria-controls="collapseUtilities">
 						<i class="fas fa-file-invoice"></i>
-						<span>Facturas</span>
+						<span>Gastos</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseFactura" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="registro_factura.php">Nuevo Factura</a>
-							<a class="collapse-item" href="lista_factura.php">Facturas</a>
+							<a class="collapse-item" href="registro_factura.php">Nuevo gasto</a>
+							<a class="collapse-item" href="lista_factura.php">Gastos</a>
 						</div>
 					</div>
 				</li>

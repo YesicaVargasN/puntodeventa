@@ -125,7 +125,7 @@
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-nvo text-uppercase mb-1">Facturas</div>
+							<div class="text-xs font-weight-bold text-nvo text-uppercase mb-1">Gastos</div>
 							<div class="h5 mb-0 font-weight-bold text-gray-800">Digitalizacion de facturas</div>
 						</div>
 						<div class="col-auto">

@@ -11,20 +11,26 @@ if(isset($_FILES['archivo']['name'])){
 	$numarchivo = narchivo(TRUE); 
 	$nomarchivo = $numarchivo.'_'.$doc;
 	$subir_archivo = $directorio.basename($nomarchivo);
+	$proveedor = $_POST['proveedor'];
+	$subtotal = $_POST['subtotal'];
+	$iva = $_POST['iva'];
+	$total = $_POST['total'];
+	$fecha = $_POST['fecha'];
+	$descripcion = $_POST['descripcion'];
 
 	if (move_uploaded_file($tmp, $subir_archivo)) {
 		//si se guarda en la carpeta hay que guardar en la bd
 		$numarchivo = narchivo(FALSE); 
-		$sql = "INSERT INTO archivos(archivo,fecha,activo,narchivo) values ('$doc', '$fecha', '1','$numarchivo')";
+		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."')";
 		//echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
             $alert = '<div class="alert alert-primary" role="alert">
-                       Factura Registrado
+                       Gasto Registrado
                     </div>';
         } else {
             $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar la factura
+                       Error al registrar los gastos
                     </div>';
         }
     }
@@ -60,20 +66,28 @@ if(isset($_FILES['archivo']['name'])){
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>ID</th>
-							<th>Factura (archivo)</th>
+							<th>Id</th>
+							<th>Proveedor</th>
+							<th>Total</th>
+							<th>Descripción</th>
+							<th>Factura (Archivo)</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM archivos");
+						$query = mysqli_query($conexion, "SELECT a.id, a.narchivo, a.archivo, a.proveedor, a.subtotal, a.iva, a.total, a.descripcion, pr.proveedor as nomproveedor
+						FROM gastos a
+						left join proveedor pr on pr.codproveedor = a.proveedor");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['id']; ?></td>
+									<td style='width:200px;'><?php echo $data['nomproveedor']; ?></td>
+									<td style='width:150px;'><?php echo 'Total: '.$data['total']; ?></td>
+									<td><?php echo $data['descripcion']; ?></td>
 									<td><a href='descargar.php?nombre=<?php echo $data['narchivo'].'_'.$data['archivo']; ?>' target='_self' title='Haga click aqui para descargar'><?php echo $data['archivo']; ?></a></td>
 									
 								</tr>
