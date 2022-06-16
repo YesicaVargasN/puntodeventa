@@ -356,17 +356,32 @@ $('#btn_anular_venta').click(function(e) {
 $('#btn_facturar_venta').click(function(e) {
   e.preventDefault();
   var rows = $('#detalle_venta tr').length;
-  if (rows > 0) {
+
+  
     var action = 'procesarVenta';
     var codcliente = $('#idcliente').val();
-    var pagarcon = $('#pagar_con').val();
-   
+    var tipoventa = $('#tipoven').val();    
+
+  if( tipoventa==1 )
+  {
+     pagarcon = document.getElementById("pagar_con").value;
+  }else
+  { pagarcon = document.getElementById("pagar_conC").value;
+   } 
+    
+
+     fechaven = $('#fechav').val();
+
+  
+  console.log(fechaven);
+  if (rows > 0) {
     $.ajax({
       url: 'modal.php',
       type: 'POST',
       async: true,
-      data: {action:action,codcliente:codcliente},
+      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven},
       success: function(response) {
+        console.log(response);
       if (response != 0) {
         var info = JSON.parse(response);
         console.log(info);
@@ -870,3 +885,20 @@ const formatterDolar = new Intl.NumberFormat('en-US', {
   currency: 'USD'
 })
 
+$('#tipoven').on('change', function() {
+ if(this.value=='1')
+ {
+  console.log("efectivo");
+   $('#ventacredito').slideUp();
+   $('#ventacontado').slideDown();
+   
+}
+ else{
+  console.log("credito");
+  $('#ventacontado').slideUp();
+  $('#ventacredito').slideDown();
+  const total=$('#totalmodal').val();
+  $('#totalmodalC').val(total);
+   
+ }
+});

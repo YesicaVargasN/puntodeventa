@@ -277,15 +277,23 @@ if ($_POST['action'] == 'procesarVenta') {
     $codcliente = 1;
   }else{
     $codcliente = $_POST['codcliente'];
-
     $token = md5($_SESSION['idUser']);
     $usuario = $_SESSION['idUser'];
+    $tipoventa = $_POST['tipoventa'];
+    $fechaven = $_POST['fechaven'];
+    $pagarcon = $_POST['pagarcon'];
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
   }
 
+$originalDate = "2017-03-08";
+$newDate = date("Y/m/d", strtotime($fechaven));
+
+
+
   if ($result > 0) {
-    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token')");
+    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate')";
+    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate')");
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);
