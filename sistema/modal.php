@@ -118,7 +118,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
   
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
-    $arrayData['totalmodal'] = $total;
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
   }else {
     echo 'error';
@@ -181,7 +181,7 @@ if ($_POST['action'] == 'searchForDetalle') {
 
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
-    $arrayData['totalmodal'] = $total;
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
     exit;
   }else {
@@ -247,7 +247,7 @@ if ($_POST['action'] == 'delProductoDetalle') {
 
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
-    $arrayData['totalmodal'] = $total;
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
 
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
   }else {

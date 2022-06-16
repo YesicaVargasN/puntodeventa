@@ -38,7 +38,7 @@
 		$pdf->SetFont('Arial', 'B', 9);
 		$pdf->Cell(60, 5, utf8_decode($resultado['nombre']), 0, 1, 'C');
 		$pdf->Ln();
-		$pdf->image("img/logo.jpg", 50, 18, 15, 15, 'JPG');
+		// $pdf->image("img/logo.jpg", 50, 18, 15, 15, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 7);
@@ -95,7 +95,10 @@
 
 		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');
 		// $pdf->Cell(76, 5, 'Su Pago' . '             ', 0, 1, 'R');
-		$pdf->Cell(76, 5,  $tipo.': $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+		$pdf->Cell(76, 5,  $tipo.': ' .$pagocon, 0, 1, 'R');	
+		$pagocon= substr( $pagocon , 1, strlen($pagocon)) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
+		$pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
+
 		if( $tipo=='Efectivo')
 		{
 			$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');

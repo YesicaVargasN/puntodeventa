@@ -145,20 +145,20 @@
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="totalmodal" class="font-weight-bold">Total</label>
-                              <input id="totalmodal"  class="form-control" type="text" placeholder="Total" value="" disabled="">
+                              <input id="totalmodal"  class="form-control" type="text" placeholder="Total"  value=""  disabled="">
                           </div>
                           </div>
                           <div class="col-md-4">
                               <div class="form-group">
                                   <label for="pagar_con" class="font-weight-bold">Pagar con: </label>
-                                  <input id="pagar_con" class="form-control" type="text" placeholder="0.00" value="0.00" onkeyup="pagarCon(event)">
+                                  <input id="pagar_con" class="form-control"  type="text" placeholder="0.00"  value="" >
                               </div>
                           </div>
                           <div class="col-md-4">
                               <div class="form-group">
                                   <label for="cambio" class="font-weight-bold">Cambio</label>
   
-                                  <input id="cambio" class="form-control" type="number" placeholder="Cambio" value="0.00" disabled="">
+                                  <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
                               </div>
                           </div>
                       </div>                    

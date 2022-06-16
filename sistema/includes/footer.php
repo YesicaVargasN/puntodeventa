@@ -23,6 +23,8 @@
 <script type="text/javascript" src="js/producto.js"></script>
 <script type="text/javascript" src="js/all.min.js"></script>
 <script type="text/javascript">
+
+  
   $(document).ready(function() {
     $('#table').DataTable({
       language: {

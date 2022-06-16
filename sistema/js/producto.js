@@ -194,6 +194,7 @@ $('#txt_cod_pro').keyup(function(e) {
     // Ocultar Boto Agregar
     $('#add_product_venta').slideUp();
   }
+
   var action = 'infoProducto';
   if (productos != '') {
   $.ajax({
@@ -256,22 +257,12 @@ $('#txt_cod_pro').keyup(function(e) {
   // Ocultar Boto Agregar
   $('#add_product_venta').slideUp();
 
-  }
-});
-
-
-
-
-// buscar producto = Ventas
-$('#txt_cod_pro').keyup(function(e) {
-  e.preventDefault();
-  if (e.which == 13) {
-    console.log("entro al enter");
-    $('#add_product_venta').click(function(e) {});
-
+  ////
   }
 
+ 
 });
+
 
 
 
@@ -292,6 +283,8 @@ $('#txt_cant_producto').keyup(function(e) {
 // Agregar producto al detalle_venta
 $('#add_product_venta').click(function(e) {
   e.preventDefault();
+  console.log('entroagrear');
+ console.log( $('#txt_cant_producto').val()+'cantidad');
   if ($('#txt_cant_producto').val() > 0) {
     var codproducto = $('#txt_cod_producto').val();
     var cantidad = $('#txt_cant_producto').val();
@@ -307,7 +300,7 @@ $('#add_product_venta').click(function(e) {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
-          $('#totalmodal').val(info.totalmodal);     
+          $('#totalmodal').val(formatterDolar.format(info.totalmodal));     
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
           $('#txt_descripcion').html('-');
@@ -332,6 +325,10 @@ $('#add_product_venta').click(function(e) {
     });
   }
 });
+
+
+
+
 
 // anular venta
 $('#btn_anular_venta').click(function(e) {
@@ -493,7 +490,7 @@ function del_product_detalle(correlativo) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(info.totalmodal);       
+        $('#totalmodal').val(formatterDolar.format(info.totalmodal));      
         $('#txt_cod_producto').val('');
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -546,7 +543,7 @@ function searchForDetalle(id) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(info.totalmodal);     
+        $('#totalmodal').val(formatterDolar.format(info.totalmodal));       
       }
       viewProcesar();
     },
@@ -803,78 +800,53 @@ if (document.getElementById("polarChart")) {
 }
 
 
-function MASK(form, n, mask, format) {
-  if (format == "undefined") format = false;
-  if (format || NUM(n)) {
-    dec = 0, point = 0;
-    x = mask.indexOf(".")+1;
-    if (x) { dec = mask.length - x; }
 
-    if (dec) {
-      n = NUM(n, dec)+"";
-      x = n.indexOf(".")+1;
-      if (x) { point = n.length - x; } else { n += "."; }
-    } else {
-      n = NUM(n, 0)+"";
-    } 
-    for (var x = point; x < dec ; x++) {
-      n += "0";
-    }
-    x = n.length, y = mask.length, XMASK = "";
-    while ( x || y ) {
-      if ( x ) {
-        while ( y && "#0.".indexOf(mask.charAt(y-1)) == -1 ) {
-          if ( n.charAt(x-1) != "-")
-            XMASK = mask.charAt(y-1) + XMASK;
-          y--;
-        }
-        XMASK = n.charAt(x-1) + XMASK, x--;
-      } else if ( y && "$0".indexOf(mask.charAt(y-1))+1 ) {
-        XMASK = mask.charAt(y-1) + XMASK;
-      }
-      if ( y ) { y-- }
-    }
-  } else {
-     XMASK="";
-  }
-  if (form) { 
-    form.value = XMASK;
-    if (NUM(n)<0) {
-      form.style.color="#FF0000";
-    } else {
-      form.style.color="#000000";
-    }
-  }
-  return XMASK;
-}
-function NUM(s, dec) {
-  for (var s = s+"", num = "", x = 0 ; x < s.length ; x++) {
-    c = s.charAt(x);
-    if (".-+/*".indexOf(c)+1 || c != " " && !isNaN(c)) { num+=c; }
-  }
-  if (isNaN(num)) { num = eval(num); }
-  if (num == "")  { num=0; } else { num = parseFloat(num); }
-  if (dec != undefined) {
-    r=.5; if (num<0) r=-r;
-    e=Math.pow(10, (dec>0) ? dec : 0 );
-    return parseInt(num*e+r) / e;
-  } else {
-    return num;
-  }
-}
+//   function pagarCon(e) {
+//     e.preventDefault();
+//     const total = document.getElementById("totalmodal").value;
+//     const pagar_con = document.getElementById("pagar_con").value;
+//     const cambio =pagar_con;   
+     
+//     if (cambio > 0 ) {
+//           document.getElementById("cambio").value = formatterDolar.format(cambio);         
+//           $('.alertCambio').html('<p style="color : red;"></p>');
+//           $('#btn_facturar_venta').slideDown();
+//           // $("#procesarVenta").css("display", "block");
+      
+//           } else {
+//            $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
+//            $('#btn_facturar_venta').slideUp();  
+//           //  $("#procesarVenta").css("display", "none");   
+//             document.getElementById('pagar_con').focus();
+//             document.getElementById("cambio").value = 0;
+            
+//           }
+      
+// }
+
+// buscar producto = Ventas
+$('#txt_cod_pro').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {
+      $('#add_product_venta').click();   
+ } 
+});
 
 
 
-  function pagarCon(e) {
-    e.preventDefault();
+
+$('#pagar_con').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {    
+    
     const total = document.getElementById("totalmodal").value;
     const pagar_con = document.getElementById("pagar_con").value;
-    const cambio =pagar_con-total;
+    document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);
     
-    
-    //if (e.which == 13) {
-          if (cambio > 0 ) {
-          document.getElementById("cambio").value = cambio;
+    const cambio =parseFloat(pagar_con)-parseFloat(total.substring(1));   
+    if (cambio > 0 ) {
+          document.getElementById("cambio").value = formatterDolar.format(cambio);
+                
           $('.alertCambio').html('<p style="color : red;"></p>');
           $('#btn_facturar_venta').slideDown();
           // $("#procesarVenta").css("display", "block");
@@ -884,19 +856,17 @@ function NUM(s, dec) {
            $('#btn_facturar_venta').slideUp();  
           //  $("#procesarVenta").css("display", "none");   
             document.getElementById('pagar_con').focus();
+            document.getElementById("cambio").value = 0;
             
           }
-    //}
+ } 
+});
 
-   
-}
 
-function alertas(msg, icono) {
-  Swal.fire({
-    position: 'top-end',
-    icon: icono,
-    title: msg,
-    showConfirmButton: false,
-    timer: 3000
-  });
-}
+
+
+const formatterDolar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+})
+
