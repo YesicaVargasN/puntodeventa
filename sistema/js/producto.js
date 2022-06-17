@@ -365,8 +365,8 @@ $('#btn_facturar_venta').click(function(e) {
     $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
    // $('#exampleModal').hide();
    // $('#modal-backdrop').removeClass("show");
-   $('#btnCerrar').click().wait(1000);   
-   
+   //$('#btnCerrar').delay(100000).click();;   
+   $('#idcliente').focus();
     return;
   }
 
