@@ -5,8 +5,28 @@
 
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-800">Panel de Administración</h1>
+		<h1 class="h3 mb-0 text-gray-800">Lista de ventas</h1>
 	</div>
+
+	<!-- Elementos para crear el reporte -->
+	<form action="reporteVentas.php" method="post">
+	<div class="row">
+	
+		<div class="col-md-4">
+			<label for="producto">Desde</label>
+            <input type="date" name="desde" id="desde" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<label for="producto">Hasta</label>
+            <input type="date" name="hasta" id="hasta" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+		</div>
+	
+	</div>
+	</form>	
+
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
