@@ -5,23 +5,15 @@
 		header('location: ../');
 	}
 	include "../../conexion.php";
-	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] )|| empty($_REQUEST['p']))
+	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] )|| empty($_REQUEST['p']) || empty($_REQUEST['t']))
 	{
 		echo "No es posible generar la factura.";
 	}else{
 		$codCliente = $_REQUEST['cl'];
 		$noFactura = $_REQUEST['f'];
 		$pagocon = $_REQUEST['p'];
-		$tipo = 'Efectivo';//$_REQUEST['t'];
-		// if($_REQUEST['t']=='T')
-		// {
-		// 	$tipo = 'Tarjeta;';
-		// }
-		// else
-		// {
-		// 	$tipo = 'Efectivo:';
-		// };
-
+		$tipo = $_REQUEST['t'];
+		
 
 		$consulta = mysqli_query($conexion, "SELECT * FROM configuracion");
 		$resultado = mysqli_fetch_assoc($consulta);
@@ -56,11 +48,13 @@
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(20, 5, $noFactura, 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(16, 5, "Fecha: ", 0, 0, 'R');
+		$pdf->Cell(16, 5, "Fecha: ", 0, 0, 'R');		
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(25, 5, $result_venta['fecha'], 0, 1, 'R');
+		$pdf->Cell(78,5,'******************************************************************************', 0, 1, 'C');
 		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(60, 5, "Datos del cliente", 0, 1, 'L');
+		$pdf->Cell(75,5, "Datos del cliente", 0, 1, 'C');
+		$pdf->Cell(78,5,'******************************************************************************', 0, 1, 'C');
 		$pdf->Cell(40, 5, "Nombre", 0, 0, 'L');
 		$pdf->Cell(20, 5, utf8_decode("Teléfono"), 0, 0, 'L');
 		$pdf->Cell(25, 5, utf8_decode("Dirección"), 0, 1, 'L');
@@ -74,8 +68,22 @@
 		$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'L');
 		$pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
 		}
+		if($tipo=='2')
+		{		
 		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(75, 5, "Detalle de Productos", 0, 1, 'L');
+		$pdf->Cell(15, 5, "Tipo Venta: ", 0, 0, 'L');
+		$pdf->SetFont('Arial', '', 7);
+		$pdf->Cell(20, 5, 'Credito', 0, 0, 'L');
+		$pdf->SetFont('Arial', 'B', 7);
+		$pdf->Cell(16, 5, "Vencimiento: ", 0, 0, 'R');		
+		$pdf->SetFont('Arial', '', 7);
+		$pdf->Cell(25, 5, $result_venta['fecha'], 0, 1, 'R');
+		}
+
+		$pdf->Cell(78, 5,'******************************************************************************', 0, 1, 'C');
+		$pdf->SetFont('Arial', 'B', 7);
+		$pdf->Cell(75, 5, "Detalle de Productos", 0, 1, 'C');
+		$pdf->Cell(78, 5,'******************************************************************************', 0, 1, 'C');
 		$pdf->SetTextColor(0, 0, 0);
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(42, 5, 'Nombre', 0, 0, 'L');
@@ -93,21 +101,23 @@
 		$pdf->Ln();
 		$pdf->SetFont('Arial', 'B', 9);
 
-		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');
-		// $pdf->Cell(76, 5, 'Su Pago' . '             ', 0, 1, 'R');
-		$pdf->Cell(76, 5,  $tipo.': ' .$pagocon, 0, 1, 'R');	
-		$pagocon= substr( $pagocon , 1, strlen($pagocon)) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
-		$pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
-
-		if( $tipo=='Efectivo')
+		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');		
+		$pdf->Cell(76, 5,  'Pago: ' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+		//$pagocon= substr( $pagocon , 1, 1) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
+		//$pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
+ 
+		if( $tipo=='1')
 		{
 			$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
+		}else
+		{
+			$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalfactura']-$pagocon), 2, '.', ','), 0, 1, 'R');
 		}
 			
 		
 		$pdf->Ln();
 		$pdf->SetFont('Arial', '', 7);
-		$pdf->Cell(80, 5, utf8_decode("Gracias por su preferencia"), 0, 1, 'C');
+		$pdf->Cell(80, 5, utf8_decode("¡Gracias por su preferencia!"), 0, 1, 'C');
 		$pdf->Output("compra.pdf", "I");
 		}
 
