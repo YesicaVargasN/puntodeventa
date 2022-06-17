@@ -42,7 +42,7 @@
 					<tbody>
 						<?php
 						require "../conexion.php";
-						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura, estado FROM factura ORDER BY nofactura DESC");
+						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura, estado ,idtipoventa,totalventa FROM factura ORDER BY nofactura DESC");
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
 
@@ -54,7 +54,7 @@
 									<td><?php echo $dato['fecha']; ?></td>
 									<td><?php echo $dato['totalfactura']; ?></td>
 									<td>
-										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>">Ver</button>
+										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
 									</td>
 								</tr>
 						<?php }

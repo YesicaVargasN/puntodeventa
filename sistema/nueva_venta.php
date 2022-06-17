@@ -128,7 +128,7 @@
               <div class="card-body">
                   <form id="formulario" onsubmit="registrarCliVenta(event);" autocomplete="off">
                   <div class="row">              
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="tipoven">Tipo de Venta</label>
                             <select id="tipoven" class="form-control" name="tipoven" required="">
@@ -137,15 +137,16 @@
                             </select>
                         </div>
                     </div>
-                      <!-- <div class="col-md-6">
+                      <div class="col-md-6">
                         <div class="form-group">
-                            <label for="tipocomp">Tipo de Comprobante</label>
-                            <select id="tipocomp" class="form-control" name="tipocomp" required="">
-                                <option value="1">Ticket</option>
-                                <option value="2">Factura</option>                             
+                            <label for="tipopago">Tipo de Pago</label>
+                            <select id="tipopago" class="form-control" name="tipopago" required="">
+                                <option value="1">Efectivo</option>
+                                <option value="2">Tarjeta</option>  
+                                <option value="3">Transferencia</option>                              
                             </select>
                         </div>
-                      </div> -->
+                      </div> -
                    </div>
                       <div class="row" id="ventacontado">
                         <div class="col-md-4">

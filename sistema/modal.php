@@ -59,8 +59,7 @@ if ($_POST['action'] == 'addCliente') {
   $direccion = $_POST['dir_cliente'];
   $usuario_id = $_SESSION['idUser'];
 
-  $sql="INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id')";
-   $query_insert = mysqli_query($conexion, $sql );
+  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id')");
   if ($query_insert) {
     $codCliente = mysqli_insert_id($conexion);
     $msg = $codCliente;
@@ -80,7 +79,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
-    $result_iva = mysqli_num_rows($query_iva);
+    $result_iva = mysqli_num_rows($query_iva);    
     $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
     $result = mysqli_num_rows($query_detalle_temp);
 
@@ -104,8 +103,8 @@ if ($_POST['action'] == 'addProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">$'.$data['precio_venta'].'</td>
-            <td class="textright">$'.$precioTotal.'</td>
+            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -114,10 +113,12 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $total = round($sub_total, 2);
     $detalleTotales ='<tr>
         <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">$'.$total.'</td>
+        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
+  
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
   }else {
     echo 'error';
@@ -136,9 +137,9 @@ if ($_POST['action'] == 'searchForDetalle') {
     $token = md5($_SESSION['idUser']);
 
     $query = mysqli_query($conexion, "SELECT tmp.correlativo, tmp.token_user,
-      SUM(tmp.cantidad) as cantidad, SUM(tmp.precio_venta) as precio_venta, p.codproducto, p.descripcion
+      sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion
       FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
-      where token_user = '$token'  GROUP BY  p.codproducto ");
+      where token_user = '$token' 		GROUP BY tmp.codproducto" );
     $result = mysqli_num_rows($query);
 
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
@@ -165,24 +166,22 @@ if ($_POST['action'] == 'searchForDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">$'.$data['precio_venta'].'</td>
-            <td class="textright">$'.$precioTotal.'</td>
+            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
         </tr>';
     }
     $total = round($sub_total, 2);
-    
-
     $detalleTotales = '<tr>
         <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">$'.$total.'</td>
+        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
 
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
-
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
     exit;
   }else {
@@ -230,8 +229,8 @@ if ($_POST['action'] == 'delProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">$'.$data['precio_venta'].'</td>
-            <td class="textright">$'.$precioTotal.'</td>
+            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');">Eliminar</a>
             </td>
@@ -243,11 +242,12 @@ if ($_POST['action'] == 'delProductoDetalle') {
 
     $detalleTotales = '<tr>
         <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.$total.'</td>
+        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
 
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
+    $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
 
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
   }else {
@@ -277,15 +277,25 @@ if ($_POST['action'] == 'procesarVenta') {
     $codcliente = 1;
   }else{
     $codcliente = $_POST['codcliente'];
-
     $token = md5($_SESSION['idUser']);
     $usuario = $_SESSION['idUser'];
+    $tipoventa = $_POST['tipoventa'];
+    $fechaven = $_POST['fechaven'];
+    $pagarcon = $_POST['pagarcon'];
+    $tipopago = $_POST['tipopago'];
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
   }
 
+$originalDate = "2017-03-08";
+$newDate = date("Y/m/d", strtotime($fechaven));
+// $pagocon= substr($pagocon , 1, 1) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
+// $pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
+
+
   if ($result > 0) {
-    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token')");
+    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)";
+    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)");
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);

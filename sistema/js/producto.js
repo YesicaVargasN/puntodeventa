@@ -359,7 +359,7 @@ $('#btn_facturar_venta').click(function(e) {
   var action = 'procesarVenta';
   var codcliente = $('#idcliente').val();
   var tipoventa = $('#tipoven').val();    
-
+  var tipopago = $('#tipopago').val();   
   if(tipoventa==2 && codcliente==1)
   {
     $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
@@ -384,13 +384,13 @@ $('#btn_facturar_venta').click(function(e) {
       url: 'modal.php',
       type: 'POST',
       async: true,
-      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven},
+      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven,tipopago:tipopago},
       success: function(response) {
         console.log(response);
       if (response != 0) {
         var info = JSON.parse(response);
         console.log(info);
-        generarPDF(info.codcliente,info.nofactura, pagarcon,tipoventa);
+        generarPDF(info.codcliente,info.nofactura);
         location.reload();
       }else {
         console.log('no hay dato');
@@ -409,9 +409,10 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
-  var pagarcon = $('#pagar_con').val(); 
-  var tipoventa = $('#tipoven').val(); 
-  generarPDF(codCliente,noFactura, pagarcon,tipoventa);
+ 
+  // var pagarcon = $('#pagar_con').val(); 
+  // var tipoventa = $('#tipoven').val(); 
+  generarPDF(codCliente,noFactura);
 });
 
 // Cambiar contraseña
@@ -494,8 +495,8 @@ if (passNuevo.length < 5) {
 $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</p>');
 $('.alertChangePass').slideDown();
 }
-function generarPDF(cliente,factura,pagocon,tipoventa) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon+'&t='+tipoventa;
+function generarPDF(cliente,factura,pagocon) {
+  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
