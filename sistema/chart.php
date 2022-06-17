@@ -12,7 +12,7 @@ if ($_POST['action'] == 'sales') {
 }
 if ($_POST['action'] == 'polarChart') {
     $arreglo = array();
-    $query = mysqli_query($conexion, "SELECT p.codproducto, p.descripcion, d.codproducto, d.cantidad, SUM(d.cantidad) as total FROM producto p INNER JOIN detallefactura d WHERE p.codproducto = d.codproducto group by d.codproducto ORDER BY d.cantidad DESC LIMIT 5");
+    $query = mysqli_query($conexion, "SELECT p.codigo, p.descripcion, d.codproducto, d.cantidad, SUM(d.cantidad) as total FROM producto p INNER JOIN detallefactura d WHERE p.codproducto = d.codproducto group by d.codproducto ORDER BY d.cantidad DESC LIMIT 5");
     while ($data = mysqli_fetch_array($query)) {
         $arreglo[] = $data;
     }
