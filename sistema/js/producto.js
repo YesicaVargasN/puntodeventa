@@ -63,6 +63,7 @@ $('.del_product').click(function(e) {
     type: 'POST',
     async: true,
     data: {action:action,producto:producto},
+
     success: function(response) {
     if (response != 0) {
       var info = JSON.parse(response);
@@ -152,8 +153,6 @@ $('#dni_cliente').keyup(function(e) {
 
 // crear cliente = Ventas
 $('#form_new_cliente_venta').submit(function(e) {
- 
-  
   e.preventDefault();
   $.ajax({
     url: 'modal.php',
@@ -169,11 +168,9 @@ $('#form_new_cliente_venta').submit(function(e) {
         $('#tel_cliente').attr('disabled','disabled');
         $('#dir_cliente').attr('disabled','disabled');
         // ocultar boton Agregar
-        $('.btn_new_cliente').slideDown();
+        $('.btn_new_cliente').slideUp();
         //ocultar boton Guardar
-       $('#div_registro_cliente').slideUp();
-        console.log(response);
-        
+        $('#div_registro_cliente').slideDown();
       }
     },
     error: function(error) {
@@ -197,6 +194,7 @@ $('#txt_cod_pro').keyup(function(e) {
     // Ocultar Boto Agregar
     $('#add_product_venta').slideUp();
   }
+
   var action = 'infoProducto';
   if (productos != '') {
   $.ajax({
@@ -259,8 +257,14 @@ $('#txt_cod_pro').keyup(function(e) {
   // Ocultar Boto Agregar
   $('#add_product_venta').slideUp();
 
+  ////
   }
+
+ 
 });
+
+
+
 
 // calcular el Total
 $('#txt_cant_producto').keyup(function(e) {
@@ -279,6 +283,8 @@ $('#txt_cant_producto').keyup(function(e) {
 // Agregar producto al detalle_venta
 $('#add_product_venta').click(function(e) {
   e.preventDefault();
+  console.log('entroagrear');
+ console.log( $('#txt_cant_producto').val()+'cantidad');
   if ($('#txt_cant_producto').val() > 0) {
     var codproducto = $('#txt_cod_producto').val();
     var cantidad = $('#txt_cant_producto').val();
@@ -288,13 +294,13 @@ $('#add_product_venta').click(function(e) {
       type: 'POST',
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
-      success: function(response) {             
-        if (response != 'error') {
-         
+      success: function(response) {
         
+        if (response != 'error') {
           var info = JSON.parse(response);
-          $('#detalle_venta').html(info.detalle);        
+          $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
+          $('#totalmodal').val(formatterDolar.format(info.totalmodal));     
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
           $('#txt_descripcion').html('-');
@@ -319,6 +325,10 @@ $('#add_product_venta').click(function(e) {
     });
   }
 });
+
+
+
+
 
 // anular venta
 $('#btn_anular_venta').click(function(e) {
@@ -345,20 +355,42 @@ $('#btn_anular_venta').click(function(e) {
 // facturar venta
 $('#btn_facturar_venta').click(function(e) {
   e.preventDefault();
-  var rows = $('#detalle_venta tr').length;
+  var rows = $('#detalle_venta tr').length;  
+  var action = 'procesarVenta';
+  var codcliente = $('#idcliente').val();
+  var tipoventa = $('#tipoven').val();    
+
+  if(tipoventa==2 && codcliente==1)
+  {
+    $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
+   // $('#exampleModal').hide();
+   // $('#modal-backdrop').removeClass("show");
+   //$('#btnCerrar').delay(100000).click();;   
+   $('#idcliente').focus();
+    return;
+  }
+
+
+  if( tipoventa==1 )
+  { pagarcon = document.getElementById("pagar_con").value;  }
+  else
+  { pagarcon = document.getElementById("pagar_conC").value;   } 
+    
+  fechaven = $('#fechav').val();
+
+
   if (rows > 0) {
-    var action = 'procesarVenta';
-    var codcliente = $('#idcliente').val();
     $.ajax({
       url: 'modal.php',
       type: 'POST',
       async: true,
-      data: {action:action,codcliente:codcliente},
+      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven},
       success: function(response) {
+        console.log(response);
       if (response != 0) {
         var info = JSON.parse(response);
-        //console.log(info);
-        generarPDF(info.codcliente,info.nofactura);
+        console.log(info);
+        generarPDF(info.codcliente,info.nofactura, pagarcon,tipoventa);
         location.reload();
       }else {
         console.log('no hay dato');
@@ -377,8 +409,9 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
-
-  generarPDF(codCliente,noFactura);
+  var pagarcon = $('#pagar_con').val(); 
+  var tipoventa = $('#tipoven').val(); 
+  generarPDF(codCliente,noFactura, pagarcon,tipoventa);
 });
 
 // Cambiar contraseña
@@ -461,8 +494,8 @@ if (passNuevo.length < 5) {
 $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</p>');
 $('.alertChangePass').slideDown();
 }
-function generarPDF(cliente,factura) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
+function generarPDF(cliente,factura,pagocon,tipoventa) {
+  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon+'&t='+tipoventa;
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
@@ -478,6 +511,7 @@ function del_product_detalle(correlativo) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
+        $('#totalmodal').val(formatterDolar.format(info.totalmodal));      
         $('#txt_cod_producto').val('');
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -507,10 +541,10 @@ function del_product_detalle(correlativo) {
 // mostrar/ ocultar boton Procesar
 function viewProcesar() {
   if ($('#detalle_venta tr').length > 0){
-    $('#btn_facturar_venta').show();
+    $('#procesarVenta').show();
     $('#btn_anular_venta').show();
   }else {
-    $('#btn_facturar_venta').hide();
+    $('#procesarVenta').hide();
     $('#btn_anular_venta').hide();
   }
 }
@@ -525,13 +559,12 @@ function searchForDetalle(id) {
     data: {action:action,user:user},
     success: function(response) {
       if (response == 0) {
-      
+        console.log(response);
       }else {
-        var info = JSON.parse(response);      
+        var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
-
-
         $('#detalle_totales').html(info.totales);
+        $('#totalmodal').val(formatterDolar.format(info.totalmodal));       
       }
       viewProcesar();
     },
@@ -788,3 +821,60 @@ if (document.getElementById("polarChart")) {
 }
 
 
+// buscar producto = Ventas
+$('#txt_cod_pro').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {
+      $('#add_product_venta').click();   
+ } 
+});
+
+
+
+
+$('#pagar_conC').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {  
+    const pagar_conC = document.getElementById("pagar_conC").value;
+    document.getElementById("pagar_conC").value=formatterDolar.format(pagar_conC);
+ } 
+});
+
+
+
+
+const formatterDolar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+})
+
+
+//EVALUAMOS QUE TIPO DE VENTA SERÁ
+$('#tipoven').on('change', function() {
+ if(this.value=='1')
+ { 
+   $('#ventacredito').slideUp();
+   $('#ventacontado').slideDown();   
+}
+ else{  
+  $('#ventacontado').slideUp();
+  $('#ventacredito').slideDown();
+  const total=$('#totalmodal').val();
+  $('#totalmodalC').val(total);
+   
+ }
+});
+
+function closeModalVenta()
+{
+$('#exampleModal').hide();
+}
+
+$(document).ready(function(){
+  $(".show-modal").click(function(){
+      $("#myModal").modal({
+          backdrop: 'static',
+          keyboard: false
+      });
+  });
+});

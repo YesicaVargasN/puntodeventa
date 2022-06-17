@@ -38,7 +38,7 @@
 
                             </div>
                             <div id="div_registro_cliente" style="display: none;">
-                                <button id="add_cliente_venta" type="submit" name="add_cliente_venta" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </form>
@@ -56,7 +56,8 @@
                     <label>Acciones</label>
                     <div id="acciones_venta" class="form-group">
                         <a href="#" class="btn btn-danger" id="btn_anular_venta">Anular</a>
-                        <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Generar Venta</a>
+                        <!-- <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Generar Venta</a> -->
+                        <a href="#" class="btn btn-primary" id="procesarVenta" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-save"></i> Generar Venta</a>
                     </div>
                 </div>
             </div>
@@ -79,8 +80,8 @@
                             <td id="txt_descripcion">-</td>
                             <td id="txt_existencia">-</td>
                             <td><input type="text" name="txt_cant_producto" id="txt_cant_producto" value="0" min="1" disabled></td>
-                            <td id="txt_precio" class="textright">$0.00</td>
-                            <td id="txt_precio_total" class="txtright">$0.00</td>
+                            <td id="txt_precio" class="textright">0.00</td>
+                            <td id="txt_precio_total" class="txtright">0.00</td>
                             <td><a href="#" id="add_product_venta" class="btn btn-dark" style="display: none;">Agregar</a></td>
                         </tr>
                         <tr>
@@ -108,6 +109,102 @@
 
 </div>
 <!-- /.container-fluid -->
+<!-- Modal -->
 
+<div id='modalpago'>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">Forma de Pago</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">      
+        <div>
+          <div class="card">
+              <div class="card-body">
+                  <form id="formulario" onsubmit="registrarCliVenta(event);" autocomplete="off">
+                  <div class="row">              
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="tipoven">Tipo de Venta</label>
+                            <select id="tipoven" class="form-control" name="tipoven" required="">
+                                <option value="1">Contado</option>
+                                <option value="2">Credito</option>                             
+                            </select>
+                        </div>
+                    </div>
+                      <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipocomp">Tipo de Comprobante</label>
+                            <select id="tipocomp" class="form-control" name="tipocomp" required="">
+                                <option value="1">Ticket</option>
+                                <option value="2">Factura</option>                             
+                            </select>
+                        </div>
+                      </div> -->
+                   </div>
+                      <div class="row" id="ventacontado">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="totalmodal" class="font-weight-bold">Total</label>
+                                <input id="totalmodal"  class="form-control" type="text" placeholder="Total"  value=""  disabled="">
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pagar_con" class="font-weight-bold">Pagar</label>
+                                    <input id="pagar_con" class="form-control"  type="text" placeholder="0.00"  value="" >
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="cambio" class="font-weight-bold">Cambio</label>  
+                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
+                                </div>
+                            </div>
+                      </div>
+
+                      <div class="row" id="ventacredito" style="display:none">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="totalmodalC" class="font-weight-bold">Total</label>
+                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="">
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pagar_conC" class="font-weight-bold">Pago</label>
+                                    <input id="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fechav" class="font-weight-bold">Fecha Venciminto </label>
+                                    <input id="fechav" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
+                                </div>
+                            </div>
+                            
+                      </div>
+
+                    </form>                  
+                </div>
+          </div>
+      </div>
+        </div>
+        <div class="alert alertCambio"></div>
+        <div class="modal-footer">     
+        <button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>
+         <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Terminar Venta</a>
+        
+      
+            
+        </div>
+      </div>
+    </div>
+  </div>
 
 <?php include_once "includes/footer.php"; ?>
