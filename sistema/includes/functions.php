@@ -64,5 +64,64 @@
 	// return $existencia;
 	// }
 
+	function revisarCortesAbiertos(){
+		require("..\conexion.php");
+		$sql = "SELECT * FROM cortecaja WHERE Estado=0";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0){
+			return 1;
+		}else{
+			return 0;
+		}			
+					
+	}
 
+
+	function fechaCorte(){
+		require("..\conexion.php");
+		$sql = "SELECT FechaApertura FROM cortecaja WHERE Estado=0";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['FechaApertura'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
+	function montoInicial(){
+		require("..\conexion.php");
+		$sql = "SELECT MontoInicial FROM cortecaja WHERE Estado=0";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['MontoInicial'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
+	function idCorteAbierto(){
+		require("..\conexion.php");
+		$sql = "SELECT Id FROM cortecaja WHERE Estado=0";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['Id'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
  ?>

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('.btnMenu').click(function(e) {
+   $('.btnMenu').click(function(e) {
     e.preventDefault();
     if($('nav').hasClass('viewMenu')) {
       $('nav').removeClass('viewMenu');
@@ -900,6 +900,101 @@ $('#tipoven').on('change', function() {
    
  }
 });
+
+
+function closeModalVenta()
+{
+$('#exampleModal').hide();
+}
+
+$(document).ready(function(){
+  $(".show-modal").click(function(){
+      $("#myModal").modal({
+          backdrop: 'static',
+          keyboard: false
+      });
+  });
+});
+
+
+
+// GUARDAR NUEVO CORTE DE CAJA
+$('#btn_guardarcorte').click(function(e) {
+  e.preventDefault();
+  var montoinicial = $('#montoinicial').val();
+
+  var action = 'guardarCorte';
+  $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,montoinicial: montoinicial},
+    success: function(response) {
+      if(response != 0){
+        location.reload();
+      }else{
+        $('.alertAddProduct').html(response);
+        $("#abrircorte input").val("");
+      }
+      
+
+    },
+    error: function(error) {
+
+    }
+  });
+  
+});
+
+
+jQuery('#abrircorte').on('hidden.bs.modal', function (e) {
+  jQuery(this).removeData('bs.modal');
+  jQuery(this).find('.alertAddProduct').empty();
+});
+
+
+// CERRAr CORTE DE CAJA
+$('#btn_cerrarcorte').click(function(e) {
+  e.preventDefault();
+  var montoinicial = $('#montoinicial').val();
+  var montofinal = $('#montofinal').val();
+  var totalventas = $('#totalventas').val();
+  var idcorte = $('#idcorte').val();
+  var montogral = $('#montogral').val();
+
+  var action = 'cerrarCorte';
+  $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,montoinicial: montoinicial, montofinal:montofinal,totalventas:totalventas, idcorte:idcorte, montogral:montogral},
+    success: function(response) {
+      if(response.includes('ok')==true){
+        console.log(response);
+        location.reload();
+        
+        
+        //location.reload();
+      }else{
+        $('.alertAddProduct').html(response);
+        console.log(response);
+      }
+      
+     
+    },
+    error: function(error) {
+
+    }
+  });
+  
+});
+
+jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
+  jQuery(this).removeData('bs.modal');
+  jQuery(this).find('.alertAddProduct').empty();
+});
+
+
 
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipopago').on('change', function() {
