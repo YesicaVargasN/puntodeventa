@@ -359,11 +359,7 @@ $('#btn_facturar_venta').click(function(e) {
   var action = 'procesarVenta';
   var codcliente = $('#idcliente').val();
   var tipoventa = $('#tipoven').val();    
-<<<<<<< HEAD
   var tipopago = $('#tipopago').val();   
-=======
-
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
   if(tipoventa==2 && codcliente==1)
   {
     $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
@@ -388,21 +384,13 @@ $('#btn_facturar_venta').click(function(e) {
       url: 'modal.php',
       type: 'POST',
       async: true,
-<<<<<<< HEAD
       data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven,tipopago:tipopago},
-=======
-      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven},
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
       success: function(response) {
         console.log(response);
       if (response != 0) {
         var info = JSON.parse(response);
         console.log(info);
-<<<<<<< HEAD
         generarPDF(info.codcliente,info.nofactura);
-=======
-        generarPDF(info.codcliente,info.nofactura, pagarcon,tipoventa);
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
         location.reload();
       }else {
         console.log('no hay dato');
@@ -421,16 +409,10 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
-<<<<<<< HEAD
  
   // var pagarcon = $('#pagar_con').val(); 
   // var tipoventa = $('#tipoven').val(); 
   generarPDF(codCliente,noFactura);
-=======
-  var pagarcon = $('#pagar_con').val(); 
-  var tipoventa = $('#tipoven').val(); 
-  generarPDF(codCliente,noFactura, pagarcon,tipoventa);
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 });
 
 // Cambiar contraseña
@@ -513,13 +495,8 @@ if (passNuevo.length < 5) {
 $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</p>');
 $('.alertChangePass').slideDown();
 }
-<<<<<<< HEAD
 function generarPDF(cliente,factura,pagocon) {
   url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
-=======
-function generarPDF(cliente,factura,pagocon,tipoventa) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon+'&t='+tipoventa;
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
@@ -845,33 +822,6 @@ if (document.getElementById("polarChart")) {
 }
 
 
-<<<<<<< HEAD
-=======
-
-//   function pagarCon(e) {
-//     e.preventDefault();
-//     const total = document.getElementById("totalmodal").value;
-//     const pagar_con = document.getElementById("pagar_con").value;
-//     const cambio =pagar_con;   
-     
-//     if (cambio > 0 ) {
-//           document.getElementById("cambio").value = formatterDolar.format(cambio);         
-//           $('.alertCambio').html('<p style="color : red;"></p>');
-//           $('#btn_facturar_venta').slideDown();
-//           // $("#procesarVenta").css("display", "block");
-      
-//           } else {
-//            $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
-//            $('#btn_facturar_venta').slideUp();  
-//           //  $("#procesarVenta").css("display", "none");   
-//             document.getElementById('pagar_con').focus();
-//             document.getElementById("cambio").value = 0;
-            
-//           }
-      
-// }
-
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 // buscar producto = Ventas
 $('#txt_cod_pro').keyup(function(e) {
   e.preventDefault();
