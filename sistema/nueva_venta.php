@@ -161,15 +161,17 @@
                                     <input id="pagar_con" class="form-control"  type="text" placeholder="0.00"  value="" >
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" id="divCambio" >
                                 <div class="form-group">
                                     <label for="cambio" class="font-weight-bold">Cambio</label>  
-                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled=""  onkeyup="pagarCon(event)">
+                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
                                 </div>
                             </div>
+
+                           
                       </div>
 
-                      <div class="row" id="ventacredito" style="display:none">
+                      <div class="row" id="ventacredito"  style="display:none;">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodalC" class="font-weight-bold">Total</label>
@@ -182,14 +184,27 @@
                                     <input id="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="">
                                 </div>
                             </div>
+                            <!-- <div class="col-md-4" id="divCambioC">
+                                <div class="form-group">
+                                    <label for="cambioC" class="font-weight-bold">Cambio</label>  
+                                    <input id="cambioC" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
+                                </div>
+                            </div> -->
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="fechav" class="font-weight-bold">Fecha Venciminto </label>
                                     <input id="fechav" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
                                 </div>
-                            </div>
+                            </div>                         
                             
                       </div>
+
+                    
+                                <div class="form-group" id='referencia' style="display:none;">
+                                    <label for="numreferencia" class="font-weight-bold">Referencia</label>  
+                                    <input id="numreferencia" class="form-control" type="text" placeholder="Referencia" value="">
+                                </div>
+                           
 
                     </form>                  
                 </div>

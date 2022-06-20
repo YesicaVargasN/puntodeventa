@@ -5,13 +5,13 @@
 		header('location: ../');
 	}
 	include "../../conexion.php";
-	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] ))
+	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'])  || empty($_REQUEST['p'] ))
 	{
 		echo "No es posible generar la factura.";
 	}else{
 		$codCliente = $_REQUEST['cl'];
 		$noFactura = $_REQUEST['f'];
-		
+		$pagocon = $_REQUEST['p'];
 		
 
 		$consulta = mysqli_query($conexion, "SELECT * FROM configuracion");
@@ -30,11 +30,21 @@
 		$pdf->Cell(60, 5, utf8_decode($resultado['nombre']), 0, 1, 'C');
 		$pdf->Ln();
 		
-		$pagocon = $result_venta['totalfactura'];
+		//$pagocon = $result_venta['totalfactura'];
 		$tipo = $result_venta['idtipoventa'];
+		$tipop = $result_venta['idtipopago'];
+		$referencia = $result_venta['referencia'];
+		$tipopago='';
+		if($tipop=='2')
+		{ 
+			$tipopago='Tarjeta';
+		}if($tipop=='3')
+		{ 
+			$tipopago='Transferencia';
 
+		}
 
-		//$pdf->image("../sistema/pdf/examples/images/aguira.jpg", 50, 18, 15, 15, 'JPG');
+		$pdf->image("img/aguira.jpg", 50, 18, 25, 10, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 7);
@@ -108,13 +118,24 @@
 		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalventa'], 2, '.', ','), 0, 1, 'R');		
 		$pdf->Cell(76, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 		
- 
-		if( $tipo=='1')
+		 if( $tipop=='1')
+ 		{
+			if( $tipo=='1' )
+			{
+				$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
+			}else
+			{
+				$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalventa']-$pagocon), 2, '.', ','), 0, 1, 'R');
+			}
+		}
+
+		$pdf->SetFont('Arial', 'B', 7);
+		if($tipop!=1)
 		{
-			$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
-		}else
-		{
-			$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalventar']-$pagocon), 2, '.', ','), 0, 1, 'R');
+		
+			$pdf->Cell(76, 5, 'Tipo dePago:' . $tipopago, 0, 1, 'R');
+		
+			$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');
 		}
 			
 		

@@ -360,6 +360,7 @@ $('#btn_facturar_venta').click(function(e) {
   var codcliente = $('#idcliente').val();
   var tipoventa = $('#tipoven').val();    
   var tipopago = $('#tipopago').val();   
+  var referencia = $('#numreferencia').val();   
   if(tipoventa==2 && codcliente==1)
   {
     $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
@@ -372,25 +373,29 @@ $('#btn_facturar_venta').click(function(e) {
 
 
   if( tipoventa==1 )
-  { pagarcon = document.getElementById("pagar_con").value;  }
+  { 
+    pago = document.getElementById("pagar_con").value;
+    fechaven = new Date();
+    total=document.getElementById("totalmodal").value;
+  }
   else
-  { pagarcon = document.getElementById("pagar_conC").value;   } 
+  { pago = document.getElementById("pagar_conC").value; 
+    total=document.getElementById("pagar_conC").value;
+    fechaven = $('#fechav').val();
+    } 
     
-  fechaven = $('#fechav').val();
-
-
+    //pago=pago.substring(1);
   if (rows > 0) {
     $.ajax({
       url: 'modal.php',
       type: 'POST',
       async: true,
-      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,pagarcon:pagarcon,fechaven:fechaven,tipopago:tipopago},
+      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,total:total, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia},
       success: function(response) {
         console.log(response);
       if (response != 0) {
-        var info = JSON.parse(response);
-        console.log(info);
-        generarPDF(info.codcliente,info.nofactura);
+        var info = JSON.parse(response);        
+        generarPDF(info.codcliente,info.nofactura,pago);
         location.reload();
       }else {
         console.log('no hay dato');
@@ -412,7 +417,7 @@ $('.view_factura').click(function(e) {
  
   // var pagarcon = $('#pagar_con').val(); 
   // var tipoventa = $('#tipoven').val(); 
-  generarPDF(codCliente,noFactura);
+  generarPDF(codCliente,noFactura,'');
 });
 
 // Cambiar contraseña
@@ -496,7 +501,7 @@ $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</
 $('.alertChangePass').slideDown();
 }
 function generarPDF(cliente,factura,pagocon) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
+  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon;
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
@@ -847,32 +852,30 @@ $('#pagar_con').keyup(function(e) {
   if (e.which == 13) {  
     console.log("entro");
     const pagar_con = document.getElementById("pagar_con").value;
-
-
     const total = document.getElementById("totalmodal").value.substring(1);
-
     const cambio =(parseFloat(pagar_con)-parseFloat(total));
-    console.log(parseFloat(pagar_con));
-    console.log((total));
-    console.log(cambio);
-    
-    //if (e.which == 13) {
+    tipopago= document.getElementById("tipopago").value;
+
+    if(tipopago==1)
+    {
           if (cambio > 0 ) {
-            document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);
-          //document.getElementById("cambio").value = cambio;
+          document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);        
           document.getElementById("cambio").value=formatterDolar.format(cambio);
           $('.alertCambio').html('<p style="color : red;"></p>');
           $('#btn_facturar_venta').slideDown();
           // $("#procesarVenta").css("display", "block");
       
           } else {
-           $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
+            document.getElementById("pagar_con").value=formatterDolar.format(pagar_con); 
+           $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor o igual al total.</p><center>');      
            $('#btn_facturar_venta').slideUp();  
           //  $("#procesarVenta").css("display", "none");   
             document.getElementById('pagar_con').focus();
             
           }
- } 
+    } 
+    const tipoventa = document.getElementById("tipoven").value;    
+}
 });
 
 
@@ -898,43 +901,22 @@ $('#tipoven').on('change', function() {
  }
 });
 
-function closeModalVenta()
-{
-$('#exampleModal').hide();
-}
-
-$(document).ready(function(){
-  $(".show-modal").click(function(){
-      $("#myModal").modal({
-          backdrop: 'static',
-          keyboard: false
-      });
-  });
-});
-
-// function pagarCon(e) {
-//   e.preventDefault();
-//   const total = document.getElementById("totalmodal").value;
-//   const pagar_con = document.getElementById("pagar_con").value;
-//   const cambio =pagar_con-total;
-//   console.log(pagar_con-total);
-//   console.log(cambio);
-  
-//   //if (e.which == 13) {
-//         if (cambio > 0 ) {
-//         document.getElementById("cambio").value = cambio;
-//         $('.alertCambio').html('<p style="color : red;"></p>');
-//         $('#btn_facturar_venta').slideDown();
-//         // $("#procesarVenta").css("display", "block");
-    
-//         } else {
-//          $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
-//          $('#btn_facturar_venta').slideUp();  
-//         //  $("#procesarVenta").css("display", "none");   
-//           document.getElementById('pagar_con').focus();
-          
-//         }
-//   //}
-
+//EVALUAMOS QUE TIPO DE VENTA SERÁ
+$('#tipopago').on('change', function() {
  
-// }
+  if(this.value=='1')
+  { 
+    $('#referencia').slideUp();       
+    $('#divCambio').slideDown();
+    $('#divCambioC').slideDown();
+ }  
+  else{  
+  
+   $('#referencia').slideDown(); 
+   $('#divCambio').slideUp();
+   $('#divCambioC').slideUp();
+    
+  }
+ });
+
+

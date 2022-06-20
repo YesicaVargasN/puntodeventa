@@ -281,8 +281,10 @@ if ($_POST['action'] == 'procesarVenta') {
     $usuario = $_SESSION['idUser'];
     $tipoventa = $_POST['tipoventa'];
     $fechaven = $_POST['fechaven'];
-    $pagarcon = $_POST['pagarcon'];
+    $pagocon = $_POST['pago'];
+    $total= $_POST['total'];
     $tipopago = $_POST['tipopago'];
+    $referencia = $_POST['referencia'];
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
   }
@@ -294,8 +296,8 @@ $newDate = date("Y/m/d", strtotime($fechaven));
 
 
   if ($result > 0) {
-    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)";
-    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)");
+    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$total','$newDate',$tipopago,'$referencia')";
+    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$total','$newDate',$tipopago,'$referencia')");
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);
