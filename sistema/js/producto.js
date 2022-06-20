@@ -855,7 +855,7 @@ $('#pagar_con').keyup(function(e) {
     const total = document.getElementById("totalmodal").value.substring(1);
     const cambio =(parseFloat(pagar_con)-parseFloat(total));
     tipopago= document.getElementById("tipopago").value;
-
+    const tipoventa = document.getElementById("tipoven").value;    
     if(tipopago==1)
     {
           if (cambio > 0 ) {
@@ -874,7 +874,7 @@ $('#pagar_con').keyup(function(e) {
             
           }
     } 
-    const tipoventa = document.getElementById("tipoven").value;    
+    document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);
 }
 });
 

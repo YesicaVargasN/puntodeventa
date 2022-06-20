@@ -13,6 +13,9 @@
 		$noFactura = $_REQUEST['f'];
 		$pagocon = $_REQUEST['p'];
 		
+		$pagocon= substr($pagocon , 1, strlen($pagocon)) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
+		//$Cantidad1=str_replace(',','',$Cantidad1); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
+
 
 		$consulta = mysqli_query($conexion, "SELECT * FROM configuracion");
 		$resultado = mysqli_fetch_assoc($consulta);
