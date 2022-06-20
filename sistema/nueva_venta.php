@@ -164,7 +164,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="cambio" class="font-weight-bold">Cambio</label>  
-                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
+                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled=""  onkeyup="pagarCon(event)">
                                 </div>
                             </div>
                       </div>
