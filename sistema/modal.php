@@ -1,6 +1,7 @@
 
 <?php
 include("../conexion.php");
+include("includes/functions.php");
 session_start();
 //print_r($_POST);
 if (!empty($_POST)) {
@@ -437,5 +438,35 @@ $newDate = date("Y/m/d", strtotime($fechaven));
 
 
 }
+
+
+// Guardar inicio de corte de caja
+if ($_POST['action'] == 'guardarCorte') {
+  $montoinicial = $_POST['montoinicial'];
+  $token = md5($_SESSION['idUser']);
+  //VERIFICAMOS PRIMERO QUE NO ESTE ABIERTO UN CORTE
+  if(revisarCortesAbiertos() == 0){
+    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', '$fecha', '0')");
+    mysqli_close($conexion);
+    if ($query_del) {
+      echo 'ok';
+    }else {
+      $data = 0;
+    }
+  }else{
+    echo 'ERROR: Existe un corte de caja abierto. (Primero debe cerrar el disponible para crear otro).';
+  }
+  exit;
+}
+
+
+
+
+
+
+
 exit;
+
+
+
  ?>

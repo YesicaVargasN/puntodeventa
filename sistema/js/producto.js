@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('.btnMenu').click(function(e) {
+   $('.btnMenu').click(function(e) {
     e.preventDefault();
     if($('nav').hasClass('viewMenu')) {
       $('nav').removeClass('viewMenu');
@@ -878,4 +878,35 @@ $(document).ready(function(){
           keyboard: false
       });
   });
+});
+
+
+
+// anular venta
+$('#btn_guardarcorte').click(function(e) {
+  e.preventDefault();
+  var montoinicial = $('#montoinicial').val();
+
+  var action = 'guardarCorte';
+  $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,montoinicial: montoinicial},
+    success: function(response) {
+      $('.alertAddProduct').html(response);
+      $("#abrircorte input").val("");
+
+    },
+    error: function(error) {
+
+    }
+  });
+  
+});
+
+
+jQuery('#abrircorte').on('hidden.bs.modal', function (e) {
+  jQuery(this).removeData('bs.modal');
+  jQuery(this).find('.alertAddProduct').empty();
 });

@@ -64,5 +64,16 @@
 	// return $existencia;
 	// }
 
+	function revisarCortesAbiertos(){
+		require("..\conexion.php");
+		$sql = "SELECT * FROM cortecaja WHERE Estado=0";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0){
+			return 1;
+		}else{
+			return 0;
+		}			
+					
+	}
 
  ?>

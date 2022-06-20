@@ -24,7 +24,9 @@ if(isset($_POST['montoinicial'])){
 
 
 ?>
-<script>
+
+
+<!-- <script>
 $('#abrircorte').on('show.bs.modal', function (event) {
 	 var montoinicial = $('#montoinicial').val(); 
 	 $.ajax({
@@ -37,9 +39,9 @@ $('#abrircorte').on('show.bs.modal', function (event) {
 	});
 
 })
+</script> -->
 
 
-</script>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#abrircorte">
   Abrir
@@ -52,7 +54,7 @@ $('#abrircorte').on('show.bs.modal', function (event) {
       <div class="modal-header">
         <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Abrir corte de caja</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
+          <span aria-hidden="true">X</span>
         </button>
       </div>
       <div class="modal-body">
@@ -63,11 +65,14 @@ $('#abrircorte').on('show.bs.modal', function (event) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+		<a href="#" class="btn btn-primary" id="btn_guardarcorte">Guardar</a>
+		<div class="alert alertAddProduct" style='color:#fff'></div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
