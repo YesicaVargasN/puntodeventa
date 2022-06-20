@@ -282,17 +282,13 @@ if ($_POST['action'] == 'procesarVenta') {
     $tipoventa = $_POST['tipoventa'];
     $fechaven = $_POST['fechaven'];
     $pagarcon = $_POST['pagarcon'];
-<<<<<<< HEAD
     $tipopago = $_POST['tipopago'];
-=======
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
   }
 
 $originalDate = "2017-03-08";
 $newDate = date("Y/m/d", strtotime($fechaven));
-<<<<<<< HEAD
 // $pagocon= substr($pagocon , 1, 1) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
 // $pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
 
@@ -300,14 +296,6 @@ $newDate = date("Y/m/d", strtotime($fechaven));
   if ($result > 0) {
     //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)";
     $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate',$tipopago)");
-=======
-
-
-
-  if ($result > 0) {
-    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate')";
-    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagarcon','$newDate')");
->>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);
