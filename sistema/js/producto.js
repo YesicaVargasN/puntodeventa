@@ -842,6 +842,38 @@ $('#pagar_conC').keyup(function(e) {
 });
 
 
+$('#pagar_con').keyup(function(e) {
+  e.preventDefault();
+  if (e.which == 13) {  
+    console.log("entro");
+    const pagar_con = document.getElementById("pagar_con").value;
+
+
+    const total = document.getElementById("totalmodal").value.substring(1);
+
+    const cambio =(parseFloat(pagar_con)-parseFloat(total));
+    console.log(parseFloat(pagar_con));
+    console.log((total));
+    console.log(cambio);
+    
+    //if (e.which == 13) {
+          if (cambio > 0 ) {
+            document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);
+          //document.getElementById("cambio").value = cambio;
+          document.getElementById("cambio").value=formatterDolar.format(cambio);
+          $('.alertCambio').html('<p style="color : red;"></p>');
+          $('#btn_facturar_venta').slideDown();
+          // $("#procesarVenta").css("display", "block");
+      
+          } else {
+           $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
+           $('#btn_facturar_venta').slideUp();  
+          //  $("#procesarVenta").css("display", "none");   
+            document.getElementById('pagar_con').focus();
+            
+          }
+ } 
+});
 
 
 const formatterDolar = new Intl.NumberFormat('en-US', {
@@ -882,7 +914,7 @@ $(document).ready(function(){
 
 
 
-// anular venta
+// GUARDAR NUEVO CORTE DE CAJA
 $('#btn_guardarcorte').click(function(e) {
   e.preventDefault();
   var montoinicial = $('#montoinicial').val();
@@ -910,3 +942,32 @@ jQuery('#abrircorte').on('hidden.bs.modal', function (e) {
   jQuery(this).removeData('bs.modal');
   jQuery(this).find('.alertAddProduct').empty();
 });
+
+
+
+// function pagarCon(e) {
+//   e.preventDefault();
+//   const total = document.getElementById("totalmodal").value;
+//   const pagar_con = document.getElementById("pagar_con").value;
+//   const cambio =pagar_con-total;
+//   console.log(pagar_con-total);
+//   console.log(cambio);
+  
+//   //if (e.which == 13) {
+//         if (cambio > 0 ) {
+//         document.getElementById("cambio").value = cambio;
+//         $('.alertCambio').html('<p style="color : red;"></p>');
+//         $('#btn_facturar_venta').slideDown();
+//         // $("#procesarVenta").css("display", "block");
+    
+//         } else {
+//          $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor al total.</p><center>');      
+//          $('#btn_facturar_venta').slideUp();  
+//         //  $("#procesarVenta").css("display", "none");   
+//           document.getElementById('pagar_con').focus();
+          
+//         }
+//   //}
+
+ 
+// }

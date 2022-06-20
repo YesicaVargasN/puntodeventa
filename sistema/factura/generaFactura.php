@@ -106,7 +106,7 @@
 		$pdf->SetFont('Arial', 'B', 9);
 
 		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalventa'], 2, '.', ','), 0, 1, 'R');		
-		$pdf->Cell(76, 5,  'Pago: ' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+		$pdf->Cell(76, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 		
  
 		if( $tipo=='1')
