@@ -902,10 +902,7 @@ $('#tipoven').on('change', function() {
 });
 
 
-function closeModalVenta()
-{
-$('#exampleModal').hide();
-}
+
 
 $(document).ready(function(){
   $(".show-modal").click(function(){
