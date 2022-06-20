@@ -446,7 +446,7 @@ if ($_POST['action'] == 'guardarCorte') {
   $token = md5($_SESSION['idUser']);
   //VERIFICAMOS PRIMERO QUE NO ESTE ABIERTO UN CORTE
   if(revisarCortesAbiertos() == 0){
-    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', '$fecha', '0')");
+    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', now(), '0')");
     mysqli_close($conexion);
     if ($query_del) {
       echo 'ok';
@@ -460,7 +460,31 @@ if ($_POST['action'] == 'guardarCorte') {
 }
 
 
+// cerrar corte de caja
+if ($_POST['action'] == 'cerrarCorte') {
+  $id = $_POST['idcorte'];
+  $montoinicial = $_POST['montoinicial'];
+  $montofinal = $_POST['montofinal'];
+  $totalventas = $_POST['totalventas'];
+  $montototal = $_POST['montogral'];
+  //VERIFICAMOS PRIMERO QUE haya ventas
 
+  if($montofinal == '' or $montofinal == 0){
+    echo 'Error: no hay ventas aun';
+  }else{
+    $sql = "UPDATE cortecaja SET MontoFinal = ".$montofinal.", FechaCierre = now(), TotalVentas = ".$totalventas.", MontoTotal = ".$montototal.", Estado = 1 WHERE Id = ".$id."";
+    //echo $sql;
+    
+    $query_del = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    if ($query_del) {
+      echo 'ok';
+    }else {
+      $data = 0;
+    }
+  }
+  exit;
+}
 
 
 
