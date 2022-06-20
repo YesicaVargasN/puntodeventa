@@ -3501,3 +3501,8 @@ pre code {
   background: #2d3035;
   border-color: #34373d;
 }
+
+.alertascss {
+  /*color: color-yiq(#868e96);*/
+  background-color: #868e96;
+}

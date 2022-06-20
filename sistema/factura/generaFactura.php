@@ -5,13 +5,22 @@
 		header('location: ../');
 	}
 	include "../../conexion.php";
+<<<<<<< HEAD
 	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] ))
+=======
+	if(empty($_REQUEST['cl']) || empty($_REQUEST['f'] )|| empty($_REQUEST['p']) || empty($_REQUEST['t']))
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 	{
 		echo "No es posible generar la factura.";
 	}else{
 		$codCliente = $_REQUEST['cl'];
 		$noFactura = $_REQUEST['f'];
+<<<<<<< HEAD
 		
+=======
+		$pagocon = $_REQUEST['p'];
+		$tipo = $_REQUEST['t'];
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 		
 
 		$consulta = mysqli_query($conexion, "SELECT * FROM configuracion");
@@ -29,12 +38,16 @@
 		$pdf->SetFont('Arial', 'B', 9);
 		$pdf->Cell(60, 5, utf8_decode($resultado['nombre']), 0, 1, 'C');
 		$pdf->Ln();
+<<<<<<< HEAD
 		
 		$pagocon = $result_venta['totalfactura'];
 		$tipo = $result_venta['idtipoventa'];
 
 
 		//$pdf->image("../sistema/pdf/examples/images/aguira.jpg", 50, 18, 15, 15, 'JPG');
+=======
+		// $pdf->image("img/logo.jpg", 50, 18, 15, 15, 'JPG');
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 7);
@@ -105,16 +118,27 @@
 		$pdf->Ln();
 		$pdf->SetFont('Arial', 'B', 9);
 
+<<<<<<< HEAD
 		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalventa'], 2, '.', ','), 0, 1, 'R');		
 		$pdf->Cell(76, 5,  'Pago: ' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 		
+=======
+		$pdf->Cell(76, 5, 'Total: $' . number_format($result_venta['totalfactura'], 2, '.', ','), 0, 1, 'R');		
+		$pdf->Cell(76, 5,  'Pago: ' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+		//$pagocon= substr( $pagocon , 1, 1) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
+		//$pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
  
 		if( $tipo=='1')
 		{
 			$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
 		}else
 		{
+<<<<<<< HEAD
 			$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalventar']-$pagocon), 2, '.', ','), 0, 1, 'R');
+=======
+			$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalfactura']-$pagocon), 2, '.', ','), 0, 1, 'R');
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
 		}
 			
 		

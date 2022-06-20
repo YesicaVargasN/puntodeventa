@@ -24,6 +24,8 @@
 <script type="text/javascript" src="js/imprimircodigo.js"></script>
 <script type="text/javascript" src="js/all.min.js"></script>
 <script type="text/javascript">
+
+  
   $(document).ready(function() {
     $('#table').DataTable({
       language: {

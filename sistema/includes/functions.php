@@ -17,6 +17,7 @@
 		return date('d')." de ". $mes[date('n')] . " de " . date('Y');
 	}
 
+<<<<<<< HEAD
 	function narchivo($consulta){
 		require("..\conexion.php");
 		$sql = "SELECT * FROM contadores WHERE id='0'";					
@@ -65,4 +66,8 @@
 	// }
 
 
+=======
+	
+	
+>>>>>>> 633b37655c9335522f7a18b15e7b0ad81e9e1cfb
  ?>
