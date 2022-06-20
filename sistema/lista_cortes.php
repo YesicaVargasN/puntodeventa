@@ -3,54 +3,71 @@
 
 
 //GUARDAR ARCHIVOS
-if(isset($_FILES['archivo']['name'])){
-	$directorio = 'archivos/';
+if(isset($_POST['montoinicial'])){
+	$montoinicial = $_POST['montoinicial'];
 	
-	$doc = $_FILES["archivo"]["name"];
-    $tmp =$_FILES["archivo"]["tmp_name"];
-	$numarchivo = narchivo(TRUE); 
-	$nomarchivo = $numarchivo.'_'.$doc;
-	$subir_archivo = $directorio.basename($nomarchivo);
-	$proveedor = $_POST['proveedor'];
-	$subtotal = $_POST['subtotal'];
-	$iva = $_POST['iva'];
-	$total = $_POST['total'];
-	$fecha = $_POST['fecha'];
-	$descripcion = $_POST['descripcion'];
-
-	if (move_uploaded_file($tmp, $subir_archivo)) {
-		//si se guarda en la carpeta hay que guardar en la bd
-		$numarchivo = narchivo(FALSE); 
-		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."')";
-		//echo $sql;	
-		$query_insert = mysqli_query($conexion, $sql);
-        if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                       Gasto Registrado
-                    </div>';
-        } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar los gastos
-                    </div>';
-        }
-    }
-		//echo "El archivo es válido y se cargó correctamente.<br><br>";
-		//echo"<a href='".$subir_archivo."' target='_blank'><img src='".$subir_archivo."' width='150'></a>";
-	 else {
+	$sql = "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', '$fecha', '0')";
+	//echo $sql;	
+	$query_insert = mysqli_query($conexion, $sql);
+	if ($query_insert) {
+		$alert = '<div class="alert alert-primary" role="alert">
+					Corte de caja abierto
+				</div>';
+	} else {
 		$alert = '<div class="alert alert-danger" role="alert">
-		La subida ha fallado
-	 </div>';
-		
+					Error al crear el nuevo corte de caja
+				</div>';
 	}
-		
+	
 	echo $alert;
 }
 
 
 ?>
+<script>
+$('#abrircorte').on('show.bs.modal', function (event) {
+	 var montoinicial = $('#montoinicial').val(); 
+	 $.ajax({
+		url: "lista_cortes.php",
+		type: "post",
+		data: {montoinicial: montoinicial},
+		success: function(data){
+			
+		}
+	});
+
+})
 
 
+</script>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#abrircorte">
+  Abrir
+</button>
 
+<!-- Modal -->
+<div class="modal fade" id="abrircorte" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Abrir corte de caja</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+	 
+		<label for="montoinicial" style="color: #fff;">Monto Inicial</label>
+		<input type="text" placeholder="Ingrese el monto inicial" id="montoinicial" name="montoinicial" class="form-control">
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -58,7 +75,7 @@ if(isset($_FILES['archivo']['name'])){
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Cortes de Caja</h1>
-		<a href="registro_factura.php" class="btn btn-primary">Nuevo</a>
+		<a href="apertura_corte.php" class="btn btn-primary">Abrir</a>
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
@@ -88,7 +105,6 @@ if(isset($_FILES['archivo']['name'])){
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['id']; ?></td>
 									<td style='width:200px;'><?php echo $data['Id']; ?></td>
 									<td style='width:150px;'><?php echo '$ '.$data['MontoInicial']; ?></td>
 									<td><?php echo $data['MontoFinal']; ?></td>
@@ -96,7 +112,7 @@ if(isset($_FILES['archivo']['name'])){
                                     <td><?php echo $data['FechaCierre']; ?></td>
                                     <td><?php echo $data['TotalVentas']; ?></td>
                                     <td><?php echo $data['MontoTotal']; ?></td>
-                                    <td><?php echo $data['Estado']; ?></td>
+                                    <td><?php if($data['Estado']==0){ echo 'Abierta'; } else {echo 'Cerrada'; } ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<form action="eliminar_gastos.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
