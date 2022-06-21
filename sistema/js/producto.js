@@ -414,10 +414,7 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
- 
-  // var pagarcon = $('#pagar_con').val(); 
-  // var tipoventa = $('#tipoven').val(); 
-  generarPDF(codCliente,noFactura,'');
+  generarPDF(codCliente,noFactura,'$0');
 });
 
 // Cambiar contraseña
@@ -902,10 +899,7 @@ $('#tipoven').on('change', function() {
 });
 
 
-function closeModalVenta()
-{
-$('#exampleModal').hide();
-}
+
 
 $(document).ready(function(){
   $(".show-modal").click(function(){
@@ -1013,3 +1007,36 @@ $('#tipopago').on('change', function() {
  });
 
 
+ // ingresar abono
+ $('#form_new_abono_creditos').submit(function(e) {
+  console.log('entro aboono');
+   e.preventDefault();
+   $.ajax({
+     url: 'modal.php',
+     type: "POST",
+     async: true,
+     data: $('#form_new_abono_creditos').serialize(),
+     success: function(response) {
+      console.log(response);
+      //  // Agregar id a inp
+       if (response  != 0) {
+       
+          location.reload();
+          $('#abrirAbonos').click();
+        //  // Agregar id a input hidden
+        //  $('#idcliente').val(response);
+        //  //bloque campos
+        //  $('#nom_cliente').attr('disabled','disabled');
+        //  $('#tel_cliente').attr('disabled','disabled');
+        //  $('#dir_cliente').attr('disabled','disabled');
+        //  // ocultar boton Agregar
+        //  $('.btn_new_cliente').slideUp();
+        //  //ocultar boton Guardar
+        //  $('#div_registro_cliente').slideDown();
+       }
+     },
+     error: function(error) {
+     }
+   });
+ });
+ 

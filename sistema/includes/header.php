@@ -139,6 +139,21 @@ if ($result_data > 0) {
 					</div>
 				</li>
 
+				<!-- Nav Item - Pages Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCredito" aria-expanded="true" aria-controls="collapseTwo">
+						<i class="fa fa-credit-card"></i>
+						<span>Creditos</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseCredito" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<!-- //<a class="collapse-item" href="nueva_venta.php">Creditos</a> -->
+							<a class="collapse-item" href="creditos.php">Creditos</a>
+						</div>
+					</div>
+				 </li>
+
 				<!-- Nav Item - Productos Collapse Menu -->
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">

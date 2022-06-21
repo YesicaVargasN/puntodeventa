@@ -505,8 +505,30 @@ if ($_POST['action'] == 'cerrarCorte') {
 
 
 
-exit;
-
+//exit;
+// registrar cliente = ventas
+if ($_POST['action'] == 'addAbono') {  
+  $nofactura = $_POST['nofactura'];
+  $pago = $_POST['pagoabono'];
+  $tipopago = $_POST['tipopago'];
+  $total = $_POST['total'];
+  $referencia = $_POST['numreferenciaabono'];
+  $usuario_id = $_SESSION['idUser'];
+  $adeudo = $_POST['adeudo'];
+  $adeudo=floatval($adeudo)-floatval($pago);
+  $sql="INSERT INTO abonos(nofactura, fecha, total, pago, adeudo,idtipopago,usuario_id,referencia) VALUES ('$nofactura',now(),'$total','$pago','$adeudo',$tipopago,'$usuario_id','$referencia')";
+//echo $sql;
+  $query_insert = mysqli_query($conexion, $sql);
+  if ($query_insert) {
+    $codCliente = mysqli_insert_id($conexion);
+    $msg = $codCliente;
+  }else {
+    $msg = 'error';
+  }
+  mysqli_close($conexion);
+  echo $msg;
+  exit;
+}
 
 
  ?>

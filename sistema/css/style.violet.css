@@ -1538,6 +1538,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 .modal-open .modal .modal-content {
   border-radius: 0;
   background: #2d3035;
+  width: auto;
 }
 
 .modal-open .modal .modal-header,

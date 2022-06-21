@@ -146,7 +146,7 @@
                                 <option value="3">Transferencia</option>                              
                             </select>
                         </div>
-                      </div> -
+                      </div> 
                    </div>
                       <div class="row" id="ventacontado">
                         <div class="col-md-4">
@@ -200,10 +200,10 @@
                       </div>
 
                     
-                                <div class="form-group" id='referencia' style="display:none;">
-                                    <label for="numreferencia" class="font-weight-bold">Referencia</label>  
-                                    <input id="numreferencia" class="form-control" type="text" placeholder="Referencia" value="">
-                                </div>
+                    <div class="form-group" id='referencia' style="display:none;">
+                        <label for="numreferencia" class="font-weight-bold">Referencia</label>  
+                        <input id="numreferencia" class="form-control" type="text" placeholder="Referencia" value="">
+                    </div>
                            
 
                     </form>                  

@@ -46,7 +46,10 @@
 			$tipopago='Transferencia';
 
 		}
-
+if($pagocon=='0')
+{
+	$pagocon=$result_venta['totalfactura'];
+}
 		$pdf->image("img/aguira.jpg", 50, 18, 25, 10, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
@@ -125,7 +128,8 @@
  		{
 			if( $tipo=='1' )
 			{
-				$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
+				//no mostrar el cambio por que no se guarda en la base de lo contrario almacenar con que pago
+				//$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
 			}else
 			{
 				$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalventa']-$pagocon), 2, '.', ','), 0, 1, 'R');
