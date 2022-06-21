@@ -379,12 +379,16 @@ $('#btn_facturar_venta').click(function(e) {
     total=document.getElementById("totalmodal").value;
   }
   else
-  { pago = document.getElementById("pagar_conC").value; 
-    total=document.getElementById("pagar_conC").value;
+  {
+    pago = document.getElementById("pagar_conC").value; 
+    total=document.getElementById("totalmodal").value;
     fechaven = $('#fechav').val();
     } 
     
+    console.log(pago);
+    console.log(total);
     //pago=pago.substring(1);
+    console.log(pago);
   if (rows > 0) {
     $.ajax({
       url: 'modal.php',

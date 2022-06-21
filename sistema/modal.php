@@ -311,8 +311,9 @@ $newDate = date("Y/m/d", strtotime($fechaven));
 
 
   if ($result > 0) {
-    //echo "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$total','$newDate',$tipopago,'$referencia')";
-    $query_procesar = mysqli_query($conexion, "CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$total','$newDate',$tipopago,'$referencia')");
+$sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia')";
+//echo $sql;    
+$query_procesar = mysqli_query($conexion, $sql);
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);
