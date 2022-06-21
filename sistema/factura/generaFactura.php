@@ -128,7 +128,7 @@ if($pagocon=='0')
  		{
 			if( $tipo=='1' )
 			{
-				$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
+				//$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
 			}else
 			{
 				$pdf->Cell(76, 5, 'Resta: $' . number_format(( $result_venta['totalventa']-$pagocon), 2, '.', ','), 0, 1, 'R');
