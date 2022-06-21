@@ -414,10 +414,7 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
- 
-  // var pagarcon = $('#pagar_con').val(); 
-  // var tipoventa = $('#tipoven').val(); 
-  generarPDF(codCliente,noFactura,'');
+  generarPDF(codCliente,noFactura,'$0');
 });
 
 // Cambiar contraseña

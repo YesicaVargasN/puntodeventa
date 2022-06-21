@@ -46,7 +46,10 @@
 			$tipopago='Transferencia';
 
 		}
-
+if($pagocon=='0')
+{
+	$pagocon=$result_venta['totalfactura'];
+}
 		$pdf->image("img/aguira.jpg", 50, 18, 25, 10, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
