@@ -128,6 +128,7 @@ if($pagocon=='0')
  		{
 			if( $tipo=='1' )
 			{
+				//no mostrar el cambio por que no se guarda en la base de lo contrario almacenar con que pago
 				//$pdf->Cell(76, 5, 'Cambio: $' . number_format(($pagocon-$result_venta['totalfactura']), 2, '.', ','), 0, 1, 'R');
 			}else
 			{
