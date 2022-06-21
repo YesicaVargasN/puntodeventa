@@ -124,4 +124,36 @@
 		}
 		    			
 	}
+
+	function fechaCorteAperturaId($id){
+		require("..\conexion.php");
+		$sql = "SELECT FechaApertura FROM cortecaja WHERE id=".$id."";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['FechaApertura'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
+	function fechaCorteCierreId($id){
+		require("..\conexion.php");
+		$sql = "SELECT FechaCierre FROM cortecaja WHERE id=".$id."";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['FechaCierre'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
  ?>

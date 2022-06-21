@@ -971,10 +971,8 @@ $('#btn_cerrarcorte').click(function(e) {
     success: function(response) {
       if(response.includes('ok')==true){
         console.log(response);
-        location.reload();
-        
-        
-        //location.reload();
+        window.location='rep_cortecaja.php?idcorte='+idcorte;
+
       }else{
         $('.alertAddProduct').html(response);
         console.log(response);

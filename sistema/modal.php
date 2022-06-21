@@ -282,10 +282,24 @@ if ($_POST['action'] == 'procesarVenta') {
     $usuario = $_SESSION['idUser'];
     $tipoventa = $_POST['tipoventa'];
     $fechaven = $_POST['fechaven'];
-    $pagocon = $_POST['pago'];
-    $total= $_POST['total'];
+    if(isset($_POST['pago'])){
+      $pagocon = $_POST['pago'];
+    }else{
+      $pagocon = "";
+    }
+    if(isset($_POST['total'])){
+      $total= $_POST['total'];
+    }else{
+      $total= "";
+    }
+    
     $tipopago = $_POST['tipopago'];
-    $referencia = $_POST['referencia'];
+    if(isset($_POST['referencia'])){
+      $referencia = $_POST['referencia'];
+    }else{
+      $referencia = "";
+    }
+    
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
   }

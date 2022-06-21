@@ -107,39 +107,22 @@ if ($result_data > 0) {
 			<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 				<!-- Divider -->
 
-				<!-- Nav Item - Pages Collapse Menu -->
-				<li class="nav-item">
-					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-						<i class="fas fa-fw fa-cog"></i>
-						<span>Ventas</span>
-						<i class="fas fa-angle-down fa-lg float-right"></i>
-					</a>
-					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
-							<a class="collapse-item" href="ventas.php">Ventas</a>
+				<?php if ($_SESSION['rol'] == 1) { ?>
+					<!-- Nav Item - Usuarios Collapse Menu -->
+					<li class="nav-item">
+						<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true">
+							<i class="fas fa-user"></i>
+							<span>Usuarios</span>
+							<i class="fas fa-angle-down fa-lg float-right"></i>
+						</a>
+						<div id="collapseUsuarios" class="collapse">
+							<div class="bg-white py-2 collapse-inner">
+								<a class="collapse-item" href="registro_usuario.php">Nuevo Usuario</a>
+								<a class="collapse-item" href="lista_usuarios.php">Usuarios</a>
+							</div>
 						</div>
-					</div>
-				</li>
-
-				<!-- Nav Item - Productos Collapse Menu -->
-				<li class="nav-item">
-					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-						<i class="fas fa-fw fa-wrench"></i>
-						<span>Productos</span>
-						<i class="fas fa-angle-down fa-lg float-right"></i>
-					</a>
-					<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="lista_codigos.php">Crear código de barra</a>
-							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
-							<a class="collapse-item" href="lista_productos.php">Productos</a>
-							<a class="collapse-item" href="lista_medida.php">Unidades de Medidas</a>
-							<a class="collapse-item" href="lista_cat.php">Categorias/Departamentos</a>
-							<a class="collapse-item" href="lista_sec.php">Secciones</a>
-						</div>
-					</div>
-				</li>
+					</li>
+				<?php } ?>
 
 				<!-- Nav Item - Clientes Collapse Menu -->
 				<li class="nav-item">
@@ -155,6 +138,70 @@ if ($result_data > 0) {
 						</div>
 					</div>
 				</li>
+
+				<!-- Nav Item - Productos Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+						<i class="fas fa-clipboard-list"></i>
+						<span>Productos</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="lista_codigos.php">Crear código de barra</a>
+							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
+							<a class="collapse-item" href="lista_productos.php">Productos</a>
+							<a class="collapse-item" href="lista_medida.php">Unidades de Medidas</a>
+							<a class="collapse-item" href="lista_cat.php">Categorias/Departamentos</a>
+							<a class="collapse-item" href="lista_sec.php">Secciones</a>
+						</div>
+					</div>
+				</li>
+
+				<!-- Nav Item - Pages Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+						<i class="fas fa-dollar-sign"></i>
+						<span>Ventas</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="nueva_venta.php">Nueva venta</a>
+							<a class="collapse-item" href="ventas.php">Ventas</a>
+						</div>
+					</div>
+				</li>
+
+				<!-- Nav Item - Pages Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaja" aria-expanded="true" aria-controls="collapseTwo">
+						<i class="fas fa-money-bill-alt"></i>
+						<span>Caja</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseCaja" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="nueva_venta.php">Caja</a>
+						</div>
+					</div>
+				</li>
+
+				<!-- Nav Item - Pages Collapse Menu -->
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCorte" aria-expanded="true" aria-controls="collapseTwo">
+					<i class="fas fa-solid fa-cash-register"></i>
+					<!--<i class="fas fa-fw fa-cog"></i>-->
+						<span>Corte de Caja</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
+					</a>
+					<div id="collapseCorte" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="lista_cortes.php">Corte de caja</a>
+						</div>
+					</div>
+				</li>
+				
 				<!-- Nav Item - Utilities Collapse Menu -->
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
@@ -182,22 +229,9 @@ if ($result_data > 0) {
 						</div>
 					</div>
 				</li>
-				<?php if ($_SESSION['rol'] == 1) { ?>
-					<!-- Nav Item - Usuarios Collapse Menu -->
-					<li class="nav-item">
-						<a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true">
-							<i class="fas fa-user"></i>
-							<span>Usuarios</span>
-							<i class="fas fa-angle-down fa-lg float-right"></i>
-						</a>
-						<div id="collapseUsuarios" class="collapse">
-							<div class="bg-white py-2 collapse-inner">
-								<a class="collapse-item" href="registro_usuario.php">Nuevo Usuario</a>
-								<a class="collapse-item" href="lista_usuarios.php">Usuarios</a>
-							</div>
-						</div>
-					</li>
-				<?php } ?>
+				
+
+
 				<li class="nav-item">
 					<a class="nav-link" href="configuracion.php" aria-expanded="true">
 						<i class="fas fa-tools"></i>

@@ -104,6 +104,23 @@
 			</div>
 		</a>
 
+		<a class="col-xl-3 col-md-6 mb-4" href="lista_cortes.php">
+			<div class="card border-left-warning bg-white shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Corte de caja</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Cortes de caja</div>
+						</div>
+						<div class="col-auto">
+							
+							<i class="fas fa-solid fa-cash-register fa-2x text-gray-300"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</a>
+
 		<a class="col-xl-3 col-md-6 mb-4" href="lista_proveedor.php">
 			<div class="card border-left-warning bg-white shadow h-100 py-2">
 				<div class="card-body">
@@ -136,22 +153,7 @@
 			</div>
 		</a>
 
-		<a class="col-xl-3 col-md-6 mb-4" href="lista_cortes.php">
-			<div class="card border-left-warning bg-white shadow h-100 py-2">
-				<div class="card-body">
-					<div class="row no-gutters align-items-center">
-						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Corte de caja</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">Cortes de caja</div>
-						</div>
-						<div class="col-auto">
-							
-							<i class="fas fa-solid fa-cash-register fa-2x text-gray-300"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</a>
+	
 
 
 

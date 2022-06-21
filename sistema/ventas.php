@@ -6,6 +6,7 @@
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Lista de ventas</h1>
+		<a href="nueva_venta.php" class="btn btn-primary">Nueva</a>
 	</div>
 
 	<!-- Elementos para crear el reporte -->
@@ -26,6 +27,8 @@
 	
 	</div>
 	</form>	
+
+
 
 	<div class="row">
 		<div class="col-lg-12">
