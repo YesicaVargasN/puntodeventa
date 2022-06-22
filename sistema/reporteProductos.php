@@ -3,37 +3,47 @@ ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
-include("includes/functions.php");
 
+if(isset($_POST['categoria'])){
+    $cat = $_POST['categoria'];
+}else{
+    $cat = "";
+}
 
-$idcorte = $_GET['idcorte'];
-//BUSCAMOS LA FECHA DEL ULTIMO CORTE ABIERTO
-$fechainicio = fechaCorteAperturaId($idcorte);
-$fechafin = fechaCorteCierreId($idcorte);
+if(isset($_POST['sec'])){
+    $seccion = $_POST['sec'];
+}else{
+    $seccion = "";
+}
+//echo $cat.' '.$seccion;
+if($cat <> '' and $seccion <> ''){
 
-  $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura, f.estado, if(f.idtipoventa = 1, 'Contado', 'Crédito') as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado
-  FROM factura f
-  left JOIN usuario u on u.idusuario = f.usuario
-  left join cliente c on c.idcliente = f.codcliente
-  WHERE f.fecha between '".$fechainicio."' and '".$fechafin."' ";
-
+    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
+    from producto p
+    inner join cat_departamento cd on cd.iddepartamento = p.categoria
+    inner join cat_secciones cs on cs.idseccion = p.seccion
+    WHERE p.categoria = '.$cat.' and p.seccion = '.$seccion.'';
+}else if($cat <> '' and $seccion == 0){
+    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
+    from producto p
+    inner join cat_departamento cd on cd.iddepartamento = p.categoria
+    inner join cat_secciones cs on cs.idseccion = p.seccion
+    WHERE p.categoria = '.$cat.'';
+}
 echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 0;
-$suma = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
-    $tabla = $tabla.'<th ><b>N. VENTA</b></th>';
-    $tabla = $tabla.'<th ><b>FECHA CAPTURA</b></th>';
-    $tabla = $tabla."<th><b>USUARIO</b></th>";
-    $tabla = $tabla."<th><b>CLIENTE</b></th>";
-    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
-    $tabla = $tabla.'<th ><b>TIPO VENTA</b></th>';
-    $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
-    $tabla = $tabla.'<th ><b>CANCELADO</b></th>';
+    $tabla = $tabla.'<th ><b>CODIGO</b></th>';
+    $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+    $tabla = $tabla."<th><b>PRECIO COMPRA</b></th>";
+    $tabla = $tabla.'<th ><b>PRECIO COSTO</b></th>';
+    $tabla = $tabla.'<th ><b>EXISTENCIA</b></th>';
+    $tabla = $tabla.'<th ><b>CATEGORÍA</b></th>';
+    $tabla = $tabla.'<th ><b>SECCIÓN</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -42,36 +52,44 @@ if ($r -> num_rows >0){
         }else{
             $tabla = $tabla.'<tr bgcolor="#FCD2CB">'; 
         }
-        $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>'.$f['quien'].'</td>';
-        $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
-        $suma = $suma += $f['totalfactura'];
-        $tabla = $tabla.'<td>'.$f['estado'].'</td>';
-        $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';
-        $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
-        $tabla = $tabla.'<td>'.$f['cancelado'].'</td>';
-
+        $tabla = $tabla.'<td>'.$f['codigo'].'</td>';
+        $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['preciocosto'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
+        $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
+        $tabla = $tabla.'<td>'.$f['nomseccion'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
     $tabla = $tabla.'</table>';
+
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td>
+                
+            </td>
+            <td  bgcolor="#FCD2CB">
+                TOTAL DE PRODUCTOS MOSTRADOS '.$vuelta.'
+            </td>
+        </tr>
+        
+    </table>';
+}else{
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td  bgcolor="#FCD2CB">
+                NO EXISTEN RESULTADOS PARA ESTA CONSULTA
+            </td>
+        </tr>
+        
+    </table>';
 }
 
 
-$tabla = $tabla.'<br><br><br>
-<table  align = "center" >
-    <tr>
-        <td>
-            
-        </td>
-        <td  bgcolor="#FCD2CB">
-            MONTO TOTAL RECUPERADO $'.number_format($suma, 2, '.', ',').'
-        </td>
-    </tr>
-    
-</table>';
+
 
 echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -80,7 +98,7 @@ $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('PUNTO DE VENTA');
 $pdf->SetKeywords('Punto de Venta');
 //$pdf->SetHeaderData('pdf_logo.jpg', '40','', '');
-$pdf->SetHeaderData('aguira.jpg', '40', 'CORTE DE CAJA', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('aguira.jpg', '40', 'PRODUCTOS', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 
@@ -118,6 +136,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document}
-ob_end_clean();
+ ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
 ?>

@@ -39,38 +39,23 @@ if (!empty($_POST)) {
 }
 ?>
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
- <!-- Content Row -->
-    <div class="row">
-        <!-- Elementos para crear el reporte -->
-        <form action="reporteVentas.php" method="post">
-        <div class="row">
-        
-            <div class="col-md-4">
-                <label for="producto">Por producto</label>
-                <input type="date" name="desde" id="desde" class="form-control">
-            </div>
-            <div class="col-md-4">
-                <label for="producto">Por Categoría</label>
-                <input type="date" name="hasta" id="hasta" class="form-control">
-            </div>
-            <div class="col-md-4">
-                <label for="producto">Por Sección</label>
-                <input type="date" name="hasta" id="hasta" class="form-control">
-            </div>
+<script>
 
-            
-        
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <br>
-                <input type="submit" value="Generar Reporte" class="btn btn-primary">
-            </div>
-        </div>
-        </form>	
-    </div>
-</div>
+function cargar_secciones(){
+
+let idcat = $('#categoria').val();
+$.ajax({
+  url: "cargar_secciones.php",
+  type: "post",
+  data: {idcat: idcat},
+  success: function(data){
+      $('#seccion').html(data+"\n");
+  }
+});
+
+}
+</script>
+
+
 <!-- /.container-fluid -->
 <?php include_once "includes/footer.php"; ?>

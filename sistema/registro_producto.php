@@ -154,7 +154,7 @@ $.ajax({
              <div class="form-group">
                <label>Categoria</label>
                <?php
-                $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY departamento ASC");
+                $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY iddepartamento ASC");
                 $resultado_dptos = mysqli_num_rows($query_dptos);
                
                 ?>
