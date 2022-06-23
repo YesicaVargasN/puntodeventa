@@ -194,6 +194,87 @@ if ($_POST['action'] == 'searchForDetalle') {
   }
   exit;
 }
+
+
+// extrae datos del detalle temp
+if ($_POST['action'] == 'searchClienteCredito') {
+  $detalleTabla="";
+  if (empty($_POST['cliente'])){
+    echo 'error';
+    // code...
+  }else
+  {
+    $idcliente = $_POST['cliente'];
+  
+     $sql="SELECT numcredito, creditos.fecha,totalventa as total,totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo,fechavencimiento,estado,nombre 
+     FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
+     WHERE creditos.estado=1 and  cliente.idcliente = '$idcliente'" ;
+    // echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    $result = mysqli_num_rows($query);
+     if ($result > 0) {
+  // $detalleTabla .= '<span>'.$id_detalle.'</span>';
+   $detalleTabla .= ' <div class="col-lg-12"> <div class="form-group">
+   <h4 class="text-center">Creditos Activos</h4> 
+   </div>
+   <div class="card">
+   <div class="card-body">
+   <div class="table-responsive">
+				<table class="table table-striped table-bordered" id="table">
+					<thead class="thead-dark">
+						<tr>
+							  <th>Id</th>
+							  <th>Fecha</th>               
+							  <th>Total</th>
+                <th>Adeudo</th>
+                <th>Fecha Vencimiento</th>
+                <th>Estatus</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>';	  
+   while ($data = mysqli_fetch_assoc($query)) {    
+      $detalleTabla .= '<tr>
+          <td class="textcenter">'.$data['numcredito'].'</td>
+          <td class="textcenter">'.date_format( date_create($data['fecha']), 'd/m/Y').'</td>
+          <td class="textcenter">'.$data['total'].'</td>
+          <td class="textcenter">'.$data['adeudo'].'</td>
+          <td class="textright">'.date_format( date_create($data['fechavencimiento']), 'd/m/Y').'</td>';
+           if( $data['estado'] =='1')
+          {
+            $detalleTabla .= '<td><span class="badge bg-success" style="color:white;">Activo</span></td>';
+          }else{
+            $detalleTabla .='<td><span class="badge bg-danger" style="color:white;">Liquidada</span></td>';
+          }
+          $detalleTabla .='<td>
+          <a href="#" class="btn btn-primary" id="abonar" class="btn btn-primary" data-toggle="modal" onclick="abrirModalAbono('.$data['numcredito'].','.$data['total'].','.$data['adeudo'].');"><i class="fa fa-credit-card"></i> Abonar</a>
+          </td>
+      </tr>';
+ 
+ 
+  }
+  $detalleTabla .= '</tbody>
+  </table>
+  </div>                       
+   </div>
+   </div> 
+    </div>';
+ 
+}
+
+ 
+}
+
+$arrayData['detalle'] = $detalleTabla;
+
+
+echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
+    
+
+  
+  exit;
+}
+
 // extrae datos del detalle temp
 if ($_POST['action'] == 'delProductoDetalle') {
   if (empty($_POST['id_detalle'])){
@@ -277,23 +358,30 @@ if ($_POST['action'] == 'procesarVenta') {
   if (empty($_POST['codcliente'])) {
     $codcliente = 1;
   }else{
+
     $codcliente = $_POST['codcliente'];
     $token = md5($_SESSION['idUser']);
     $usuario = $_SESSION['idUser'];
     $tipoventa = $_POST['tipoventa'];
     $fechaven = $_POST['fechaven'];
+    $numcredito=$_POST['numcredito'];
+    $tipopago = $_POST['tipopago'];
+    
+    
+
     if(isset($_POST['pago'])){
       $pagocon = $_POST['pago'];
     }else{
       $pagocon = "";
     }
-    if(isset($_POST['total'])){
-      $total= $_POST['total'];
-    }else{
-      $total= "";
-    }
+
+    // if(isset($_POST['total'])){
+    //   $total= $_POST['total'];
+    // }else{
+    //   $total= "";
+    // }
     
-    $tipopago = $_POST['tipopago'];
+    
     if(isset($_POST['referencia'])){
       $referencia = $_POST['referencia'];
     }else{
@@ -302,27 +390,30 @@ if ($_POST['action'] == 'procesarVenta') {
     
     $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
     $result = mysqli_num_rows($query);
+    /*EVALUAMOS  SI EXISTE UN NUMERO DE CREDITO QUIERE DECIR QUE ES UN ABONO*/
+    if($numcredito> 0)
+    {
+      $result=1;
+    }
   }
+  /*QUITAMOS EL SIGNO DE PESOS*/
+  $pagocon = str_replace("$", "", $pagocon);
 
-$originalDate = "2017-03-08";
-$newDate = date("Y/m/d", strtotime($fechaven));
-// $pagocon= substr($pagocon , 1, 1) ; //QUITO EL SIGNO DE PESOS ($) DE LA CANTIDAD.
-// $pagocon=str_replace(',','',$pagocon); // SE QUITA LA COMA DE LA CANTIDAD PARA QUE PUEDA ALMACENARSE EN LA BASE DE DATOS.
-
+    $newDate = date("Y/m/d", strtotime($fechaven));
 
   if ($result > 0) {
-$sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia')";
-//echo $sql;    
-$query_procesar = mysqli_query($conexion, $sql);
+  $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
+  //echo $sql;    
+  $query_procesar = mysqli_query($conexion, $sql,);
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {
       $data = mysqli_fetch_assoc($query_procesar);
       echo json_encode($data,JSON_UNESCAPED_UNICODE);
     }else {
-      echo "error";
+      echo "error2";
     }
   }else {
-    echo "error";
+    echo "error1";
   }
   mysqli_close($conexion);
   exit;

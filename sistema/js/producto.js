@@ -133,6 +133,24 @@ $('#dni_cliente').keyup(function(e) {
         $('#nom_cliente').val(data.nombre);
         $('#tel_cliente').val(data.telefono);
         $('#dir_cliente').val(data.direccion);
+        cl=data.idcliente;
+      
+        var action = 'searchClienteCredito';
+        $.ajax({
+          url: 'modal.php',
+          type: "POST",
+          async: true,
+          data: {action:action,cliente:cl},
+          success: function(response) {
+            var info = $.parseJSON(response);
+            $('#divCreditos').html(info.detalle);
+          },
+          error: function(error) {
+      
+          }
+        });
+
+
         // ocultar boton Agregar
         $('.btn_new_cliente').slideUp();
 
@@ -300,7 +318,7 @@ $('#add_product_venta').click(function(e) {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
-          $('#totalmodal').val(formatterDolar.format(info.totalmodal));     
+          $('#totalmodal').val(info.totalmodal);     
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
           $('#txt_descripcion').html('-');
@@ -355,6 +373,7 @@ $('#btn_anular_venta').click(function(e) {
 // facturar venta
 $('#btn_facturar_venta').click(function(e) {
   e.preventDefault();
+
   var rows = $('#detalle_venta tr').length;  
   var action = 'procesarVenta';
   var codcliente = $('#idcliente').val();
@@ -364,10 +383,7 @@ $('#btn_facturar_venta').click(function(e) {
   if(tipoventa==2 && codcliente==1)
   {
     $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
-   // $('#exampleModal').hide();
-   // $('#modal-backdrop').removeClass("show");
-   //$('#btnCerrar').delay(100000).click();;   
-   $('#idcliente').focus();
+    $('#idcliente').focus();
     return;
   }
 
@@ -384,22 +400,20 @@ $('#btn_facturar_venta').click(function(e) {
     total=document.getElementById("totalmodal").value;
     fechaven = $('#fechav').val();
     } 
-    
-    console.log(pago);
-    console.log(total);
-    //pago=pago.substring(1);
-    console.log(pago);
+    numcredito = document.getElementById("numcredito").value; 
+   
+ 
   if (rows > 0) {
     $.ajax({
       url: 'modal.php',
       type: 'POST',
       async: true,
-      data: {action:action,codcliente:codcliente,tipoventa:tipoventa,total:total, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia},
+      data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
       success: function(response) {
-        console.log(response);
+      (response); 
       if (response != 0) {
         var info = JSON.parse(response);        
-        generarPDF(info.codcliente,info.nofactura,pago);
+        generarPDF(info.codcliente,info.nofactura);
         location.reload();
       }else {
         console.log('no hay dato');
@@ -409,6 +423,32 @@ $('#btn_facturar_venta').click(function(e) {
 
       }
     });
+  }else 
+  {
+    if (numcredito> 0)
+    {
+      console.log('entro');
+    $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,codcliente:codcliente,tipoventa:tipoventa,total:total, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
+    success: function(response) {
+      console.log(response);
+    if (response != 0) {
+      var info = JSON.parse(response);        
+      generarPDF(info.codcliente,info.nofactura);
+      location.reload();
+    }else {
+      console.log('no hay dato');
+    }
+    },
+    error: function(error) {
+
+    }
+  });
+  }
+
   }
 });
 
@@ -418,7 +458,7 @@ $('.view_factura').click(function(e) {
 
   var codCliente = $(this).attr('cl');
   var noFactura = $(this).attr('f');
-  generarPDF(codCliente,noFactura,'$0');
+  generarPDF(codCliente,noFactura);
 });
 
 // Cambiar contraseña
@@ -501,8 +541,8 @@ if (passNuevo.length < 5) {
 $('.alertChangePass').html('<p style="color:blue;">Las contraseñas Coinciden.</p>');
 $('.alertChangePass').slideDown();
 }
-function generarPDF(cliente,factura,pagocon) {
-  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura+'&p='+pagocon;
+function generarPDF(cliente,factura) {
+  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
   window.open(url, '_blank');
 }
 function del_product_detalle(correlativo) {
@@ -515,10 +555,12 @@ function del_product_detalle(correlativo) {
     data: {action:action,id_detalle:id_detalle},
     success: function(response) {
         if (response != 0) {
+        
+         
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(formatterDolar.format(info.totalmodal));      
+        $('#totalmodal').val(info.totalmodal);          
         $('#txt_cod_producto').val('');
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -571,7 +613,7 @@ function searchForDetalle(id) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(formatterDolar.format(info.totalmodal));       
+        $('#totalmodal').val(formatter.format(info.totalmodal));          
       }
       viewProcesar();
     },
@@ -839,80 +881,83 @@ $('#txt_cod_pro').keyup(function(e) {
 
 
 
-$('#pagar_conC').keyup(function(e) {
-  e.preventDefault();
-  if (e.which == 13) {  
-    const pagar_conC = document.getElementById("pagar_conC").value;
-    document.getElementById("pagar_conC").value=formatterDolar.format(pagar_conC);
- } 
-});
+// $('#pagar_conC').keyup(function(e) {
+//   e.preventDefault();
+//   if (e.which == 13) {  
+//     const pagar_conC = document.getElementById("pagar_conC").value;
+//     document.getElementById("pagar_conC").value=pagar_conC;
+//  } 
+// });
 
 
 $('#pagar_con').keyup(function(e) {
   e.preventDefault();
   if (e.which == 13) {  
-    console.log("entro");
-    const pagar_con = document.getElementById("pagar_con").value;
-    const total = document.getElementById("totalmodal").value.substring(1);
+
+    pagar_con = document.getElementById("pagar_con").value.replace('$',''); //Quitamos el signo de pesos 
+    total = document.getElementById("totalmodal").value.replace('$','');//Quitamos el signo de pesos 
+
+    total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
+    pagar_con=pagar_con.replace(',','');//Quitamos el la coma para poder hacer la operacion
+
     const cambio =(parseFloat(pagar_con)-parseFloat(total));
     tipopago= document.getElementById("tipopago").value;
     const tipoventa = document.getElementById("tipoven").value;    
+  
     if(tipopago==1)
     {
-          if (cambio > 0 ) {
-          document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);        
-          document.getElementById("cambio").value=formatterDolar.format(cambio);
+     
+          if (cambio >= 0 ) {       
+          document.getElementById("cambio").value=MASK('', (cambio),'$##,###,##0.00',1);
           $('.alertCambio').html('<p style="color : red;"></p>');
-          $('#btn_facturar_venta').slideDown();
-          // $("#procesarVenta").css("display", "block");
-      
+          $('#btn_facturar_venta').slideDown();      
           } else {
-            document.getElementById("pagar_con").value=formatterDolar.format(pagar_con); 
+            document.getElementById("pagar_con").value=pagar_con;
            $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor o igual al total.</p><center>');      
-           $('#btn_facturar_venta').slideUp();  
-          //  $("#procesarVenta").css("display", "none");   
+           $('#btn_facturar_venta').slideUp();    
             document.getElementById('pagar_con').focus();
             
           }
     } 
-    document.getElementById("pagar_con").value=formatterDolar.format(pagar_con);
+  
 }
 });
 
 
-const formatterDolar = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD'
 })
 
 
+
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipoven').on('change', function() {
- if(this.value=='1')
- { 
-   $('#ventacredito').slideUp();
-   $('#ventacontado').slideDown();   
-}
- else{  
-  $('#ventacontado').slideUp();
-  $('#ventacredito').slideDown();
-  const total=$('#totalmodal').val();
-  $('#totalmodalC').val(total);
-   
+  if(this.value=='1')
+  { 
+    $('#ventacredito').slideUp();
+    $('#ventacontado').slideDown();   
  }
-});
+  else{  
+   $('#ventacontado').slideUp();
+   $('#ventacredito').slideDown();
+   const total=$('#totalmodal').val();
+   $('#totalmodalC').val(total);
 
-
-
-
-$(document).ready(function(){
-  $(".show-modal").click(function(){
-      $("#myModal").modal({
-          backdrop: 'static',
-          keyboard: false
-      });
-  });
-});
+   numcredito = document.getElementById("numcredito").value; 
+  
+   if(numcredito==0)
+   { 
+    $('#divSaldo').slideUp();  
+    $('#divcredito').slideUp();  
+   }else{
+    $('#divSaldo').slideDown();  
+    $('#divcredito').slideDown();
+   
+   }
+    
+  }
+ });
 
 
 
@@ -991,8 +1036,21 @@ jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
 });
 
 
+function abrirModalAbono(numcredito,total,saldo)
+{
+  ;
+  $('#tipoven').val(2); 
+  $('#tipoven').change();
+  $('#numcredito').val(numcredito); 
+  $('#totalmodalC').val(formatter.format(total)); 
+  $('#saldo').val(formatter.format(saldo));
+  $('#divSaldo').slideDown();   
+  $('#divFechaVencimiento').slideUp();     
+  $('#exampleModal').modal('show');
+        
+}
 
-//EVALUAMOS QUE TIPO DE VENTA SERÁ
+//EVALUAMOS QUE TIPO DE PAGO SERÁ
 $('#tipopago').on('change', function() {
  
   if(this.value=='1')
@@ -1000,20 +1058,33 @@ $('#tipopago').on('change', function() {
     $('#referencia').slideUp();       
     $('#divCambio').slideDown();
     $('#divCambioC').slideDown();
+    document.getElementById('pagar_con').value="0.00";
+    document.getElementById('pagar_conC').value="0.00";
+    document.getElementById('pagar_con').disabled = false;
+    document.getElementById('pagar_con').disabled = false;
+    
  }  
   else{  
   
-   $('#referencia').slideDown(); 
-   $('#divCambio').slideUp();
-   $('#divCambioC').slideUp();
-    
+  $('#referencia').slideDown(); 
+  $('#divCambio').slideUp();
+  $('#divCambioC').slideUp();
+  var total=$('#totalmodal').val();
+  var totalC=$('#totalmodalC').val();
+   console.log(total);  
+   if$('#tipoven').val()==1
+  {
+    document.getElementById('pagar_con').value=total;
+    document.getElementById('pagar_conC').value=totalC;
+    document.getElementById('pagar_con').disabled = true;
+    document.getElementById('pagar_con').disabled = true;
+    }
   }
  });
 
 
  // ingresar abono
- $('#form_new_abono_creditos').submit(function(e) {
-  console.log('entro aboono');
+ $('#form_new_abono_creditos').submit(function(e) {  
    e.preventDefault();
    $.ajax({
      url: 'modal.php',
@@ -1026,17 +1097,7 @@ $('#tipopago').on('change', function() {
        if (response  != 0) {
        
           location.reload();
-          $('#abrirAbonos').click();
-        //  // Agregar id a input hidden
-        //  $('#idcliente').val(response);
-        //  //bloque campos
-        //  $('#nom_cliente').attr('disabled','disabled');
-        //  $('#tel_cliente').attr('disabled','disabled');
-        //  $('#dir_cliente').attr('disabled','disabled');
-        //  // ocultar boton Agregar
-        //  $('.btn_new_cliente').slideUp();
-        //  //ocultar boton Guardar
-        //  $('#div_registro_cliente').slideDown();
+          $('#abrirAbonos').click();  
        }
      },
      error: function(error) {
@@ -1044,3 +1105,62 @@ $('#tipopago').on('change', function() {
    });
  });
  
+ function MASK(form, n, mask, format) {
+  if (format == "undefined") format = false;
+  if (format || NUM(n)) {
+    dec = 0, point = 0;
+    x = mask.indexOf(".")+1;
+    if (x) { dec = mask.length - x; }
+
+    if (dec) {
+      n = NUM(n, dec)+"";
+      x = n.indexOf(".")+1;
+      if (x) { point = n.length - x; } else { n += "."; }
+    } else {
+      n = NUM(n, 0)+"";
+    } 
+    for (var x = point; x < dec ; x++) {
+      n += "0";
+    }
+    x = n.length, y = mask.length, XMASK = "";
+    while ( x || y ) {
+      if ( x ) {
+        while ( y && "#0.".indexOf(mask.charAt(y-1)) == -1 ) {
+          if ( n.charAt(x-1) != "-")
+            XMASK = mask.charAt(y-1) + XMASK;
+          y--;
+        }
+        XMASK = n.charAt(x-1) + XMASK, x--;
+      } else if ( y && "$0".indexOf(mask.charAt(y-1))+1 ) {
+        XMASK = mask.charAt(y-1) + XMASK;
+      }
+      if ( y ) { y-- }
+    }
+  } else {
+     XMASK="";
+  }
+  if (form) { 
+    form.value = XMASK;
+    if (NUM(n)<0) {
+      form.style.color="#FF0000";
+    } else {
+      //form.style.color="#000000";
+    }
+  }
+  return XMASK;
+}
+function NUM(s, dec) {
+  for (var s = s+"", num = "", x = 0 ; x < s.length ; x++) {
+    c = s.charAt(x);
+    if (".-+/*".indexOf(c)+1 || c != " " && !isNaN(c)) { num+=c; }
+  }
+  if (isNaN(num)) { num = eval(num); }
+  if (num == "")  { num=0; } else { num = parseFloat(num); }
+  if (dec != undefined) {
+    r=.5; if (num<0) r=-r;
+    e=Math.pow(10, (dec>0) ? dec : 0 );
+    return parseInt(num*e+r) / e;
+  } else {
+    return num;
+  }
+}

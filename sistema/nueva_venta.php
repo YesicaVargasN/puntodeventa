@@ -44,6 +44,10 @@
                     </form>
                 </div>
             </div>
+            <div class="row" id="divCreditos" name="divCreditos">
+            </div>
+            <BR>
+            <BR>
             <h4 class="text-center">Datos Venta</h4>
             <div class="row">
                 <div class="col-lg-6">
@@ -143,7 +147,8 @@
                             <select id="tipopago" class="form-control" name="tipopago" required="">
                                 <option value="1">Efectivo</option>
                                 <option value="2">Tarjeta</option>  
-                                <option value="3">Transferencia</option>                              
+                                <option value="3">Transferencia</option>    
+                                <option value="4">Deposito</option>                            
                             </select>
                         </div>
                       </div> 
@@ -152,19 +157,19 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodal" class="font-weight-bold">Total</label>
-                                <input id="totalmodal"  class="form-control" type="text" placeholder="Total"  value=""  disabled="">
+                                <input id="totalmodal"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="pagar_con" class="font-weight-bold">Pagar</label>
-                                    <input id="pagar_con" class="form-control"  type="text" placeholder="0.00"  value="" >
+                                    <label for="pagar_con"  class="font-weight-bold">Pagar</label>
+                                    <input id="pagar_con" name="pagar_con" class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>
                             <div class="col-md-4" id="divCambio" >
                                 <div class="form-group">
                                     <label for="cambio" class="font-weight-bold">Cambio</label>  
-                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
+                                    <input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>
 
@@ -175,27 +180,33 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodalC" class="font-weight-bold">Total</label>
-                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="">
+                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
+                            <div class="col-md-4" id="divSaldo">
+                                <div class="form-group">
+                                    <label for="saldo" class="font-weight-bold">Saldo</label>
+                                    <input id="saldo" class="form-control"  type="text" placeholder="0.00"  value="" disabled onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                </div>
+                            </div>  
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="pagar_conC" class="font-weight-bold">Pago</label>
-                                    <input id="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="">
+                                    <input id="pagar_conC" name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
-                            </div>
-                            <!-- <div class="col-md-4" id="divCambioC">
-                                <div class="form-group">
-                                    <label for="cambioC" class="font-weight-bold">Cambio</label>  
-                                    <input id="cambioC" class="form-control" type="text" placeholder="Cambio" value="0.00" disabled="">
-                                </div>
-                            </div> -->
-                            <div class="col-md-4">
+                            </div>                            
+                            <div class="col-md-4" id="divFechaVencimiento">
                                 <div class="form-group">
                                     <label for="fechav" class="font-weight-bold">Fecha Venciminto </label>
                                     <input id="fechav" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
                                 </div>
-                            </div>                         
+                            </div> 
+                            <div class="col-md-4" id="divcredito">
+                                <div class="form-group">
+                                    <label for="numcredito" class="font-weight-bold">NumCredito</label>  
+                                    <input id="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" disabled="">
+                                </div>
+                            </div>                    
                             
                       </div>
 

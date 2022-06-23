@@ -46,10 +46,10 @@
 					<tbody>
 						<?php
 						require "../conexion.php";
-						$query = mysqli_query($conexion, "SELECT nofactura, factura.fecha,codcliente, nombre,totalfactura, estado ,idtipoventa,totalventa ,factura.fechavencimiento
-                        ,factura.totalventa-(select sum(pago) from abonos where factura.nofactura=abonos.nofactura) as adeudo
-                        FROM factura  inner join  cliente on factura.codcliente=cliente.idcliente where idtipoventa=2
-                        ORDER BY nofactura DESC");
+
+                        $sql="SELECT numcredito, creditos.fecha,totalventa as total,totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo,fechavencimiento,estado,nombre 
+                        FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente" ;
+						$query = mysqli_query($conexion,$sql);
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
 
@@ -57,11 +57,10 @@
 							while ($dato = mysqli_fetch_array($query)) {
 						?>
 								<tr>
-									<td><?php echo $dato['nofactura']; ?></td>
-                                   
+									<td><?php echo $dato['numcredito']; ?></td>                                   
 						            <td><?php echo  date_format( date_create($dato['fecha']), 'd/m/Y  H:i:s'); ?></td>
                                     <td><?php echo $dato['nombre']; ?></td>
-									<td><?php echo $dato['totalventa']; ?></td>
+									<td><?php echo $dato['total']; ?></td>
                                     <td><?php echo $dato['adeudo']; ?></td>
                                     <td><?php echo date_format( date_create($dato['fechavencimiento']), 'd/m/Y');?></td>
                                     <td>
@@ -89,49 +88,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                    <div class="row">
-
-                                    <div class="col-lg-12"> 
-                                    <h4 class="text-center">Ingresar abono</h4>           
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form method="post" name="form_new_abono_creditos" id="form_new_abono_creditos">
-                                                <input type="hidden" name="action" value="addAbono">
-                                                <input type="hidden" name="total" value="<?php echo $dato['totalventa']; ?>">
-                                                <input type="hidden" name="adeudo" value="<?php echo $dato['adeudo']; ?>">
-                                                <input type="hidden" id="nofactura" value="<?php echo $dato['nofactura']; ?>" name="nofactura" required>
-                                                <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                            <label for="tipopago">Tipo de Pago</label>
-                                                            <select id="tipopago" class="form-control" name="tipopago" required="">
-                                                                <option value="1">Efectivo</option>
-                                                                <option value="2">Tarjeta</option>  
-                                                                <option value="3">Transferencia</option>                              
-                                                            </select>
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label for="pagoabono" class="font-weight-bold">Pago</label>
-                                                            <input id="pagoabono" name="pagoabono" class="form-control"  type="text" placeholder="0.00" value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                    <div class="form-group" id='referencia' disabled >
-                                                        <label for="numreferenciaabono" class="font-weight-bold">Referencia</label>  
-                                                        <input id="numreferenciaabono" name="numreferenciaabono" class="form-control" type="text" placeholder="Referencia" value="" >
-                                                    </div>
-                                                    </div>
-                                                    <div id="div_registro_cliente" >
-                                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                                        <!-- <a href="#" class="btn btn-primary" id="btn_guardarcorte">Guardar</a> -->
-                                                        <div class="alert alertAddProduct" style='color:#fff'></div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <div class="row">                                  
                                         <div class="col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-bordered" id="table">

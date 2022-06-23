@@ -156,4 +156,21 @@
 		}
 		    			
 	}
+
+	function nabonos($numcredito){
+		include "../../conexion.php";
+		$sql = "select count(*) as numabono from factura where numcredito=".$numcredito;					
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+		{
+			// echo $sql;
+			$rc= $conexion -> query($sql);
+			if($f = $rc -> fetch_array())
+				{		
+							
+					return $f['numabono'];
+				}
+			 else {return FALSE;}
+		}
+	}
  ?>
