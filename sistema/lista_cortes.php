@@ -175,7 +175,7 @@ $('#abrircorte').on('show.bs.modal', function (event) {
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM cortecaja");
+						$query = mysqli_query($conexion, "SELECT * FROM cortecaja ORDER BY Id DESC");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -190,7 +190,7 @@ $('#abrircorte').on('show.bs.modal', function (event) {
                                     <td><?php if($data['Estado']==0){ echo 'Abierta'; } else {echo 'Cerrada'; } ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
-										<form action="eliminar_gastos.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
+										<form action="eliminar_cortes.php?id=<?php echo $data['Id']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>
