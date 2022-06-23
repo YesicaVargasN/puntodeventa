@@ -3507,3 +3507,128 @@ pre code {
   /*color: color-yiq(#868e96);*/
   background-color: #868e96;
 }
+
+#msgsugerencias { 
+  background-color: #E8FFD9; 
+margin-left: 4px; 
+margin-right: 4px;
+border-radius: 5px; 
+border-color: #A2FF64;
+border-width: 2px;
+font-size: 10pt 
+}
+#msgError { 
+background-color: #F78181; 
+margin-left: 4px; 
+margin-right: 4px;
+border-radius: 5px; 
+border-color: #A2FF64;
+border-width: 2px;
+font-size: 10pt 
+}
+
+#modal_oscuro {
+  visibility: visible;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  z-index: 999;
+  transition: all 1s;
+  width: 100%
+}
+#modal_error {
+  visibility: visible;
+  opacity: 1;
+  background-color: #7D0000;
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  z-index: 809;
+  transition: all 1s;
+  width: 100%
+}
+.centrar_mensaje_padre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%
+}
+.centrar_mensaje_hijo {
+  width: 80%
+}
+#modal_ventana {
+  width: 50%;
+  left: 30%;
+  top: 30%;
+  background-color: white;
+  z-index: 5000;
+}
+#mensaje {
+  color: black;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: white;
+  width: 50%;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  right: 20%;
+  z-index: 2010;
+  opacity: 1;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 100px;
+  transition: all 5s cubic-bezier(.46, .03, .52, .96)
+}
+
+
+#msg_error {
+  color: red;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid red;
+  background-color: white;
+  width: 50%;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  right: 20%;
+  z-index: 2010;
+  opacity: 1;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 100px;
+  transition: all 5s cubic-bezier(.46, .03, .52, .96)
+}
+#msg_error p {
+  font-size: 12pt
+}
+#msg_error a {
+  text-decoration: none
+}
+#msg_error img {
+  width: 60%;
+  height: 50%
+}
+.msg_padre {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: yellow;
+  display: table
+}
+.msg_hijo {
+  display: table-cell;
+  vertical-align: middle
+}

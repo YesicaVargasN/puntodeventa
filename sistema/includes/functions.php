@@ -173,4 +173,155 @@
 			 else {return FALSE;}
 		}
 	}
- ?>
+ 
+function sugerencia($msg){
+			$msg = '
+			<div id="sugerencias" style="margin-top:10px;">
+				<table border="0"><tr>
+					<td><img src="./icon/sugerencia.png" class="icono"></td>
+					<td class="normal" style="font-size:8pt;">
+						'.$msg.'
+					</td></tr></table>
+				</div>
+				';
+				return $msg;
+}
+function error($msg){
+	$msg = '
+	<div id="sugerencias" style="margin-top:10px;">
+		<table border="0"><tr>
+			<td><img src="./icon/sugerencia.png" class="icono"></td>
+			<td class="normal" style="font-size:8pt;">
+				'.$msg.'
+			</td></tr></table>
+		</div>
+		';
+		return $msg;
+}
+
+
+
+function mensajeicono($mensaje, $link,$tipo,$tipob){
+
+
+if ($link==""){
+	$link = "index.php";
+}
+$tipo = substr($mensaje, 0,5);    // devuelve "ef"
+// if ($tipo=='ERROR'){
+// 	Problema_create("PLATAFORMA", "fn mensaje: ".$mensaje."=>".$link, $IdEmpleado);
+// }
+	if ($tipo=='ERROR')
+	{	
+		echo '<div id="modal_error"></div>';
+	}
+	else
+	{
+		echo '<div id="modal_oscuro"></div>';
+	}
+
+	if ($tipo=='ERROR'){echo '<div id="msg_error">';}
+	else
+	{
+		echo '<div id="mensaje">';}
+	
+		
+
+		switch ($tipob ) {
+			case "normal":		
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-primary" href="'.$link.'">Aceptar</a>  ';
+				  break;
+			case "secundario":
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-secondary" href="'.$link.'">Aceptar</a>  ';
+				break;
+			 case "exito":
+				echo '<div class="swal2-icon swal2-success">
+				<div class="swal2-success-circular-line-left"></div>
+				<span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>
+				<div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div>
+				<div class="swal2-success-circular-line-right"></div>
+			   </div>';	
+			   echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-success" href="'.$link.'">Aceptar</a>  ';
+				break;
+			case "error":
+				echo'<div class="swal2-icon swal2-error">
+				<div class="swal2-icon-content" style="display:block;">X</div>
+				</div>';
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-danger" href="'.$link.'">Aceptar</a>  ';
+				break;						
+			case "advertencia":
+				echo '<div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;"><div class="swal2-icon-content">!</div></div>';
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-warning" href="'.$link.'">Aceptar</a>  ';
+				break;
+			case "info":
+				echo '<div class="swal2-icon swal2-info"><div class="swal2-icon-content" style="display:block;">i</div></div>';
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-info" href="'.$link.'">Aceptar</a>  ';				
+				break;
+			case "light":
+				echo '<p>'.$mensaje.'</p>';
+				echo '<a class="btn btn-light" href="'.$link.'">Aceptar</a>  ';
+				break;
+				case "dark":
+				echo '<p>'.$mensaje.'</p>';
+			echo '<a class="btn btn-dark" href="'.$link.'">Aceptar</a>  ';
+				break;
+		}
+		
+		echo '</div>';
+}
+
+
+function mensaje( $titulo,$mensaje,$tipo,$link)
+{ 
+	
+if ($link==""){
+	$link = "index.php";
+}
+echo '<div class="modal" tabindex="-1" role="dialog"  style="padding-right: 17px; display: block;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">'.$titulo.'</h5>
+      
+      </div>
+      <div class="modal-body">';
+	    echo '<p>'.$mensaje.'</p>';
+        echo '</div>
+    	<div class="modal-footer">';
+        		switch ($tipo ) {
+			case "normal":
+				echo '<a class="btn btn-primary" href="'.$link.'">Aceptar</a>  ';
+				  break;
+			case "secundario":
+				echo '<a class="btn btn-secondary" href="'.$link.'">Aceptar</a>  ';
+				break;
+			 case "exito":
+				echo '<a class="btn btn-success" href="'.$link.'">Aceptar</a>  ';
+				break;
+			case "advertancia":
+				echo '<a class="btn btn-warning" href="'.$link.'">Aceptar</a>  ';
+				break;
+			case "info":
+				echo '<a class="btn btn-info" href="'.$link.'">Aceptar</a>  ';
+				break;
+			case "light":
+				echo '<a class="btn btn-light" href="'.$link.'">Aceptar</a>  ';
+				break;
+				case "dark":
+			echo '<a class="btn btn-dark" href="'.$link.'">Aceptar</a>  ';
+				break;
+		}
+      echo '</div>
+    </div>
+  </div>
+</div>';
+}
+
+
+?>
