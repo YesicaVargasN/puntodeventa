@@ -623,4 +623,81 @@ if ($_POST['action'] == 'addAbono') {
 }
 
 
+
+if ($_POST['action'] == 'guardarAjuste') {  
+  $cod_pro = $_POST['cod_pro'];
+  $name = $_POST['name'];
+  $cantidad = $_POST['cantidad'];
+  $agregar = $_POST['agregar'];
+
+  //BUSCAR SI YA EXISTE EN AJUSTE DEL DIA DE HOY
+  $id = existeEnAjusteelProducto($cod_pro);
+
+  if($id == 0){
+    //SI NO EXISTE REGISTRO DE HOY, ES NUEVO
+     //SI ES MENOR A CERO SE VA A QUITAR DEL STOCK
+    if($agregar < 0){
+      $resta  = $cantidad - ($agregar);
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas) VALUES ('$cod_pro','$name', now(), '$resta')";
+      echo $sql;
+        $query = mysqli_query($conexion, $sql);
+        if ($query) {
+          echo 'ok';
+        }else {
+          $data = 0;
+        }
+        
+        
+    }else{
+      $suma  = $cantidad + ($agregar);
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas ) VALUES ('$cod_pro','$name',now(), '$suma')";
+      echo $sql;
+  
+      $query = mysqli_query($conexion, $sql);
+      if ($query) {
+        echo 'ok';
+      }else {
+        $data = 0;
+      }
+    }
+
+  }else{
+    //SI TENEMOS REGISTRO DE HOY, SOLO ACTUALIZAMOS LOS NUMEROS
+    //SI ES MENOR A CERO SE VA A QUITAR DEL STOCK
+    $entradasAnt = entradasQueTenia($id);
+    $salidasAnt = salidasQueTenia($id);
+    if($agregar < 0){
+      $entradas = $entradasAnt + ($agregar);
+      $salidas  = $salidasAnt + ($agregar);
+      $sql="UPDATE ajuste_inventario SET entradas = '$entradas', salidas = '$salidas' WHERE id = '$id'";
+      echo $sql;
+      $query = mysqli_query($conexion, $sql);
+      if ($query) {
+        echo 'ok';
+      }else {
+        $data = 0;
+      }
+    }else{
+      $entradas = $entradasAnt - ($agregar);
+      $salidas  = $salidasAnt + ($agregar);
+      $sql="UPDATE ajuste_inventario SET entradas ='$entradas', salidas = '$salidas' WHERE id = '$id'";
+      echo $sql;
+      $query = mysqli_query($conexion, $sql);
+      if ($query) {
+        echo 'ok';
+      }else {
+        $data = 0;
+      }
+    }
+
+  }
+
+ 
+ 
+ 
+  mysqli_close($conexion);
+
+  exit;
+}
+
  ?>

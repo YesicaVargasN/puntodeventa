@@ -1164,3 +1164,113 @@ function NUM(s, dec) {
     return num;
   }
 }
+
+
+// buscar producto para ajuste de inventario
+$('#cod_pro').keyup(function(e) {
+  e.preventDefault();
+  var productos = $(this).val();
+
+ 
+  if (productos == "") {
+    $('#txt_descripcion').html('-');
+    $('#txt_existencia').html('-');
+    $('#txt_cant_producto').val('0');
+    $('#txt_precio').html('0.00');
+    $('#txt_precio_total').html('0.00');
+
+    //Bloquear Cantidad
+    $('#txt_cant_producto').attr('disabled', 'disabled');
+    // Ocultar Boto Agregar
+    $('#add_product_venta').slideUp();
+  }
+
+  var action = 'infoProducto';
+  if (productos != '') {
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,producto:productos},
+    success: function(response){
+      if(response == 0) {
+        $('#txt_descripcion').html('-');
+        $('#txt_existencia').html('-');
+        $('#txt_cant_producto').val('0');
+        $('#txt_precio').html('0.00');
+        $('#txt_precio_total').html('0.00');
+
+        //Bloquear Cantidad
+        $('#txt_cant_producto').attr('disabled','disabled');
+        // Ocultar Boto Agregar
+        $('#add_product_venta').slideUp();
+
+
+      }else{
+        var info = JSON.parse(response);
+        if (info.existencia < 1) {
+          $('#name').val(info.descripcion);
+          $('#cantidad').val(info.existencia);
+        
+          //Bloquear Cantidad
+          $('#txt_cant_producto').attr('disabled', 'disabled');
+          // Ocultar Boto Agregar
+          $('#add_product_venta').slideUp();
+        }else{
+          $('#name').val(info.descripcion);
+          $('#cantidad').val(info.existencia);
+          // Activar Cantidad
+          $('#txt_cant_producto').removeAttr('disabled');
+          // Mostar boton Agregar
+          $('#add_product_venta').slideDown();
+        }
+
+      }
+    },
+    error: function(error) {
+    }
+  });
+
+  //Bloquear Cantidad
+  $('#txt_cant_producto').attr('disabled','disabled');
+  // Ocultar Boto Agregar
+  $('#add_product_venta').slideUp();
+
+  ////
+  }
+
+ 
+});
+
+// CERRAr CORTE DE CAJA
+$('#btn_guardarajuste').click(function(e) {
+  e.preventDefault();
+  var cod_pro = $('#cod_pro').val();
+  var name = $('#name').val();
+  var cantidad = $('#cantidad').val();
+  var agregar = $('#agregar').val();
+
+  var action = 'guardarAjuste';
+  $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,cod_pro:cod_pro, name:name,cantidad:cantidad, agregar:agregar},
+    success: function(response) {
+      if(response.includes('ok')==true){
+        console.log(response);
+        //window.location='ajuste_inventario.php';
+
+      }else{
+        $('.alertAddProduct').html(response);
+        console.log(response);
+      }
+      
+     
+    },
+    error: function(error) {
+
+    }
+  });
+  
+});

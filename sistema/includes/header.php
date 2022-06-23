@@ -166,6 +166,7 @@ if ($result_data > 0) {
 							<a class="collapse-item" href="lista_codigos.php">Crear código de barra</a>
 							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
 							<a class="collapse-item" href="lista_productos.php">Productos</a>
+							<a class="collapse-item" href="ajuste_inventario.php">Ajuste Inventario</a>
 							<a class="collapse-item" href="lista_medida.php">Unidades de Medidas</a>
 							<a class="collapse-item" href="lista_cat.php">Categorias/Departamentos</a>
 							<a class="collapse-item" href="lista_sec.php">Secciones</a>
