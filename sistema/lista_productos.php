@@ -46,13 +46,18 @@ $.ajax({
 				<?php
 				if ($resultado_dptos > 0) {
 					while ($dptos = mysqli_fetch_array($query_dptos)) {
-					// code...
+						if($dptos['iddepartamento'] == 0){
+				?>
+					<option value="<?php echo $dptos['iddepartamento']; ?>">TODOS</option>
+				<?php
+						}else{
 				?>
 					<option value="<?php echo $dptos['iddepartamento']; ?>"><?php echo $dptos['departamento']; ?></option>
 				<?php
+						}
 					}
 				}
-				?>
+					?>
 				</select>
 			</div>
 		</div>
@@ -105,7 +110,7 @@ $.ajax({
 									<td><?php echo $data['existencia']; ?></td>
 										<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
-										<a href="agregar_producto.php?id=<?php echo $data['codproducto']; ?>" class="btn btn-primary"><i class='fas fa-audio-description'></i></a>
+										 <!-- <a href="agregar_producto.php?id=<?php //echo $data['codproducto']; ?>" class="btn btn-primary"><i class='fas fa-audio-description'></i></a>-->
 
 										<a href="editar_producto.php?id=<?php echo $data['codproducto']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
 

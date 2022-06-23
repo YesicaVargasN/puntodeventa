@@ -157,6 +157,55 @@
 		    			
 	}
 
+	function existeEnAjusteelProducto($codproducto){
+		require("..\conexion.php");
+		$sql = "SELECT id FROM ajuste_inventario WHERE codproducto='".$codproducto."' and fecha  = CURRENT_DATE()";	
+		echo $sql;
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['id'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
+	function entradasQueTenia($id){
+		require("..\conexion.php");
+		$sql = "SELECT entradas FROM ajuste_inventario WHERE id='".$id."' ";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['entradas'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
+	function salidasQueTenia($id){
+		require("..\conexion.php");
+		$sql = "SELECT salidas FROM ajuste_inventario WHERE id='".$id."' ";	
+		$r = $conexion -> query($sql);
+		if ($r -> num_rows >0) {
+			while($f = $r -> fetch_array())
+			{
+				return $f['salidas'];
+			}
+		     
+		}else{
+			return 0;
+		}
+		    			
+	}
+
 	function nabonos($numcredito){
 		include "../../conexion.php";
 		$sql = "select count(*) as numabono from factura where numcredito=".$numcredito;					

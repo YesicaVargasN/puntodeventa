@@ -55,20 +55,30 @@ if (!empty($_POST)) {
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Abrir corte de caja</h5>
+            <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Entradas/Salidas</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">X</span>
             </button>
         </div>
         <div class="modal-body">
-        
-            <label for="montoinicial" style="color: #fff;">Monto Inicial</label>
-            <input type="text" placeholder="Ingrese el monto inicial" id="montoinicial" name="montoinicial" class="form-control">
-            
+            <label for="cod_pro" style="color: #fff;">Buscar producto</label>
+            <input type="text" placeholder="Ingrese el codigo del producto a buscar" name="cod_pro" id="cod_pro" class="form-control">           
+        </div>
+        <div class="modal-body">
+            <label for="name" style="color: #fff;">Nombre</label>
+            <input type="text" placeholder="Nombre del producto" name="name" id="name" class="form-control" readonly>           
+        </div>
+        <div class="modal-body">
+            <label for="cantidad" style="color: #fff;">Cantidad</label>
+            <input type="text" placeholder="Cantidad en stock del producto" name="cantidad" id="cantidad" class="form-control" readonly>           
+        </div>
+        <div class="modal-body">
+            <label for="agregar" style="color: #fff;">Agregar + ó Restar - *</label>
+            <input id="agregar" class="form-control" type="number" name="agregar" placeholder="Agregar Existencia" required="">           
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <a href="#" class="btn btn-primary" id="btn_guardarcorte">Guardar</a>
+            <a href="#" class="btn btn-primary" id="btn_guardarajuste">Guardar</a>
             <div class="alert alertAddProduct" style='color:#fff'></div>
         </div>
         </div>

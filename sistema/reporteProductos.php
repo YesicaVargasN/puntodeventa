@@ -16,18 +16,24 @@ if(isset($_POST['sec'])){
     $seccion = "";
 }
 //echo $cat.' '.$seccion;
-if($cat <> '' and $seccion <> ''){
+if($cat == 0){
+    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
+    from producto p
+    left join cat_departamento cd on cd.iddepartamento = p.categoria
+    left join cat_secciones cs on cs.idseccion = p.seccion
+    ';
+}else if($cat <> '' and $seccion <> ''){
 
     $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
     from producto p
-    inner join cat_departamento cd on cd.iddepartamento = p.categoria
-    inner join cat_secciones cs on cs.idseccion = p.seccion
+    left join cat_departamento cd on cd.iddepartamento = p.categoria
+    left join cat_secciones cs on cs.idseccion = p.seccion
     WHERE p.categoria = '.$cat.' and p.seccion = '.$seccion.'';
 }else if($cat <> '' and $seccion == 0){
     $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
     from producto p
-    inner join cat_departamento cd on cd.iddepartamento = p.categoria
-    inner join cat_secciones cs on cs.idseccion = p.seccion
+    left join cat_departamento cd on cd.iddepartamento = p.categoria
+    left join cat_secciones cs on cs.idseccion = p.seccion
     WHERE p.categoria = '.$cat.'';
 }
 echo $sql;
@@ -57,7 +63,9 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['preciocosto'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
-        $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
+       
+            $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
+        
         $tabla = $tabla.'<td>'.$f['nomseccion'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
@@ -136,6 +144,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document}
- ob_end_clean();
+ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
 ?>
