@@ -206,6 +206,19 @@
 		    			
 	}
 
+	function actualizarExistenciasenProducto($id, $cantidadactual){
+		require("..\conexion.php");
+		$sql = "UPDATE producto SET existencia = ".$cantidadactual." WHERE codigo='".$id."' ";
+		echo $sql;	
+		$query = mysqli_query($conexion, $sql);
+		if ($query) {
+			return TRUE;
+		}else {
+			return FALSE;
+		}
+		    			
+	}
+
 	function nabonos($numcredito){
 		include "../../conexion.php";
 		$sql = "select count(*) as numabono from factura where numcredito=".$numcredito;					
