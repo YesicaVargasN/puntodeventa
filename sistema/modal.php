@@ -673,7 +673,7 @@ if ($_POST['action'] == 'guardarAjuste') {
    
     if($agregar < 0){
       echo 'entro a actualizar restando salidas';
-      $entradas = $entradasAnt + ($agregar);
+      $entradas = $entradasAnt;
       $salidas  = $salidasAnt + ($agregar);
       $existencia  = $cantidad - abs($agregar);
       $sql="UPDATE ajuste_inventario SET entradas = '$entradas', salidas = '$salidas' WHERE id = '$id'";
@@ -687,9 +687,7 @@ if ($_POST['action'] == 'guardarAjuste') {
       }
     }else{
       echo 'entro a actualizar sumando entradas';
-        $entradas = $entradasAnt + ($agregar);
-      
-      
+      $entradas = $entradasAnt + ($agregar);
       $salidas  = $salidasAnt + ($agregar);
       $existencia  = $cantidad + ($agregar);
       $sql="UPDATE ajuste_inventario SET entradas ='$entradas', salidas = '$salidas' WHERE id = '$id'";

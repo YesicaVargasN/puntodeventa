@@ -3,50 +3,7 @@ include_once "includes/header.php";
 include "../conexion.php";
 // Validar producto
 
-if (empty($_REQUEST['id'])) {
-   // header("Location: lista_productos.php");
-} else {
-    $id_producto = $_REQUEST['id'];
-    if (!is_numeric($id_producto)) {
-        header("Location: lista_productos.php");
-    }
-    $query_producto = mysqli_query($conexion, "SELECT codproducto, descripcion, proveedor, precio, existencia FROM producto WHERE codproducto = $id_producto");
-    $result_producto = mysqli_num_rows($query_producto);
-
-    if ($result_producto > 0) {
-        $data_producto = mysqli_fetch_assoc($query_producto);
-    } else {
-        header("Location: lista_productos.php");
-    }
-}
-// Agregar Productos a entrada
-if (!empty($_POST)) {
-    $alert = "";
-    if (!empty($_POST['cantidad']) || !empty($_POST['precio']) || !empty($_POST['producto_id'])) {
-        $precio = $_POST['precio'];
-        $cantidad = $_POST['cantidad'];
-        $producto_id = $_GET['id'];
-        $usuario_id = $_SESSION['idUser'];
-        $query_insert = mysqli_query($conexion, "INSERT INTO entradas(codproducto,cantidad,precio,usuario_id) VALUES ($producto_id, $cantidad, $precio, $usuario_id)");
-        if ($query_insert) {
-            // ejecutar procedimiento almacenado
-            $query_upd = mysqli_query($conexion, "CALL actualizar_precio_producto($cantidad,$precio,$producto_id)");
-            $result_pro = mysqli_num_rows($query_upd);
-            if ($result_pro > 0) {
-                $alert = '<div class="alert alert-success" role="alert">
-                        Producto actualizado con exito
-                    </div>';
-            }
-        } else {
-            echo "error";
-        }
-        mysqli_close($conexion);
-    } else {
-        echo "error";
-    }
-}
 ?>
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
 

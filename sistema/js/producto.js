@@ -411,7 +411,9 @@ $('#btn_facturar_venta').click(function(e) {
       data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
       success: function(response) {
       (response); 
+      console.log(response);
       if (response != 0) {
+        
         var info = JSON.parse(response);        
         generarPDF(info.codcliente,info.nofactura);
         location.reload();

@@ -9,10 +9,9 @@ $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
 $suma = 0;
 
-$sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
-from gastos g
-left join proveedor p on p.codproveedor = g.proveedor
-WHERE g.fecha BETWEEN  "'.$desde.'" and "'.$hasta.'"';
+$sql = 'select *
+from cortecaja c
+WHERE c.FechaApertura BETWEEN  "'.$desde.'" and "'.$hasta.'"';
 //echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
@@ -21,12 +20,13 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
-    $tabla = $tabla.'<th ><b>PROVEEDOR</b></th>';
-    $tabla = $tabla."<th><b>FECHA</b></th>";
-    $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>IVA</b></th>';
-    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+    $tabla = $tabla.'<th ><b>MONTO INICIAL</b></th>';
+    $tabla = $tabla."<th><b>MONTO FINAL</b></th>";
+    $tabla = $tabla.'<th ><b>FECHA APERTURA</b></th>';
+    $tabla = $tabla.'<th ><b>FECHA CIERRE</b></th>';
+    $tabla = $tabla.'<th ><b>TOTAL VENTAS</b></th>';
+    $tabla = $tabla.'<th ><b>MONTO TOTAL</b></th>';
+    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -36,13 +36,19 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<tr bgcolor="#FCD2CB">'; 
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
-        $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $suma = $suma += $f['total'];
+        $tabla = $tabla.'<td>$'.number_format($f['MontoInicial'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['MontoFinal'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['FechaApertura'].'</td>';
+        $tabla = $tabla.'<td>'.$f['FechaCierre'].'</td>';
+        $tabla = $tabla.'<td>'.$f['TotalVentas'].'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['MontoTotal'], 2, '.', ',').'</td>';
+        if($f['Estado']==1){
+            $tabla = $tabla.'<td>Terminado</td>';
+        }else{
+            $tabla = $tabla.'<td>En proceso</td>';
+        }
+        
+        $suma = $suma += $f['MontoTotal'];
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -70,7 +76,7 @@ $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('PUNTO DE VENTA');
 $pdf->SetKeywords('Punto de Venta');
 //$pdf->SetHeaderData('pdf_logo.jpg', '40','', '');
-$pdf->SetHeaderData('aguira.jpg', '40', 'Listado de Gastos', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('aguira.jpg', '40', 'Listado de Cortes de Caja', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 
