@@ -60,6 +60,32 @@ if(isset($_FILES['archivo']['name'])){
 		<h1 class="h3 mb-0 text-gray-800">Facturas</h1>
 		<a href="registro_factura.php" class="btn btn-primary">Nuevo</a>
 	</div>
+
+	<!-- Elementos para crear el reporte -->
+	<form action="reporteGastos.php" method="post">
+	<div class="row">
+	
+		<div class="col-md-4">
+			<label for="producto">Desde</label>
+            <input type="date" name="desde" id="desde" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<label for="producto">Hasta</label>
+            <input type="date" name="hasta" id="hasta" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+		</div>
+	
+	</div>
+	</form>	
+
+
+
+
+
+
+
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">

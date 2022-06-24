@@ -640,11 +640,13 @@ if ($_POST['action'] == 'guardarAjuste') {
     //SI NO EXISTE REGISTRO DE HOY, ES NUEVO
      //SI ES MENOR A CERO SE VA A QUITAR DEL STOCK
     if($agregar < 0){
-      $resta  = $cantidad - ($agregar);
-      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas) VALUES ('$cod_pro','$name', now(), '$resta')";
+      echo 'entro a insert restando salidas';
+      $existencia  = $cantidad - abs($agregar);
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas) VALUES ('$cod_pro','$name', now(), '$agregar')";
       echo $sql;
         $query = mysqli_query($conexion, $sql);
         if ($query) {
+          echo actualizarExistenciasenProducto($cod_pro, $existencia);
           echo 'ok';
         }else {
           $data = 0;
@@ -652,12 +654,14 @@ if ($_POST['action'] == 'guardarAjuste') {
         
         
     }else{
-      $suma  = $cantidad + ($agregar);
-      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas ) VALUES ('$cod_pro','$name',now(), '$suma')";
+      echo 'entro a insert sumando entradas';
+      $existencia  = $cantidad + ($agregar);
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas ) VALUES ('$cod_pro','$name',now(), '$agregar')";
       echo $sql;
   
       $query = mysqli_query($conexion, $sql);
       if ($query) {
+        echo actualizarExistenciasenProducto($cod_pro, $existencia);
         echo 'ok';
       }else {
         $data = 0;
@@ -669,24 +673,31 @@ if ($_POST['action'] == 'guardarAjuste') {
     //SI ES MENOR A CERO SE VA A QUITAR DEL STOCK
     $entradasAnt = entradasQueTenia($id);
     $salidasAnt = salidasQueTenia($id);
+   
     if($agregar < 0){
-      $entradas = $entradasAnt + ($agregar);
+      echo 'entro a actualizar restando salidas';
+      $entradas = $entradasAnt;
       $salidas  = $salidasAnt + ($agregar);
+      $existencia  = $cantidad - abs($agregar);
       $sql="UPDATE ajuste_inventario SET entradas = '$entradas', salidas = '$salidas' WHERE id = '$id'";
       echo $sql;
       $query = mysqli_query($conexion, $sql);
       if ($query) {
+        echo actualizarExistenciasenProducto($cod_pro, $existencia);
         echo 'ok';
       }else {
         $data = 0;
       }
     }else{
-      $entradas = $entradasAnt - ($agregar);
+      echo 'entro a actualizar sumando entradas';
+      $entradas = $entradasAnt + ($agregar);
       $salidas  = $salidasAnt + ($agregar);
+      $existencia  = $cantidad + ($agregar);
       $sql="UPDATE ajuste_inventario SET entradas ='$entradas', salidas = '$salidas' WHERE id = '$id'";
       echo $sql;
       $query = mysqli_query($conexion, $sql);
       if ($query) {
+        echo actualizarExistenciasenProducto($cod_pro, $existencia);
         echo 'ok';
       }else {
         $data = 0;

@@ -66,6 +66,27 @@ $('#abrircorte').on('show.bs.modal', function (event) {
   </div>
 </div>
 
+	<!-- Elementos para crear el reporte -->
+	<form action="reporteCortes.php" method="post">
+	<div class="row">
+	
+		<div class="col-md-4">
+			<label for="producto" style='color:#000;'>Desde</label>
+            <input type="date" name="desde" id="desde" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<label for="producto" style='color:#000;'>Hasta</label>
+            <input type="date" name="hasta" id="hasta" class="form-control">
+		</div>
+		<div class="col-md-4">
+			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+		</div>
+	
+	</div>
+	
+	</form>	
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="cerrarcorte" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

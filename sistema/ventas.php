@@ -14,18 +14,49 @@
 	<div class="row">
 	
 		<div class="col-md-4">
-			<label for="producto">Desde</label>
+			<label for="producto" style='color:#000;'>Desde</label>
             <input type="date" name="desde" id="desde" class="form-control">
 		</div>
 		<div class="col-md-4">
-			<label for="producto">Hasta</label>
+			<label for="producto" style='color:#000;'>Hasta</label>
             <input type="date" name="hasta" id="hasta" class="form-control">
 		</div>
-		<div class="col-md-4">
+		<!-- <div class="col-md-4">
 			<input type="submit" value="Generar Reporte" class="btn btn-primary">
-		</div>
+		</div>-->
 	
 	</div>
+	<div class="row">
+		<div class="col" style='width: 500px;'>
+			<div class="form-group">
+			<label style='color:#000'>Tipo de venta</label>
+				<select id="tipoventa" name="tipoventa"  class="form-control">
+					<option value="0">SIN ESPECIFICAR</option>
+					<option value="1">CONTADO</option>
+					<option value="2">CRÉDITO</option>
+				</select>
+			</div>
+		</div>
+		<div class="col" style='width: 500px;'>
+			<div class="form-group">
+				<label style='color:#000'>Tipo de pago</label>
+				<select id="tipopago" name="tipopago"  class="form-control">
+					<option value="0">SIN ESPECIFICAR</option>
+					<option value="1">EFECTIVO</option>
+					<option value="2">TARJETA</option>
+					<option value="3">TRANSFERENCIA</option>
+					<option value="4">DEPOSITO</option>
+				</select>
+			</div>
+		</div>
+		<div class="col" style='align:right;'>
+			<div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+				<input type="submit" value="Generar Reporte" class="btn btn-primary">
+			</div>
+		</div>
+    </div>
+
 	</form>	
 
 
