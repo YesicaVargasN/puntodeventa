@@ -1,4 +1,9 @@
 <?php include_once "includes/header.php"; ?>
+<?php 
+if(HayCajaAbierta()==0)
+{
+    mensajeicono("¡No hay caja abierta!. Por favor abra una caja en el apartado de corte de caja.","","","error");
+} ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -230,5 +235,5 @@
       </div>
     </div>
   </div>
- // mensajeicono("Venta Realizada correctamente","","","info");
+  <!-- mensajeicono("Venta Realizada correctamente","","","info"); -->
 <?php include_once "includes/footer.php"; ?>

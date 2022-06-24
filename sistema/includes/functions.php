@@ -278,11 +278,11 @@ $tipo = substr($mensaje, 0,5);    // devuelve "ef"
 
 		switch ($tipob ) {
 			case "normal":		
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-primary" href="'.$link.'">Aceptar</a>  ';
 				  break;
 			case "secundario":
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-secondary" href="'.$link.'">Aceptar</a>  ';
 				break;
 			 case "exito":
@@ -292,32 +292,32 @@ $tipo = substr($mensaje, 0,5);    // devuelve "ef"
 				<div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div>
 				<div class="swal2-success-circular-line-right"></div>
 			   </div>';	
-			   echo '<p>'.$mensaje.'</p>';
+			    echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-success" href="'.$link.'">Aceptar</a>  ';
 				break;
-			case "error":
-				echo'<div class="swal2-icon swal2-error">
-				<div class="swal2-icon-content" style="display:block;">X</div>
+			case "error":				
+				echo'<div class="swal2-icon swal2-error">				
+				<div class="swal2-icon-content" style="display:block;">X</div>						
 				</div>';
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-danger" href="'.$link.'">Aceptar</a>  ';
 				break;						
 			case "advertencia":
 				echo '<div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;"><div class="swal2-icon-content">!</div></div>';
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-warning" href="'.$link.'">Aceptar</a>  ';
 				break;
 			case "info":
 				echo '<div class="swal2-icon swal2-info"><div class="swal2-icon-content" style="display:block;">i</div></div>';
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';
 				echo '<a class="btn btn-info" href="'.$link.'">Aceptar</a>  ';				
 				break;
 			case "light":
-				echo '<p>'.$mensaje.'</p>';
+				echo '<p class="msmgmodal">'.$mensaje.'</p>';;
 				echo '<a class="btn btn-light" href="'.$link.'">Aceptar</a>  ';
 				break;
 				case "dark":
-				echo '<p>'.$mensaje.'</p>';
+					echo '<p class="msmgmodal">'.$mensaje.'</p>';;
 			echo '<a class="btn btn-dark" href="'.$link.'">Aceptar</a>  ';
 				break;
 		}
@@ -372,5 +372,21 @@ echo '<div class="modal" tabindex="-1" role="dialog"  style="padding-right: 17px
 </div>';
 }
 
+function HayCajaAbierta(){
+	include "../conexion.php";
+	$sql = "select count(*) as existe from cortecaja where estado=0";					
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+	{
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+						
+				return $f['existe'];
+			}
+		 else {return FALSE;}
+	}
+}
 
 ?>
