@@ -32,7 +32,6 @@ $.ajax({
         <!-- Elementos para crear el reporte -->
         <form action="reporteProductos.php" method="post">
         <div class="row">
-
 		<div class="col" style='width: 500px;'>
 			<div class="form-group">
 			<label style='color:#000'>Reporte por Categoría</label>

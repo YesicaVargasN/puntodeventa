@@ -120,7 +120,7 @@ if (!empty($_POST)) {
                             while ($data = mysqli_fetch_assoc($query)) { ?>
                                 <tr>
                                     <td><?php echo $data['codproducto']; ?></td>
-                                    <td><?php echo '$ '.$data['descripcion']; ?></td>
+                                    <td><?php echo $data['descripcion']; ?></td>
                                     <td><?php echo $data['fecha']; ?></td>
                                     <td><?php echo $data['entradas']; ?></td>
                                     <td><?php echo $data['salidas']; ?></td>

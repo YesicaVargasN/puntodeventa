@@ -4,25 +4,96 @@ ob_start();
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
+if(isset($_POST['desde'])){
+    $desde = $_POST['desde'];
+}else{
+    $desde = "";
+}
 
-$desde = $_POST['desde'];
-$hasta = $_POST['hasta'];
+if(isset($_POST['hasta'])){
+    $hasta = $_POST['hasta'];
+}else{
+    $hasta = "";
+}
+if(isset($_POST['tipoventa'])){
+    $tipoventa = $_POST['tipoventa'];
+}else{
+    $tipoventa = "";
+}
+if(isset($_POST['tipopago'])){
+    $tipopago = $_POST['tipopago'];
+}else{
+    $tipopago = "";
+}
+
 $suma = 0;
+echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
+if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
 
-$sql = 'select *, u.usuario as nomusuario from factura f
-inner join usuario u on f.usuario = u.idusuario
-WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
-//echo $sql;
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
+}else if($tipopago <> 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipopago = "'.$tipopago.'"';
+}else if($tipopago == 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa = "'.$tipoventa.'"';
+}else if($tipopago <> 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipopago = "'.$tipopago.'" and idtipoventa = "'.$tipoventa.'"';
+}else if($tipopago <> 0 and $tipoventa <> 0 and $desde == '' and $hasta == ''){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE idtipopago = "'.$tipopago.'" and idtipoventa = "'.$tipoventa.'"';
+}else if($desde == '' and $hasta == '' and $tipoventa <> 0 and $tipopago == 0){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE idtipoventa = "'.$tipoventa.'"';
+
+}else if($desde == '' and $hasta == '' and $tipoventa == 0 and $tipopago <> 0){
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE idtipopago = "'.$tipopago.'"';
+
+}else{
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+    from factura f
+    inner join usuario u on f.usuario = u.idusuario
+    WHERE f.fecha';
+}
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
-$vuelta = 0;
+$vuelta = 1;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
+    $tabla = $tabla.'<th ><b>No.</b></th>';
     $tabla = $tabla.'<th ><b>ID VENTA</b></th>';
     $tabla = $tabla.'<th ><b>FECHA CAPTURA</b></th>';
     $tabla = $tabla."<th><b>USUARIO</b></th>";
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
+    $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
+    $tabla = $tabla.'<th ><b>TIPO VENTA</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -31,30 +102,44 @@ if ($r -> num_rows >0){
         }else{
             $tabla = $tabla.'<tr bgcolor="#FCD2CB">'; 
         }
+        $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
         $suma = $suma += $f['totalfactura'];
         $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
+        $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
     $tabla = $tabla.'</table>';
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td>
+                
+            </td>
+            <td  bgcolor="#FCD2CB">
+                MONTO TOTAL RECUPERADO $'.number_format($suma, 2, '.', ',').'
+            </td>
+        </tr>
+        
+    </table>';
+}else{
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td  bgcolor="#FCD2CB">
+                NO SE ENCONTRARON RESULTADOS PARA ESTA CONSULTA
+            </td>
+        </tr>
+        
+    </table>';
 }
 
 
-$tabla = $tabla.'<br><br><br>
-<table  align = "center" >
-    <tr>
-        <td>
-            
-        </td>
-        <td  bgcolor="#FCD2CB">
-            MONTO TOTAL RECUPERADO $'.number_format($suma, 2, '.', ',').'
-        </td>
-    </tr>
-    
-</table>';
+
 
 echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -101,6 +186,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document}
-ob_end_clean();
+//ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
 ?>

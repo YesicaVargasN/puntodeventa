@@ -1249,7 +1249,7 @@ $('#cod_pro').keyup(function(e) {
  
 });
 
-// CERRAr CORTE DE CAJA
+// AJUSTE DE INVENTARIO
 $('#btn_guardarajuste').click(function(e) {
   e.preventDefault();
   var cod_pro = $('#cod_pro').val();
@@ -1258,26 +1258,62 @@ $('#btn_guardarajuste').click(function(e) {
   var agregar = $('#agregar').val();
 
   var action = 'guardarAjuste';
-  $.ajax({
-    url: 'modal.php',
-    type: 'POST',
-    async: true,
-    data: {action:action,cod_pro:cod_pro, name:name,cantidad:cantidad, agregar:agregar},
-    success: function(response) {
-      if(response.includes('ok')==true){
-        console.log(response);
-        //window.location='ajuste_inventario.php';
 
-      }else{
-        $('.alertAddProduct').html(response);
-        console.log(response);
-      }
+  if(cantidad == 0 && agregar < 0){
+    $('#ajusteinventario').modal('hide');
+    Swal.fire({
+      icon: 'error',
+      title: 'Opss',
+      text: 'No puedes hacer salidas de un producto sin stock!',
+      footer: ''
+    })
+   
+  }else{
+
+    $.ajax({
+      url: 'modal.php',
+      type: 'POST',
+      async: true,
+      data: {action:action,cod_pro:cod_pro, name:name,cantidad:cantidad, agregar:agregar},
+      success: function(response) {
+        if(response.includes('ok')==true){
+          console.log(response);
+          $('#ajusteinventario').modal('hide');
+          Swal.fire({
+            icon: 'success',
+            title: 'Hecho!',
+            text: 'Se ha regiistrado con éxito el ajuste!',
+            footer: ''
+          })
+
+          //window.location='ajuste_inventario.php';
+          
+          
+
+        }else{
+          $('#ajusteinventario').modal('hide');
+          
+          Swal.fire({
+            icon: 'error',
+            title: 'Opss',
+            text: 'Hubo un error, favor de intentarlo de nuevo.',
+            footer: ''
+          })
+          //window.location='ajuste_inventario.php';
+          console.log(response);
+        }
+        
       
-     
-    },
-    error: function(error) {
+      },
+      error: function(error) {
 
-    }
-  });
+      }
+    });
+}
   
+});
+
+jQuery('#ajusteinventario').on('hidden.bs.modal', function (e) {
+  jQuery(this).removeData('bs.modal');
+  //jQuery(this).find('.alertAddProduct').empty();
 });
