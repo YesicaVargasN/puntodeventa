@@ -913,7 +913,14 @@ $('#pagar_con').keyup(function(e) {
           $('#btn_facturar_venta').slideDown();      
           } else {
             document.getElementById("pagar_con").value=pagar_con;
-           $('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor o igual al total.</p><center>');      
+           /*$('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor o igual al total.</p><center>');   */
+           Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Error la cantidad a pagar debe ser mayor o igual al total!',
+            footer: ''
+          })
+          $('#exampleModal').modal('hide');
            $('#btn_facturar_venta').slideUp();    
             document.getElementById('pagar_con').focus();
             

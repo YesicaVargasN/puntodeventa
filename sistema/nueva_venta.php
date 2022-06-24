@@ -226,12 +226,9 @@
         <div class="modal-footer">     
         <button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>
          <a href="#" class="btn btn-primary" id="btn_facturar_venta"><i class="fas fa-save"></i> Terminar Venta</a>
-        
-      
-            
         </div>
       </div>
     </div>
   </div>
-
+ // mensajeicono("Venta Realizada correctamente","","","info");
 <?php include_once "includes/footer.php"; ?>
