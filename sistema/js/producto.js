@@ -982,11 +982,23 @@ $('#btn_guardarcorte').click(function(e) {
     async: true,
     data: {action:action,montoinicial: montoinicial},
     success: function(response) {
-      if(response != 0){
-        location.reload();
+      if(response.includes('ok')==true){
+        Swal.fire({
+          icon: 'success',
+          title: 'Hecho!',
+          text: 'Se ha regiistrado con éxito el nuevo corte de caja!',
+          footer: ''
+        })
+        //location.reload();
       }else{
-        $('.alertAddProduct').html(response);
-        $("#abrircorte input").val("");
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss',
+          text: response,
+          footer: ''
+        })
+       // $('.alertAddProduct').html(response);
+       // $("#abrircorte input").val("");
       }
       
 

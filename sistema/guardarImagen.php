@@ -1,6 +1,7 @@
 <?php
 include "../conexion.php";
 include "barcode/barcode.php";
+session_start();
 
 $filepath = $_POST['filepath'];
 $text = $_POST['text'];
@@ -27,9 +28,11 @@ if ($result > 0) {
         </div>';
     }else{
         barcode( $filepath, $text,'70','horizontal','code128',true,1);
-
+        $usuario_id = $_SESSION['idUser'];
         //guardar en la bd
-        $query_insert = mysqli_query($conexion, "INSERT INTO codigobarras(codigo,producto) values ('$text', '$nombre')");
+        $sql =  "INSERT INTO codigobarras(codigo,producto, idusuario, fecha) values ('$text', '$nombre', '$usuario_id', now())";
+        //echo $sql;
+        $query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
             echo '<div class="alert alert-primary" role="alert">
                                 Código Registrado.

@@ -57,7 +57,13 @@ include "../conexion.php";
         //$("#nombre").val('');
         $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data, nombre:nombre }  )
             .done(function( data ) {
-                $("#respuesta").html(data);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Hecho!',
+                    text: 'Se ha regiistrado con éxito el código!',
+                    footer: ''
+                })
+                //$("#respuesta").html(data);
                 //$("#imagen").html('<img src="codigosGenerados/'+text+'.png"/>');
             }
         );

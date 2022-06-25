@@ -17,33 +17,37 @@ if(isset($_FILES['archivo']['name'])){
 	$total = $_POST['total'];
 	$fecha = $_POST['fecha'];
 	$descripcion = $_POST['descripcion'];
-
+	$usuario_id = $_SESSION['idUser'];
 	if (move_uploaded_file($tmp, $subir_archivo)) {
 		//si se guarda en la carpeta hay que guardar en la bd
 		$numarchivo = narchivo(FALSE); 
-		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."')";
+		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion, idusuariosube) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."', '".$usuario_id."')";
 		//echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
+           /* $alert = '<div class="alert alert-primary" role="alert">
                        Gasto Registrado
-                    </div>';
+                    </div>';*/
+			mensajeicono('Se ha regiistrado con éxito el nuevo gasto!', 'lista_factura.php','exito','');
+			
         } else {
-            $alert = '<div class="alert alert-danger" role="alert">
+           /* $alert = '<div class="alert alert-danger" role="alert">
                        Error al registrar los gastos
-                    </div>';
+                    </div>';*/
+			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','error','');
         }
     }
 		//echo "El archivo es válido y se cargó correctamente.<br><br>";
 		//echo"<a href='".$subir_archivo."' target='_blank'><img src='".$subir_archivo."' width='150'></a>";
 	 else {
-		$alert = '<div class="alert alert-danger" role="alert">
+		/*$alert = '<div class="alert alert-danger" role="alert">
 		La subida ha fallado
-	 </div>';
+	 </div>';*/
+	 mensajeicono('Hubo un error en la subida del archivo, favor de intentarlo de nuevo.', 'lista_factura.php','error','');
 		
 	}
 		
-	echo $alert;
+	//echo $alert;
 }
 
 

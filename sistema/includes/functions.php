@@ -19,7 +19,7 @@
 
 	function narchivo($consulta){
 		require("..\conexion.php");
-		$sql = "SELECT * FROM contadores WHERE id='0'";					
+		$sql = "SELECT * FROM contadores WHERE id='1'";					
 		$rc= $conexion -> query($sql);
 		if($f = $rc -> fetch_array())
 		{
@@ -32,7 +32,7 @@
 			// la diferencia entre ceropapel y este, es que cero papel se multiplica
 			// por las copias que se entregan o con copia, para estadistica de cuanto se ha ahorrado
 				$n2 = $f['narchivo'] + 1;
-				$sql="UPDATE contadores SET narchivo='".$n2."' WHERE id='0'";
+				$sql="UPDATE contadores SET narchivo='".$n2."' WHERE id='1'";
 				$resultado = $conexion -> query($sql);
 					if ($conexion->query($sql) == TRUE) 
 					{

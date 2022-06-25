@@ -551,10 +551,10 @@ if ($_POST['action'] == 'procesarVenta') {
 // Guardar inicio de corte de caja
 if ($_POST['action'] == 'guardarCorte') {
   $montoinicial = $_POST['montoinicial'];
-  $token = md5($_SESSION['idUser']);
+  $usuario_id = $_SESSION['idUser'];
   //VERIFICAMOS PRIMERO QUE NO ESTE ABIERTO UN CORTE
   if(revisarCortesAbiertos() == 0){
-    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', now(), '0')");
+    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado, Usuario) values ('$montoinicial', now(), '0', '$usuario_id')");
     mysqli_close($conexion);
     if ($query_del) {
       echo 'ok';

@@ -57,7 +57,7 @@ include "../conexion.php";
                     </div>
                     <div class="form-group">
                         <label for="contacto">Archivo</label>
-                        <input type="file" placeholder="Suba el archivo de la factura" name="archivo" id="archivo" class="form-control" required>
+                        <input type="file" placeholder="Suba el archivo de la factura" name="archivo" id="archivo" class="form-control" accept="application/pdf" required>
                     </div>
                    
                     <div class="form-group">

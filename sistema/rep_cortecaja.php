@@ -11,7 +11,7 @@ $idcorte = $_GET['idcorte'];
 $fechainicio = fechaCorteAperturaId($idcorte);
 $fechafin = fechaCorteCierreId($idcorte);
 
-  $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura, f.estado, if(f.idtipoventa = 1, 'Contado', 'Crédito') as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado
+  $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura,  if(f.idtipoventa = 1, 'Contado', 'Crédito') as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado
   FROM factura f
   left JOIN usuario u on u.idusuario = f.usuario
   left join cliente c on c.idcliente = f.codcliente
@@ -30,7 +30,6 @@ if ($r -> num_rows >0){
     $tabla = $tabla."<th><b>USUARIO</b></th>";
     $tabla = $tabla."<th><b>CLIENTE</b></th>";
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
     $tabla = $tabla.'<th ><b>TIPO VENTA</b></th>';
     $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
     $tabla = $tabla.'<th ><b>CANCELADO</b></th>';
@@ -48,7 +47,6 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
         $suma = $suma += $f['totalfactura'];
-        $tabla = $tabla.'<td>'.$f['estado'].'</td>';
         $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
         $tabla = $tabla.'<td>'.$f['cancelado'].'</td>';
@@ -118,6 +116,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document}
-ob_end_clean();
+//ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
 ?>

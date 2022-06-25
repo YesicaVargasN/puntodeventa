@@ -1,45 +1,6 @@
 <?php include_once "includes/header.php"; 
-
-
-
-//GUARDAR ARCHIVOS
-if(isset($_POST['montoinicial'])){
-	$montoinicial = $_POST['montoinicial'];
-	
-	$sql = "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado) values ('$montoinicial', '$fecha', '0')";
-	//echo $sql;	
-	$query_insert = mysqli_query($conexion, $sql);
-	if ($query_insert) {
-		$alert = '<div class="alert alert-primary" role="alert">
-					Corte de caja abierto
-				</div>';
-	} else {
-		$alert = '<div class="alert alert-danger" role="alert">
-					Error al crear el nuevo corte de caja
-				</div>';
-	}
-	
-	echo $alert;
-}
-
-
 ?>
 
-
-<!-- <script>
-$('#abrircorte').on('show.bs.modal', function (event) {
-	 var montoinicial = $('#montoinicial').val(); 
-	 $.ajax({
-		url: "lista_cortes.php",
-		type: "post",
-		data: {montoinicial: montoinicial},
-		success: function(data){
-			
-		}
-	});
-
-})
-</script> -->
 
 <!-- Modal -->
 <div class="modal fade" id="abrircorte" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -190,6 +151,7 @@ $('#abrircorte').on('show.bs.modal', function (event) {
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
+							<th>PDF</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -215,7 +177,14 @@ $('#abrircorte').on('show.bs.modal', function (event) {
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>
-										<?php } ?>
+									<?php } ?>
+									<td>
+										<form action='rep_cortecaja.php?idcorte=<?php echo $data['Id']; ?>' method='GET' >
+											<button class="btn btn-info" type="submit"><i class="fas fa-file-pdf"></i> </button>
+										</form>
+									</td>
+
+							
 								</tr>
 						<?php }
 						} ?>
