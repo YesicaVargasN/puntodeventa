@@ -75,7 +75,8 @@ if ($_POST['action'] == 'addCliente') {
 if ($_POST['action'] == 'addProductoDetalle') {
   if (empty($_POST['producto']) || empty($_POST['cantidad'])){
     echo 'error';
-  }else {
+  }else {    
+
     $codproducto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
@@ -492,6 +493,8 @@ if ($_POST['action'] == 'procesarVenta') {
   echo "error";
   exit;
   }
+
+
   // anular factura
   if ($_POST['action'] == 'anularFactura') {
     if (!empty($_POST['noFactura'])) {
@@ -701,14 +704,34 @@ if ($_POST['action'] == 'guardarAjuste') {
       }
     }
 
-  }
-
- 
- 
- 
-  mysqli_close($conexion);
+  } 
+   mysqli_close($conexion);
 
   exit;
 }
 
+ 
+// VALIDAR QUE NO SE REBASE EL STOCK
+if ($_POST['action'] == 'productoDetalleValida') {
+  $data = "";
+  if (empty($_POST['producto']) ){
+        echo 'error';
+        }else { 
+          $codproducto = $_POST['producto'];
+$token = md5($_SESSION['idUser']);
+$sql="select sum(cantidad) as cantidad   from detalle_temp where codproducto=".$codproducto." and token_user='".$token."'";
+$query = mysqli_query($conexion, $sql);
+     mysqli_close($conexion);
+     $result = mysqli_num_rows($query);
+     if ($result > 0) {
+       $data = mysqli_fetch_assoc($query);     
+      echo $data["cantidad"];
+       exit;
+     }else{
+       $data = "";
+     }
+}
+exit;
+}
+ 
  ?>

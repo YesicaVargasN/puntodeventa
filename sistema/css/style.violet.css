@@ -3632,3 +3632,10 @@ font-size: 10pt
   display: table-cell;
   vertical-align: middle
 }
+.msmgmodal{
+color: #545454;
+    font-size: 1.125em;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;}

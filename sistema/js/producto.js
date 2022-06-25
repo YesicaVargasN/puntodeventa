@@ -240,6 +240,7 @@ $('#txt_cod_pro').keyup(function(e) {
           $('#txt_descripcion').html(info.descripcion);
           $('#txt_cod_producto').val(info.codproducto);
           $('#txt_existencia').html(info.existencia);
+        
           $('#txt_precio').html(info.precio);
           $('#txt_precio_total').html(info.precio);
           //Bloquear Cantidad
@@ -249,6 +250,7 @@ $('#txt_cod_pro').keyup(function(e) {
         }else{
           $('#txt_descripcion').html(info.descripcion);
           $('#txt_existencia').html(info.existencia);
+         
           $('#txt_cod_producto').val(info.codproducto);
           $('#txt_cant_producto').val('1');
           $('#txt_precio').html(info.precio);
@@ -298,13 +300,50 @@ $('#txt_cant_producto').keyup(function(e) {
   }
 });
 
-// Agregar producto al detalle_venta
+
 $('#add_product_venta').click(function(e) {
   e.preventDefault();
-  console.log('entroagrear');
- console.log( $('#txt_cant_producto').val()+'cantidad');
+ 
   if ($('#txt_cant_producto').val() > 0) {
-    var codproducto = $('#txt_cod_producto').val();
+
+    var codproducto = $('#txt_cod_producto').val();    
+
+
+ 
+   //validar que exista una  caja abierta
+   codproducto= $('#txt_cant_producto').val();
+   var action = 'productoDetalleValida';
+  //  $.ajax({
+  //    url: 'modal.php',
+  //    type: 'POST',
+  //    async: true,
+  //    data: {action:action,producto:codproducto},
+  //    success: function(response) {
+  //     existencia= parseInt($('#txt_existencia').html());
+  // console.log(response);
+  // console.log(existencia);
+  //     if(response==existencia)
+  //     {
+  //      Swal.fire({
+  //        icon: 'error',
+  //        title: 'Oops...',
+  //        text: '¡Ya no puede agegar mas productos, revasaria el stock exitente!',
+  //        footer: ''
+  //      });
+  //      return;
+  //    }
+      
+      
+  //    },
+  //    error: function(error) {
+   
+  //    }
+  //  });
+
+
+
+
+
     var cantidad = $('#txt_cant_producto').val();
     var action = 'addProductoDetalle';
     $.ajax({
@@ -312,8 +351,7 @@ $('#add_product_venta').click(function(e) {
       type: 'POST',
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
-      success: function(response) {
-        
+      success: function(response) {        
         if (response != 'error') {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
@@ -329,7 +367,6 @@ $('#add_product_venta').click(function(e) {
 
           // Bloquear cantidad
           $('#txt_cant_producto').attr('disabled','disabled');
-
           // Ocultar boton agregar
           $('#add_product_venta').slideUp();
         }else {
@@ -374,6 +411,7 @@ $('#btn_anular_venta').click(function(e) {
 $('#btn_facturar_venta').click(function(e) {
   e.preventDefault();
 
+
   var rows = $('#detalle_venta tr').length;  
   var action = 'procesarVenta';
   var codcliente = $('#idcliente').val();
@@ -382,7 +420,12 @@ $('#btn_facturar_venta').click(function(e) {
   var referencia = $('#numreferencia').val();   
   if(tipoventa==2 && codcliente==1)
   {
-    $('.alertCambio').html('<center><p style="color : red;">Error. Debe especificar el nombre de un cliente, No puede ser al publico en general </p><center>');
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe especificar el nombre de un cliente , el credito no puede ser a publico en general!',
+      footer: ''
+    })
     $('#idcliente').focus();
     return;
   }
@@ -428,8 +471,7 @@ $('#btn_facturar_venta').click(function(e) {
   }else 
   {
     if (numcredito> 0)
-    {
-      console.log('entro');
+    {     
     $.ajax({
     url: 'modal.php',
     type: 'POST',
@@ -880,18 +922,6 @@ $('#txt_cod_pro').keyup(function(e) {
  } 
 });
 
-
-
-
-// $('#pagar_conC').keyup(function(e) {
-//   e.preventDefault();
-//   if (e.which == 13) {  
-//     const pagar_conC = document.getElementById("pagar_conC").value;
-//     document.getElementById("pagar_conC").value=pagar_conC;
-//  } 
-// });
-
-
 $('#pagar_con').keyup(function(e) {
   e.preventDefault();
   if (e.which == 13) {  
@@ -914,8 +944,7 @@ $('#pagar_con').keyup(function(e) {
           $('.alertCambio').html('<p style="color : red;"></p>');
           $('#btn_facturar_venta').slideDown();      
           } else {
-            document.getElementById("pagar_con").value=pagar_con;
-           /*$('.alertCambio').html('<center><p style="color : red;">Error la cantidad a pagar debe ser mayor o igual al total.</p><center>');   */
+            document.getElementById("pagar_con").value=pagar_con;        
            Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -1231,8 +1260,7 @@ $('#cod_pro').keyup(function(e) {
         var info = JSON.parse(response);
         if (info.existencia < 1) {
           $('#name').val(info.descripcion);
-          $('#cantidad').val(info.existencia);
-        
+          $('#cantidad').val(info.existencia);         
           //Bloquear Cantidad
           $('#txt_cant_producto').attr('disabled', 'disabled');
           // Ocultar Boto Agregar
@@ -1327,6 +1355,20 @@ $('#btn_guardarajuste').click(function(e) {
   
 });
 
+// canidad del producto
+$('#txt_cant_producto').keyup(function() {
+  
+  if(  parseInt($('#txt_cant_producto').val())> parseInt($('#txt_existencia').html()))
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'La cantidad de producto no puede ser mayor a la cantidad en existencia.',
+      footer: ''
+    })
+   $('#txt_cant_producto').val("");
+  }
+});
 jQuery('#ajusteinventario').on('hidden.bs.modal', function (e) {
   jQuery(this).removeData('bs.modal');
   //jQuery(this).find('.alertAddProduct').empty();
