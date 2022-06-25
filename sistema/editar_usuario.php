@@ -4,7 +4,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
   $alert = "";
   if (empty($_POST['nombre']) || empty($_POST['correo']) || empty($_POST['usuario']) || empty($_POST['rol'])) {
-    $alert = '<div class="alert alert-danger" role="alert">Todo los campos son requeridos</div>';
+    mensajeicono('Todos los campos son obligatorios.', 'editar_usuario.php','','info');
+
   } else {
     $idusuario = $_GET['id'];
     $nombre = $_POST['nombre'];
@@ -13,7 +14,8 @@ if (!empty($_POST)) {
     $rol = $_POST['rol'];
 
     $sql_update = mysqli_query($conexion, "UPDATE usuario SET nombre = '$nombre', correo = '$correo' , usuario = '$usuario', rol = $rol WHERE idusuario = $idusuario");
-    $alert = '<div class="alert alert-success" role="alert">Usuario Actualizado</div>';
+    mensajeicono('Se ha registrado con éxito la actualización del usuario!', 'lista_usuarios.php','','exito');
+
   }
 }
 

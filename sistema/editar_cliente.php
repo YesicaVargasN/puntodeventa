@@ -3,7 +3,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
   $alert = "";
   if (empty($_POST['nombre']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-    $alert = '<div class="alert alert-danger" role="alert">Todo los campos son requeridos</div>';
+    mensajeicono('Todos los campos son obligatorios.', 'editar_cliente.php','','info');
+
   } else {
     $idcliente = $_POST['id'];
     $dni = $_POST['dni'];

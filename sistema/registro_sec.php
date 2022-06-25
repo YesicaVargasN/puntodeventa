@@ -4,9 +4,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['seccion'])){
-        $alert = '<div class="alert alert-danger" role="alert">
-                        Los campos son obligatorios
-                    </div>';
+        mensajeicono('El campo seccion es obligatorio.', 'registro_sec.php','','info');
+
     } else {
         $seccion = $_POST['seccion'];
         $idcat = $_POST['idcat'];
@@ -14,12 +13,11 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_secciones(seccion, iddepartamento) values ('$seccion', '$idcat')");
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                        SSección Registrada
-                    </div>';
+            mensajeicono('Se ha registrado con éxito la nueva sección!', 'lista_sec.php','','exito');
+
         } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar la sección';
+            mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_sec.php','','error');
+
         }
         
     }

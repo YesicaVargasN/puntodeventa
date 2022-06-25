@@ -4,22 +4,19 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['medida']) || empty($_POST['nombrecorto']) ) {
-        $alert = '<div class="alert alert-danger" role="alert">
-                        Todo los campos son obligatorios
-                    </div>';
+        mensajeicono('El campo medida y nombre corto son obligatorios.', 'registro_medida.php','','info');
+
     } else {
         $medida = $_POST['medida'];
         $nombrecorto = $_POST['nombrecorto'];
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_unidadmedida(unidadmedida,activo, nombrecorto) values ('$medida', '1','$nombrecorto' )");
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                        Unidad de Medida Registrada
-                    </div>';
+            mensajeicono('Se ha registrado con éxito la nueva medida!', 'lista_medida.php','','exito');
+
         } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar la unidad de medida
-                    </div>';
+            mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_medida.php','','error');
+
         }
         
     }

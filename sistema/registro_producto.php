@@ -3,9 +3,8 @@
   if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['proveedor']) || empty($_POST['producto']) || empty($_POST['precioventa']) || $_POST['precioventa'] <  0 || empty($_POST['cantidad'] || $_POST['cantidad'] <  0)) {
-      $alert = '<div class="alert alert-danger" role="alert">
-                Todo los campos son obligatorios
-              </div>';
+      mensajeicono('Todos los campos son obligatorios.', 'registro_producto.php','','info');
+
     } else {
       $codigo = $_POST['codigo'];
       $proveedor = $_POST['proveedor'];
@@ -25,15 +24,12 @@
       
 
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec')");
+      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now())");
       if ($query_insert) {
-        $alert = '<div class="alert alert-success" role="alert">
-                Producto Registrado
-              </div>';
+        mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
+
       } else {
-        $alert = '<div class="alert alert-danger" role="alert">
-                Error al registrar el producto
-              </div>';
+        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_productos.php','','error');
       }
     }
   }

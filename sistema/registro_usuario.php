@@ -3,9 +3,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['nombre']) || empty($_POST['correo']) || empty($_POST['usuario']) || empty($_POST['clave']) || empty($_POST['rol'])) {
-        $alert = '<div class="alert alert-primary" role="alert">
-                    Todo los campos son obligatorios
-                </div>';
+        mensajeicono('Todos los campos son obligatorios.', 'registro_usuario.php','','info');
+
     } else {
 
         $nombre = $_POST['nombre'];
@@ -18,19 +17,16 @@ if (!empty($_POST)) {
         $result = mysqli_fetch_array($query);
 
         if ($result > 0) {
-            $alert = '<div class="alert alert-danger" role="alert">
-                        El correo ya existe
-                    </div>';
+            mensajeicono('El correo ya existe.', 'registro_usuario.php','','info');
+
         } else {
             $query_insert = mysqli_query($conexion, "INSERT INTO usuario(nombre,correo,usuario,clave,rol) values ('$nombre', '$email', '$user', '$clave', '$rol')");
             if ($query_insert) {
-                $alert = '<div class="alert alert-primary" role="alert">
-                            Usuario registrado
-                        </div>';
+                mensajeicono('Se ha registrado con éxito el usuario!', 'lista_usuarios.php','','exito');
+
             } else {
-                $alert = '<div class="alert alert-danger" role="alert">
-                        Error al registrar
-                    </div>';
+                mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_usuarios.php','','error');
+
             }
         }
     }

@@ -4,9 +4,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['proveedor']) || empty($_POST['contacto']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-        $alert = '<div class="alert alert-danger" role="alert">
-                        Todo los campos son obligatorios
-                    </div>';
+        mensajeicono('Todos los campos son obligatorios.', 'lista_proveedor.php','','info');
+
     } else {
         $proveedor = $_POST['proveedor'];
         $contacto = $_POST['contacto'];
@@ -17,21 +16,17 @@ if (!empty($_POST)) {
         $result = mysqli_fetch_array($query);
 
         if ($result > 0) {
-            $alert = '<div class="alert alert-danger" role="alert">
-                        El Ruc ya esta registrado
-                    </div>';
+            mensajeicono('Ya existe un proveedor con este mismo contacto.', 'lista_proveedor.php','','info');
         }else{
         
 
         $query_insert = mysqli_query($conexion, "INSERT INTO proveedor(proveedor,contacto,telefono,direccion,usuario_id) values ('$proveedor', '$contacto', '$telefono', '$Direccion','$usuario_id')");
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                        Proveedor Registrado
-                    </div>';
+            mensajeicono('Se ha registrado con éxito el proveedor!', 'lista_proveedor.php','','exito');
+
         } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar proveedor
-                    </div>';
+            mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_proveedor.php','','error');
+            
         }
         }
     }

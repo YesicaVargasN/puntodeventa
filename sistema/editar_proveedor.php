@@ -4,7 +4,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
   $alert = "";
   if (empty($_POST['proveedor']) || empty($_POST['contacto']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-    $alert = '<div class="alert alert-danger" role="alert">Todo los campos son requeridos</div>';
+    mensajeicono('Todos los campos son obligatorios.', 'editar_proveedor.php','','info');
+
   } else {
     $idproveedor = $_GET['id'];
     $proveedor = $_POST['proveedor'];
@@ -15,12 +16,11 @@ if (!empty($_POST)) {
     $sql_update = mysqli_query($conexion, "UPDATE proveedor SET proveedor = '$proveedor', contacto = '$contacto' , telefono = $telefono, direccion = '$direccion' WHERE codproveedor = $idproveedor");
 
     if ($sql_update) {
-      $alert = '<div class="alert alert-success" role="alert">Proveedor Actualizado correctamente</div>';
+      mensajeicono('Se ha actualizado con éxito el proveedor!', 'lista_proveedor.php','','exito');
+
     } else {
-      $alert = '
-      <div class="alert alert-danger" role="alert">
- Error al Actualizar el Proveedor
-</div>';
+      mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_proveedor.php','','error');
+
     }
   }
 }

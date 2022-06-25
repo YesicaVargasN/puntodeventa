@@ -60,7 +60,7 @@ include "../conexion.php";
                 Swal.fire({
                     icon: 'success',
                     title: 'Hecho!',
-                    text: 'Se ha regiistrado con éxito el código!',
+                    text: 'Se ha registrado con éxito el código!',
                     footer: ''
                 })
                 //$("#respuesta").html(data);

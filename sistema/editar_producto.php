@@ -23,16 +23,14 @@ if (!empty($_POST)) {
     }else{
       $sec = "";
     }
-    
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec' WHERE codproducto = $codproducto");
+    $moduser = $_SESSION['idUser'];
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser' WHERE codproducto = $codproducto");
     if ($query_update) {
-      $alert = '<div class="alert alert-primary" role="alert">
-              Producto Modificado
-            </div>';
+      mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
+
     } else {
-      $alert = '<div class="alert alert-primary" role="alert">
-                Error al Modificar
-              </div>';
+      mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_productos.php','','error');
+
     }
   }
 //}

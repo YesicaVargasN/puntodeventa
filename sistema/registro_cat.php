@@ -4,22 +4,19 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['nombre'])){
-        $alert = '<div class="alert alert-danger" role="alert">
-                        Los campos son obligatorios
-                    </div>';
+        mensajeicono('El campo nombre es obligatorio.', 'registro_cat.php','','info');
+
     } else {
         $nombre = $_POST['nombre'];
         
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_departamento(iddepartamento,departamento) values ('', '$nombre')");
         if ($query_insert) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                        Categoria Registrada
-                    </div>';
+            mensajeicono('Se ha registrado con éxito la nueva categoría!', 'lista_cat.php','','exito');
+
         } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar la categoria
-                    </div>';
+            mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_cat.php','','error');
+
         }
         
     }

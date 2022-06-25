@@ -60,7 +60,7 @@ if ($_POST['action'] == 'addCliente') {
   $direccion = $_POST['dir_cliente'];
   $usuario_id = $_SESSION['idUser'];
 
-  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id')");
+  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id, fecha) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id', now())");
   if ($query_insert) {
     $codCliente = mysqli_insert_id($conexion);
     $msg = $codCliente;
@@ -632,7 +632,7 @@ if ($_POST['action'] == 'guardarAjuste') {
   $name = $_POST['name'];
   $cantidad = $_POST['cantidad'];
   $agregar = $_POST['agregar'];
-
+  $usuario_id = $_SESSION['idUser'];
   //BUSCAR SI YA EXISTE EN AJUSTE DEL DIA DE HOY
   $id = existeEnAjusteelProducto($cod_pro);
 
@@ -642,7 +642,7 @@ if ($_POST['action'] == 'guardarAjuste') {
     if($agregar < 0){
       echo 'entro a insert restando salidas';
       $existencia  = $cantidad - abs($agregar);
-      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas) VALUES ('$cod_pro','$name', now(), '$agregar')";
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas, usuario) VALUES ('$cod_pro','$name', now(), '$agregar', '$usuario_id')";
       echo $sql;
         $query = mysqli_query($conexion, $sql);
         if ($query) {
@@ -656,7 +656,7 @@ if ($_POST['action'] == 'guardarAjuste') {
     }else{
       echo 'entro a insert sumando entradas';
       $existencia  = $cantidad + ($agregar);
-      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas ) VALUES ('$cod_pro','$name',now(), '$agregar')";
+      $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas, usuario) VALUES ('$cod_pro','$name',now(), '$agregar', '$usuario_id')";
       echo $sql;
   
       $query = mysqli_query($conexion, $sql);

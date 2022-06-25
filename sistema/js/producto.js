@@ -1015,7 +1015,7 @@ $('#btn_guardarcorte').click(function(e) {
         Swal.fire({
           icon: 'success',
           title: 'Hecho!',
-          text: 'Se ha regiistrado con éxito el nuevo corte de caja!',
+          text: 'Se ha registrado con éxito el nuevo corte de caja!',
           footer: ''
         })
         //location.reload();
@@ -1324,7 +1324,7 @@ $('#btn_guardarajuste').click(function(e) {
           Swal.fire({
             icon: 'success',
             title: 'Hecho!',
-            text: 'Se ha regiistrado con éxito el ajuste!',
+            text: 'Se ha registrado con éxito el ajuste!',
             footer: ''
           })
 

@@ -3,9 +3,8 @@ include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['nombre']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-        $alert = '<div class="alert alert-danger" role="alert">
-                                    Todo los campos son obligatorio
-                                </div>';
+        mensajeicono('El campo nombre, teléfono y dirección son obligatorios.', 'registro_cliente.php','','info');
+
     } else {
         $dni = $_POST['dni'];
         $nombre = $_POST['nombre'];
@@ -19,19 +18,14 @@ if (!empty($_POST)) {
             $result = mysqli_fetch_array($query);
         }
         if ($result > 0) {
-            $alert = '<div class="alert alert-danger" role="alert">
-                                    El dni ya existe
-                                </div>';
+            mensajeicono('El identificador del cliente ya existe.', 'registro_cliente.php','','info');
         } else {
-            $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni,nombre,telefono,direccion, usuario_id) values ('$dni', '$nombre', '$telefono', '$direccion', '$usuario_id')");
+            $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni,nombre,telefono,direccion, usuario_id, fecha) values ('$dni', '$nombre', '$telefono', '$direccion', '$usuario_id', now())");
             if ($query_insert) {
-                $alert = '<div class="alert alert-primary" role="alert">
-                                    Cliente Registrado
-                                </div>';
+                mensajeicono('Se ha registrado con éxito la nuevo cliente!', 'lista_cliente.php','','exito');
+
             } else {
-                $alert = '<div class="alert alert-danger" role="alert">
-                                    Error al Guardar
-                            </div>';
+                mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_cliente.php','','error');
             }
         }
     }
@@ -59,8 +53,8 @@ if (!empty($_POST)) {
                     <form action="" method="post" autocomplete="off">
                         <?php echo isset($alert) ? $alert : ''; ?>
                         <div class="form-group">
-                            <label for="dni">Dni</label>
-                            <input type="number" placeholder="Ingrese dni" name="dni" id="dni" class="form-control">
+                            <label for="dni">Identificador cliente</label>
+                            <input type="number" placeholder="Ingrese dni " name="dni" id="dni" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre</label>

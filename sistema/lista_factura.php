@@ -28,13 +28,13 @@ if(isset($_FILES['archivo']['name'])){
            /* $alert = '<div class="alert alert-primary" role="alert">
                        Gasto Registrado
                     </div>';*/
-			mensajeicono('Se ha regiistrado con éxito el nuevo gasto!', 'lista_factura.php','exito','');
+			mensajeicono('Se ha registrado con éxito el nuevo gasto!', 'lista_factura.php','','exito');
 			
         } else {
            /* $alert = '<div class="alert alert-danger" role="alert">
                        Error al registrar los gastos
                     </div>';*/
-			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','error','');
+			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
         }
     }
 		//echo "El archivo es válido y se cargó correctamente.<br><br>";
@@ -43,7 +43,7 @@ if(isset($_FILES['archivo']['name'])){
 		/*$alert = '<div class="alert alert-danger" role="alert">
 		La subida ha fallado
 	 </div>';*/
-	 mensajeicono('Hubo un error en la subida del archivo, favor de intentarlo de nuevo.', 'lista_factura.php','error','');
+	 mensajeicono('Hubo un error en la subida del archivo, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
 		
 	}
 		
