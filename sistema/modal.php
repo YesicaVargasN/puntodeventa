@@ -54,16 +54,20 @@ if ($_POST['action'] == 'searchCliente') {
 }
 // registrar cliente = ventas
 if ($_POST['action'] == 'addCliente') {
-  $dni = $_POST['dni_cliente'];
-  $nomnre = $_POST['nom_cliente'];
+
+  $dni = $_POST['dni_cliente']; 
+  $nombre = $_POST['nom_cliente'];
   $telefono = $_POST['tel_cliente'];
   $direccion = $_POST['dir_cliente'];
   $usuario_id = $_SESSION['idUser'];
 
-  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id, fecha) VALUES ('$dni','$nomnre','$telefono','$direccion','$usuario_id', now())");
+  //$dni=nextDni();
+  $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni, nombre, telefono, direccion, usuario_id, fecha) VALUES ('$dni','$nombre','$telefono','$direccion','$usuario_id', now())");
+ 
   if ($query_insert) {
     $codCliente = mysqli_insert_id($conexion);
     $msg = $codCliente;
+   
   }else {
     $msg = 'error';
   }
@@ -399,16 +403,17 @@ if ($_POST['action'] == 'procesarVenta') {
   }
   /*QUITAMOS EL SIGNO DE PESOS*/
   $pagocon = str_replace("$", "", $pagocon);
-
+  $pagocon = str_replace(",", "", $pagocon);
     $newDate = date("Y/m/d", strtotime($fechaven));
 
   if ($result > 0) {
   $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
-  //echo $sql;    
+ // echo $sql;    
   $query_procesar = mysqli_query($conexion, $sql,);
     $result_detalle = mysqli_num_rows($query_procesar);
-    if ($result_detalle > 0) {
+    if ($result_detalle > 0) {    
       $data = mysqli_fetch_assoc($query_procesar);
+      //historia('Se registro una venta por $'.$data['totalventa'].' y con numero de factura '.$data['nofactura'].'');
       echo json_encode($data,JSON_UNESCAPED_UNICODE);
     }else {
       echo "error2";
@@ -605,34 +610,6 @@ if ($_POST['action'] == 'cerrarCorte') {
 
 
 
-//exit;
-// registrar cliente = ventas
-if ($_POST['action'] == 'addAbono') {  
-  $nofactura = $_POST['nofactura'];
-  $pago = $_POST['pagoabono'];
-  $tipopago = $_POST['tipopago'];
-  $total = $_POST['total'];
-  $referencia = $_POST['numreferenciaabono'];
-  $usuario_id = $_SESSION['idUser'];
-  $adeudo = $_POST['adeudo'];
-  $adeudo=floatval($adeudo)-floatval($pago);
-  $sql="INSERT INTO abonos(nofactura, fecha, total, pago, adeudo,idtipopago,usuario_id,referencia) VALUES ('$nofactura',now(),'$total','$pago','$adeudo',$tipopago,'$usuario_id','$referencia')";
-//echo $sql;
-  $query_insert = mysqli_query($conexion, $sql);
-  if ($query_insert) {
-    $codCliente = mysqli_insert_id($conexion);
-    $msg = $codCliente;
-    historia('Se registro un nuevo abono para la factura '.$nofactura.' por la cantidad de '.$pago);
-
-  }else {
-    historia('Error al registrar un nuevo abono para la factura '.$nofactura.' por la cantidad de '.$pago);
-    $msg = 'error';
-  }
-  mysqli_close($conexion);
-  echo $msg;
-  exit;
-}
-
 
 
 if ($_POST['action'] == 'guardarAjuste') {  
@@ -735,9 +712,10 @@ if ($_POST['action'] == 'productoDetalleValida') {
         echo 'error';
         }else { 
           $codproducto = $_POST['producto'];
-$token = md5($_SESSION['idUser']);
-$sql="select sum(cantidad) as cantidad   from detalle_temp where codproducto=".$codproducto." and token_user='".$token."'";
-$query = mysqli_query($conexion, $sql);
+       $token = md5($_SESSION['idUser']);
+      $sql="select sum(cantidad) as cantidad   from detalle_temp where codproducto=".$codproducto."";
+    //echo $sql;
+     $query = mysqli_query($conexion, $sql);
      mysqli_close($conexion);
      $result = mysqli_num_rows($query);
      if ($result > 0) {
@@ -750,5 +728,24 @@ $query = mysqli_query($conexion, $sql);
 }
 exit;
 }
+
+
+// Next IdCliente
+if ($_POST['action'] == 'nextIdcliente') {
+  
+	$sql = "select Max(idcliente)+1 as idcliente from cliente order by idcliente desc";
+  //echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     echo $data["idcliente"];
+      exit;
+    }else{
+      $data = "1";
+    }
  
+  exit;
+}
  ?>

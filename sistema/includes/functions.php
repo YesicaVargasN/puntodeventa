@@ -236,30 +236,6 @@
 		}
 	}
  
-function sugerencia($msg){
-			$msg = '
-			<div id="sugerencias" style="margin-top:10px;">
-				<table border="0"><tr>
-					<td><img src="./icon/sugerencia.png" class="icono"></td>
-					<td class="normal" style="font-size:8pt;">
-						'.$msg.'
-					</td></tr></table>
-				</div>
-				';
-				return $msg;
-}
-function error($msg){
-	$msg = '
-	<div id="sugerencias" style="margin-top:10px;">
-		<table border="0"><tr>
-			<td><img src="./icon/sugerencia.png" class="icono"></td>
-			<td class="normal" style="font-size:8pt;">
-				'.$msg.'
-			</td></tr></table>
-		</div>
-		';
-		return $msg;
-}
 
 
 
@@ -405,16 +381,45 @@ function HayCajaAbierta(){
 function historia($descripcion){
 	include "../conexion.php";
 	$usuario_id = $_SESSION['idUser'];	
+	$fachaactual=date('Y-m-d h:i:s a', time());
 	$sql = "INSERT INTO historia
 	(user, fecha, descripcion)
 	VALUES
-	('$usuario_id', now(), '$descripcion')";
-	//echo $sql;
+	('$usuario_id', '$fachaactual', '$descripcion')";
+	echo $sql;
 	$query_insert = mysqli_query($conexion, $sql);
-	if ($query_insert) { 
-	} else {
+	$error_message = mysqli_error($conexion);
+	if ($query_insert) {
+	} 
+	else {
 	}
+
+
+
+    // if($error_message == ""){
+    //     echo "No error related to SQL query.";
+    // }else{
+    //     echo "Query Failed: ".$error_message;
+    // }
 		
+}
+
+function nextDni(){
+	include "../conexion.php";
+	$sql = "select Max(idcliente+1) as idcliente from cliente";			
+	//echo $sql;		
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+	{
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+						
+				return $f['idcliente'];
+			}
+		 else {return FALSE;}
+	}
 }
 
 ?>

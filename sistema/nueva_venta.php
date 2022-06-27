@@ -8,19 +8,21 @@ if(HayCajaAbierta()==0)
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">
-                <h4 class="text-center">Datos del Cliente</h4>
+                <h4 class="text-center">Datos del Cliente </h4>
                 <a href="#" class="btn btn-primary btn_new_cliente"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
+                <a href="#" class="btn btn-secondary"  name="btnBuscarCliente" id="btnBuscarCliente"data-toggle="modal" data-target="#modalBusquedacliente"><i class="fas fa-user"></i> Buscar Cliente</a>
             </div>
             <div class="card">
                 <div class="card-body">
-                    <form method="post" name="form_new_cliente_venta" id="form_new_cliente_venta">
+                    <form method="post" name="form_new_cliente_venta" id="form_new_cliente_venta" autocomplete="off" >
                         <input type="hidden" name="action" value="addCliente">
                         <input type="hidden" id="idcliente" value="1" name="idcliente" required>
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Dni</label>
-                                    <input type="number" name="dni_cliente" id="dni_cliente" class="form-control">
+                                    <label>IdCliente</label>
+                                    <input type="text" name="dni_cliente"  id="dni_cliente" class="form-control">
+                                   
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -38,7 +40,7 @@ if(HayCajaAbierta()==0)
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Dirreción</label>
-                                    <input type="text" name="dir_cliente" id="dir_cliente" class="form-control" disabled required>
+                                    <input type="text" name="dir_cliente" id="dir_cliente" class="form-control" disabled required>                                  
                                 </div>
 
                             </div>
@@ -236,4 +238,87 @@ if(HayCajaAbierta()==0)
     </div>
   </div>
   <!-- mensajeicono("Venta Realizada correctamente","","","info"); -->
+
+
+  <div class="modal fade" id="modalBusquedacliente" tabindex="-1" role="dialog" aria-labelledby="modalBusquedaclienteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 120%;">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">BuscarCliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">      
+        <div>
+          <div class="card">
+              <div class="card-body">
+                  <form id="formulario" >
+                  <div class="row">
+		<div class="col-lg-12">
+
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered" id="table">
+					<thead class="thead-dark">
+						<tr>
+							<!-- <th>ID</th> -->
+							<th>DNI</th>
+							<th>NOMBRE</th>
+							<th>TELEFONO</th>
+							<th>DIRECCIÓN</th>
+							<?php if ($_SESSION['rol'] == 1) { ?>
+							<th></th>
+							<?php } ?>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						include "../conexion.php";
+
+						$query = mysqli_query($conexion, "SELECT * FROM cliente");
+						$result = mysqli_num_rows($query);
+						if ($result > 0) {
+							while ($data = mysqli_fetch_assoc($query)) { ?>
+								<tr>
+									<!-- <td><?php echo $data['idcliente']; ?></td> -->
+									<td><?php echo $data['dni']; ?></td>
+									<td><?php echo $data['nombre']; ?></td>
+									<td><?php echo $data['telefono']; ?></td>
+									<td><?php echo $data['direccion']; ?></td>
+								
+									<td> <center>
+										<a class="btn btn-success" onclick="seleccionarCliente('<?php echo $data['dni']; ?>');"><i class='fa fa-reply' style="color:white"></i></a>
+										<!-- <form action="eliminar_cliente.php?id=<?php echo $data['idcliente']; ?>" method="post" class="confirmar d-inline">
+											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+										</form> -->
+                                    </center>
+									</td>
+									
+								</tr>
+						<?php }
+						} ?>
+					</tbody>
+
+				</table>
+			</div>
+
+		</div>
+	</div>
+                    </form>                  
+                </div>
+          </div>
+      </div>
+        </div>
+        <div class="alert alertCambio"></div>
+        <div class="modal-footer">    
+        <button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
 <?php include_once "includes/footer.php"; ?>

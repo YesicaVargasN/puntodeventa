@@ -104,8 +104,28 @@ $('.btn_new_cliente').click(function(e) {
   $('#nom_cliente').removeAttr('disabled');
   $('#tel_cliente').removeAttr('disabled');
   $('#dir_cliente').removeAttr('disabled');
-
+  //$('#dir_cliente').removeAttr('disabled');
+  $('#nom_cliente').focus();
   $('#div_registro_cliente').slideDown();
+
+  var action = 'nextIdcliente';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action},
+    success: function(response) {
+    //console.log(response);
+    var data = $.parseJSON(response);
+      $('#dni_cliente').val(data);
+      $('#idcliente').val(data);
+      $('#dni_cliente').attr('disabled','disabled');
+      $('#nom_cliente').focus();
+    },
+    error: function(error) {
+
+    }
+  });
 
 });
 
@@ -127,9 +147,11 @@ $('#dni_cliente').keyup(function(e) {
         $('#dir_cliente').val('');
         // mostar boton agregar
         $('.btn_new_cliente').slideDown();
+      
       }else {
         var data = $.parseJSON(response);
         $('#idcliente').val(data.idcliente);
+        $('#dni_cliente').val(data.idcliente);
         $('#nom_cliente').val(data.nombre);
         $('#tel_cliente').val(data.telefono);
         $('#dir_cliente').val(data.direccion);
@@ -153,8 +175,10 @@ $('#dni_cliente').keyup(function(e) {
 
         // ocultar boton Agregar
         $('.btn_new_cliente').slideUp();
+        $('#btnBuscarCliente').slideUp();
 
         // Bloque campos
+      
         $('#nom_cliente').attr('disabled','disabled');
         $('#tel_cliente').attr('disabled','disabled');
         $('#dir_cliente').attr('disabled','disabled');
@@ -170,7 +194,8 @@ $('#dni_cliente').keyup(function(e) {
 });
 
 // crear cliente = Ventas
-$('#form_new_cliente_venta').submit(function(e) {
+$('#form_new_cliente_venta').submit(function(e) {  
+  $('#dni_cliente').removeAttr('disabled');
   e.preventDefault();
   $.ajax({
     url: 'modal.php',
@@ -181,14 +206,16 @@ $('#form_new_cliente_venta').submit(function(e) {
       if (response  != 0) {
         // Agregar id a input hidden
         $('#idcliente').val(response);
+        $('#dni_cliente').val(response);
         //bloque campos
+        $('#dni_cliente').attr('disabled','disabled');
         $('#nom_cliente').attr('disabled','disabled');
         $('#tel_cliente').attr('disabled','disabled');
         $('#dir_cliente').attr('disabled','disabled');
         // ocultar boton Agregar
         $('.btn_new_cliente').slideUp();
         //ocultar boton Guardar
-        $('#div_registro_cliente').slideDown();
+        $('#div_registro_cliente').slideUp();
       }
     },
     error: function(error) {
@@ -302,49 +329,38 @@ $('#txt_cant_producto').keyup(function(e) {
 
 
 $('#add_product_venta').click(function(e) {
-  e.preventDefault();
- 
+  e.preventDefault(); 
   if ($('#txt_cant_producto').val() > 0) {
-
-    var codproducto = $('#txt_cod_producto').val();    
-
-
- 
-   //validar que exista una  caja abierta
-   codproducto= $('#txt_cant_producto').val();
-   var action = 'productoDetalleValida';
-  //  $.ajax({
-  //    url: 'modal.php',
-  //    type: 'POST',
-  //    async: true,
-  //    data: {action:action,producto:codproducto},
-  //    success: function(response) {
-  //     existencia= parseInt($('#txt_existencia').html());
-  // console.log(response);
-  // console.log(existencia);
-  //     if(response==existencia)
-  //     {
-  //      Swal.fire({
-  //        icon: 'error',
-  //        title: 'Oops...',
-  //        text: '¡Ya no puede agegar mas productos, revasaria el stock exitente!',
-  //        footer: ''
-  //      });
-  //      return;
-  //    }
-      
-      
-  //    },
-  //    error: function(error) {
-   
-  //    }
-  //  });
+    var existencia= parseInt($('#txt_existencia').html());
+    var action = 'productoDetalleValida';
+    var codproducto = $('#txt_cod_producto').val();   
+    var cantidad=$('#txt_cant_producto').val();
+    $.ajax({
+      url: 'modal.php',
+      type: 'POST',
+      async: true,
+      data: {action:action,producto:codproducto},
+      success: function(response) {    
+       
+       if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
+       {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '¡Ya no puede agegar mas productos, revasaria el stock exitente!',
+          footer: ''
+        });
+        return;
+      }
+       
+       
+      },
+      error: function(error) {
+    
+      }
+    });
 
 
-
-
-
-    var cantidad = $('#txt_cant_producto').val();
     var action = 'addProductoDetalle';
     $.ajax({
       url: 'modal.php',
@@ -356,7 +372,7 @@ $('#add_product_venta').click(function(e) {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
-          $('#totalmodal').val(info.totalmodal);     
+          $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));             
           $('#txt_cod_producto').val('');
           $('#txt_cod_pro').val('');
           $('#txt_descripcion').html('-');
@@ -410,8 +426,6 @@ $('#btn_anular_venta').click(function(e) {
 // facturar venta
 $('#btn_facturar_venta').click(function(e) {
   e.preventDefault();
-
-
   var rows = $('#detalle_venta tr').length;  
   var action = 'procesarVenta';
   var codcliente = $('#idcliente').val();
@@ -456,7 +470,7 @@ $('#btn_facturar_venta').click(function(e) {
       (response); 
       console.log(response);
       if (response != 0) {
-        
+        console.log(response);
         var info = JSON.parse(response);        
         generarPDF(info.codcliente,info.nofactura);
         location.reload();
@@ -604,7 +618,7 @@ function del_product_detalle(correlativo) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(info.totalmodal);          
+        $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));          
         $('#txt_cod_producto').val('');
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -657,7 +671,7 @@ function searchForDetalle(id) {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
         $('#detalle_totales').html(info.totales);
-        $('#totalmodal').val(formatter.format(info.totalmodal));          
+        $('#totalmodal').val(MASK('', (info.totalmodal),'$##,###,##0.00',1));          
       }
       viewProcesar();
     },
@@ -962,12 +976,6 @@ $('#pagar_con').keyup(function(e) {
 });
 
 
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
-})
-
-
 
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipoven').on('change', function() {
@@ -1140,8 +1148,8 @@ function abrirModalAbono(numcredito,total,saldo)
   $('#tipoven').val(2); 
   $('#tipoven').change();
   $('#numcredito').val(numcredito); 
-  $('#totalmodalC').val(formatter.format(total)); 
-  $('#saldo').val(formatter.format(saldo));
+  $('#totalmodalC').val( MASK('', (total),'$##,###,##0.00',1));  
+  $('#saldo').val(MASK('', (saldo),'$##,###,##0.00',1));
   $('#divSaldo').slideDown();   
   $('#divFechaVencimiento').slideUp();     
   $('#exampleModal').modal('show');
@@ -1425,7 +1433,44 @@ $('#txt_cant_producto').keyup(function() {
     })
    $('#txt_cant_producto').val("");
   }
+  var existencia= parseInt($('#txt_existencia').html());
+  var action = 'productoDetalleValida';
+  var codproducto = $('#txt_cod_producto').val();   
+  var cantidad=$('#txt_cant_producto').val();
+  $.ajax({
+    url: 'modal.php',
+    type: 'POST',
+    async: true,
+    data: {action:action,producto:codproducto},
+    success: function(response) {  
+      console.log(response);
+      console.log(parseInt(response)+parseInt(cantidad))  ;
+     if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
+     {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '¡Ya no puede agegar mas productos, revasaria el stock exitente!',
+        footer: ''
+      });
+      return;
+    }
+     
+     
+    },
+    error: function(error) {
+  
+    }
+  });
+
+
+
 });
+
+
+
+
+
 jQuery('#ajusteinventario').on('hidden.bs.modal', function (e) {
   jQuery(this).removeData('bs.modal');
   //jQuery(this).find('.alertAddProduct').empty();
@@ -1470,3 +1515,74 @@ $('#iva').keyup(function(e) {
   //$('#total').val(suma);
   
 }*/
+
+
+
+
+
+function seleccionarCliente(dnicliente)
+{
+ 
+  cl=dnicliente;  
+  var action = 'searchCliente';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,cliente:cl},
+    success: function(response) {
+      if (response == 0) {
+        $('#idcliente').val('');
+        $('#nom_cliente').val('');
+        $('#tel_cliente').val('');
+        $('#dir_cliente').val('');
+        // mostar boton agregar
+        $('.btn_new_cliente').slideDown();
+      }else {
+        var data = $.parseJSON(response);
+        $('#dni_cliente').val(data.dni);
+        $('#idcliente').val(data.idcliente);
+        $('#nom_cliente').val(data.nombre);
+        $('#tel_cliente').val(data.telefono);
+        $('#dir_cliente').val(data.direccion);
+        cl=data.idcliente;
+      
+        var action = 'searchClienteCredito';
+        $.ajax({
+          url: 'modal.php',
+          type: "POST",
+          async: true,
+          data: {action:action,cliente:cl},
+          success: function(response) {
+            var info = $.parseJSON(response);
+            $('#divCreditos').html(info.detalle);
+          },
+          error: function(error) {
+      
+          }
+        });
+
+
+        // ocultar boton Agregar
+        $('.btn_new_cliente').slideUp();
+        $('#btnBuscarCliente').slideUp();
+        // Bloque campos
+        $('#nom_cliente').attr('disabled','disabled');
+        $('#tel_cliente').attr('disabled','disabled');
+        $('#dir_cliente').attr('disabled','disabled');
+        // ocultar boto Guardar
+        $('#div_registro_cliente').slideUp();
+        $('#modalBusquedacliente').modal('hide');
+      }
+
+    },
+    error: function(error) {
+
+    }
+  });
+
+
+
+
+
+}
