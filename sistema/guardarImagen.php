@@ -34,10 +34,13 @@ if ($result > 0) {
         //echo $sql;
         $query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
+            historia('Se registro el nuevo código '.$text);
+
             echo '<div class="alert alert-primary" role="alert">
                                 Código Registrado.
                             </div>';
         } else {
+            historia('Error al intentar guardar el registro del el nuevo código '.$text);
             echo '<div class="alert alert-danger" role="alert">
                                 Error al guardar el codigo generado, favor de intentarlo nuevamente.
                         </div>';

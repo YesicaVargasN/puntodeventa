@@ -1,24 +1,15 @@
 <?php include_once "includes/header.php"; ?>
-
-
-
-
 <?php
-
-$alert = '<div class="alert alert-primary" role="alert">
-            Categoría eliminada con éxito
-        </div>';
 
     if(isset($_GET['ideliminar'])){
         require("../conexion.php");
         $id = $_GET['ideliminar'];
-        $query_delete = mysqli_query($conexion, "DELETE FROM cat_departamento WHERE iddepartamento = $id");
-        mysqli_close($conexion);
-        echo $alert;
+        $query_delete = mysqli_query($conexion, "DELETE FROM cat_unidadmedida WHERE idunidadmedida = $id");
+        //mysqli_close($conexion);
+		historia('Se elimino con éxito la medida '.$id);
+		mensajeicono('Se ha eliminado con éxito la medida!', 'lista_medida.php','','exito');
+
     }
-
-
-
 ?>
 
 <!-- Begin Page Content -->
@@ -58,8 +49,9 @@ $alert = '<div class="alert alert-primary" role="alert">
                                     <td><?php echo $data['nombrecorto']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
-										<form action="lista_cat.php?ideliminar=<?php echo $data['idunidadmedida']; ?>" method="post" class="confirmar d-inline">
-											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+										<form action="lista_medida.php" method="get" class="confirmar d-inline">
+										<input type='hidden' id='ideliminar' name='ideliminar'	value='<?php echo $data['idunidadmedida']; ?>'>
+										<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>
 									<?php } ?>

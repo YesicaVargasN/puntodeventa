@@ -12,9 +12,11 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_departamento(iddepartamento,departamento) values ('', '$nombre')");
         if ($query_insert) {
+            historia('Se registro la nueva categoría '.$nombre);
             mensajeicono('Se ha registrado con éxito la nueva categoría!', 'lista_cat.php','','exito');
 
         } else {
+            historia('Error al intenar registrar la nueva categoría '.$nombre);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_cat.php','','error');
 
         }

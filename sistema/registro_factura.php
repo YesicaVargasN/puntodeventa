@@ -4,7 +4,9 @@ include "../conexion.php";
 
 
 ?>
+<script>
 
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Content Row -->
@@ -49,7 +51,7 @@ include "../conexion.php";
                     </div>
                     <div class="form-group">
                         <label for="contacto">IVA</label>
-                        <input type="text" placeholder="Ingrese el IVA de la factura" name="iva" id="iva" class="form-control" required>
+                        <input type="text" placeholder="Ingrese el IVA de la factura"  name="iva" id="iva" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="contacto">Total</label>
@@ -71,8 +73,6 @@ include "../conexion.php";
             </div>
         </div>
     </div>
-
-
 </div>
 <!-- /.container-fluid -->
 <?php include_once "includes/footer.php"; ?>

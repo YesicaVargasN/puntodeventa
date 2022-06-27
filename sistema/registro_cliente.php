@@ -22,9 +22,11 @@ if (!empty($_POST)) {
         } else {
             $query_insert = mysqli_query($conexion, "INSERT INTO cliente(dni,nombre,telefono,direccion, usuario_id, fecha) values ('$dni', '$nombre', '$telefono', '$direccion', '$usuario_id', now())");
             if ($query_insert) {
+                historia('Se registro el nuevo cliente '.$dni);
                 mensajeicono('Se ha registrado con éxito la nuevo cliente!', 'lista_cliente.php','','exito');
 
             } else {
+                historia('Error al intentar registrar el nuevo cliente '.$dni);
                 mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_cliente.php','','error');
             }
         }

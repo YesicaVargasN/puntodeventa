@@ -22,9 +22,11 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO proveedor(proveedor,contacto,telefono,direccion,usuario_id) values ('$proveedor', '$contacto', '$telefono', '$Direccion','$usuario_id')");
         if ($query_insert) {
+            historia('Se registro el nuevo proveedor '.$proveedor);
             mensajeicono('Se ha registrado con éxito el proveedor!', 'lista_proveedor.php','','exito');
 
         } else {
+            historia('Error al intentar registrar el nuevo proveedor '.$proveedor);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_proveedor.php','','error');
             
         }

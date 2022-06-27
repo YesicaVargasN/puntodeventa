@@ -402,4 +402,19 @@ function HayCajaAbierta(){
 	}
 }
 
+function historia($descripcion){
+	include "../conexion.php";
+	$usuario_id = $_SESSION['idUser'];	
+	$sql = "INSERT INTO historia
+	(user, fecha, descripcion)
+	VALUES
+	('$usuario_id', now(), '$descripcion')";
+	//echo $sql;
+	$query_insert = mysqli_query($conexion, $sql);
+	if ($query_insert) { 
+	} else {
+	}
+		
+}
+
 ?>

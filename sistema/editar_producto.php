@@ -26,9 +26,11 @@ if (!empty($_POST)) {
     $moduser = $_SESSION['idUser'];
     $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser' WHERE codproducto = $codproducto");
     if ($query_update) {
+      historia('Se actualizo el producto '.$codproducto);
       mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
 
     } else {
+      historia('Error al actualizar el producto '.$codproducto);
       mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_productos.php','','error');
 
     }

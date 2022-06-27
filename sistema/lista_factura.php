@@ -25,15 +25,11 @@ if(isset($_FILES['archivo']['name'])){
 		//echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
-           /* $alert = '<div class="alert alert-primary" role="alert">
-                       Gasto Registrado
-                    </div>';*/
+			historia('Se registro un nuevo gasto '.$numarchivo.'_'.$doc);
 			mensajeicono('Se ha registrado con éxito el nuevo gasto!', 'lista_factura.php','','exito');
 			
         } else {
-           /* $alert = '<div class="alert alert-danger" role="alert">
-                       Error al registrar los gastos
-                    </div>';*/
+			historia('Error al intentar ingresar un nuevo gasto '.$numarchivo.'_'.$doc);
 			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
         }
     }
@@ -43,6 +39,7 @@ if(isset($_FILES['archivo']['name'])){
 		/*$alert = '<div class="alert alert-danger" role="alert">
 		La subida ha fallado
 	 </div>';*/
+	 historia('Error al intentar subir el archivo del nuevo gasto '.$numarchivo.'_'.$doc);
 	 mensajeicono('Hubo un error en la subida del archivo, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
 		
 	}

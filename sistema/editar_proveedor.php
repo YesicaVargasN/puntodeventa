@@ -16,9 +16,11 @@ if (!empty($_POST)) {
     $sql_update = mysqli_query($conexion, "UPDATE proveedor SET proveedor = '$proveedor', contacto = '$contacto' , telefono = $telefono, direccion = '$direccion' WHERE codproveedor = $idproveedor");
 
     if ($sql_update) {
+      historia('Se actualizo el proveedor '.$idproveedor);
       mensajeicono('Se ha actualizado con éxito el proveedor!', 'lista_proveedor.php','','exito');
 
     } else {
+      historia('Error al actualizar el proveedor '.$idproveedor);
       mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_proveedor.php','','error');
 
     }

@@ -14,6 +14,7 @@ if (!empty($_POST)) {
     $rol = $_POST['rol'];
 
     $sql_update = mysqli_query($conexion, "UPDATE usuario SET nombre = '$nombre', correo = '$correo' , usuario = '$usuario', rol = $rol WHERE idusuario = $idusuario");
+    historia('Se actualizo el usuario '.$idusuario);
     mensajeicono('Se ha registrado con éxito la actualización del usuario!', 'lista_usuarios.php','','exito');
 
   }

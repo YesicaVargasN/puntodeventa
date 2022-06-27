@@ -1,24 +1,13 @@
 <?php include_once "includes/header.php"; ?>
-
-
-
-
 <?php
-
-$alert = '<div class="alert alert-primary" role="alert">
-            Categoría eliminada con éxito
-        </div>';
-
     if(isset($_GET['ideliminar'])){
         require("../conexion.php");
         $id = $_GET['ideliminar'];
         $query_delete = mysqli_query($conexion, "DELETE FROM cat_departamento WHERE iddepartamento = $id");
-        mysqli_close($conexion);
-        echo $alert;
+		historia('Se elimino la categoria '.$id);
+		mysqli_close($conexion);
+		mensajeicono('Se ha eliminado con éxito la categoría!', 'lista_cat.php','','exito');
     }
-
-
-
 ?>
 
 <!-- Begin Page Content -->

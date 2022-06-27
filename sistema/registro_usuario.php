@@ -22,9 +22,11 @@ if (!empty($_POST)) {
         } else {
             $query_insert = mysqli_query($conexion, "INSERT INTO usuario(nombre,correo,usuario,clave,rol) values ('$nombre', '$email', '$user', '$clave', '$rol')");
             if ($query_insert) {
+                historia('Se registro el nuevo usuario '.$user);
                 mensajeicono('Se ha registrado con éxito el usuario!', 'lista_usuarios.php','','exito');
 
             } else {
+                historia('Error al intentar registrar el nuevo usuario '.$user);
                 mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_usuarios.php','','error');
 
             }

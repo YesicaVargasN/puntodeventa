@@ -113,8 +113,6 @@
   </div>
 </div>
 
-
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -179,7 +177,8 @@
 									</td>
 									<?php } ?>
 									<td>
-										<form action='rep_cortecaja.php?idcorte=<?php echo $data['Id']; ?>' method='GET' >
+										<form action='rep_cortecaja.php' method='GET' >
+										<input type='hidden' value='<?php echo $data['Id']; ?>' name='idcorte' id='idcorte'>
 											<button class="btn btn-info" type="submit"><i class="fas fa-file-pdf"></i> </button>
 										</form>
 									</td>

@@ -12,9 +12,11 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_unidadmedida(unidadmedida,activo, nombrecorto) values ('$medida', '1','$nombrecorto' )");
         if ($query_insert) {
+            historia('Se registro la nueva medida '.$medida);
             mensajeicono('Se ha registrado con éxito la nueva medida!', 'lista_medida.php','','exito');
 
         } else {
+            historia('Error al intentar registrar la nueva medida '.$medida);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_medida.php','','error');
 
         }

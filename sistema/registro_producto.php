@@ -26,9 +26,11 @@
 
       $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now())");
       if ($query_insert) {
+        historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
 
       } else {
+        historia('Error al intentar registrar el nuevo producto '.$codigo);
         mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_productos.php','','error');
       }
     }

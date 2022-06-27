@@ -51,6 +51,7 @@ include "../conexion.php";
 		</button>
         <!-- Button trigger modal -->
     </div>
+    <div id='respuesta' name='respuesta'></div>
     <div class="row">
         <div class="col-lg-12">
             <div class="table-responsive">

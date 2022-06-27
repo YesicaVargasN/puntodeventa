@@ -1012,22 +1012,41 @@ $('#btn_guardarcorte').click(function(e) {
     data: {action:action,montoinicial: montoinicial},
     success: function(response) {
       if(response.includes('ok')==true){
+        $('#abrircorte').modal('hide');
         Swal.fire({
           icon: 'success',
           title: 'Hecho!',
           text: 'Se ha registrado con éxito el nuevo corte de caja!',
           footer: ''
         })
+        .then(() => {
+          location.reload();
+        })
         //location.reload();
-      }else{
+      }else if(responde == 1){
+        $('#abrircorte').modal('hide');
         Swal.fire({
           icon: 'error',
           title: 'Opss',
-          text: response,
+          text: 'No se puede hacer corte de caja sin registro de ventas.',
           footer: ''
+        })
+        .then(() => {
+          location.reload();
         })
        // $('.alertAddProduct').html(response);
        // $("#abrircorte input").val("");
+      }else{
+        $('#abrircorte').modal('hide');
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss',
+          text: 'Hubo un error, favor de intentarlo nuevamente.',
+          footer: ''
+        })
+        .then(() => {
+          location.reload();
+        })
       }
       
 
@@ -1064,11 +1083,40 @@ $('#btn_cerrarcorte').click(function(e) {
     success: function(response) {
       if(response.includes('ok')==true){
         console.log(response);
-        window.location='rep_cortecaja.php?idcorte='+idcorte;
+        $('#cerrarcorte').modal('hide');
+        Swal.fire({
+          icon: 'success',
+          title: 'Hecho!',
+          text: 'Se ha cerrado con éxito el corte de caja!',
+          footer: ''
+        })
+        .then(() => {
+          location.reload();
+        })
+        //window.location='rep_cortecaja.php?idcorte='+idcorte;
 
+      }else if(response.includes('1')){
+        $('#cerrarcorte').modal('hide');
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss',
+          text: 'No se puede hacer corte de caja sin registro de ventas.',
+          footer: ''
+        })
+        .then(() => {
+          location.reload();
+        })
       }else{
-        $('.alertAddProduct').html(response);
-        console.log(response);
+        $('#cerrarcorte').modal('hide');
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss',
+          text: 'Hubo un error, favor de intentarlo nuevamente.',
+          footer: ''
+        })
+        .then(() => {
+          location.reload();
+        })
       }
       
      
@@ -1309,6 +1357,9 @@ $('#btn_guardarajuste').click(function(e) {
       text: 'No puedes hacer salidas de un producto sin stock!',
       footer: ''
     })
+    .then(() => {
+      location.reload();
+    })
    
   }else{
 
@@ -1318,6 +1369,7 @@ $('#btn_guardarajuste').click(function(e) {
       async: true,
       data: {action:action,cod_pro:cod_pro, name:name,cantidad:cantidad, agregar:agregar},
       success: function(response) {
+        
         if(response.includes('ok')==true){
           console.log(response);
           $('#ajusteinventario').modal('hide');
@@ -1327,7 +1379,11 @@ $('#btn_guardarajuste').click(function(e) {
             text: 'Se ha registrado con éxito el ajuste!',
             footer: ''
           })
-
+          .then(() => {
+            location.reload();
+          })
+          
+        
           //window.location='ajuste_inventario.php';
           
           
@@ -1341,8 +1397,9 @@ $('#btn_guardarajuste').click(function(e) {
             text: 'Hubo un error, favor de intentarlo de nuevo.',
             footer: ''
           })
-          //window.location='ajuste_inventario.php';
-          console.log(response);
+          .then(() => {
+            location.reload();
+          })
         }
         
       
@@ -1373,3 +1430,43 @@ jQuery('#ajusteinventario').on('hidden.bs.modal', function (e) {
   jQuery(this).removeData('bs.modal');
   //jQuery(this).find('.alertAddProduct').empty();
 });
+
+$('#subtotal').keyup(function(e) {
+  e.preventDefault();
+  var suma = 0;
+  var subtotal = $('#subtotal').val();
+  if(subtotal == ''){
+    subtotal = 0;
+  }
+  var iva = $('#iva').val();
+  if(iva == ''){
+    iva = 0;
+  }
+  suma = (parseFloat(subtotal) + parseFloat(iva));
+  $('#total').val(suma);
+});
+
+$('#iva').keyup(function(e) {
+  e.preventDefault();
+  var suma = 0;
+  var subtotal = $('#subtotal').val();
+  if(subtotal == ''){
+    subtotal = 0;
+  }
+  var iva = $('#iva').val();
+  if(iva == ''){
+    iva = 0;
+  }
+  suma = (parseFloat(subtotal) + parseFloat(iva));
+  $('#total').val(suma);
+});
+
+/*function calcular_total(){
+  var suma = 0;
+  var subtotal = $('#subtotal').val();
+  var iva = $('#iva').val();
+  suma = (parseFloat(subtotal) + parseFloat(iva));
+  document.getElementById("total").value=MASK('', (suma),'$##,###,##0.00',1);
+  //$('#total').val(suma);
+  
+}*/

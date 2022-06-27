@@ -13,9 +13,11 @@ if (!empty($_POST)) {
 
         $query_insert = mysqli_query($conexion, "INSERT INTO cat_secciones(seccion, iddepartamento) values ('$seccion', '$idcat')");
         if ($query_insert) {
+            historia('Se registro la nueva sección '.$seccion);
             mensajeicono('Se ha registrado con éxito la nueva sección!', 'lista_sec.php','','exito');
 
         } else {
+            historia('Error al intentar registrar la nueva sección '.$seccion);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_sec.php','','error');
 
         }

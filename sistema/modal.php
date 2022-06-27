@@ -486,6 +486,7 @@ if ($_POST['action'] == 'procesarVenta') {
     $result = mysqli_num_rows($query);
     if ($result > 0) {
       $data = mysqli_fetch_assoc($query);
+      historia('Se consulto la informacion de la factura '.$nofactura);
       echo json_encode($data,JSON_UNESCAPED_UNICODE);
       exit;
     }
@@ -529,9 +530,11 @@ if ($_POST['action'] == 'procesarVenta') {
           if ($query_update) {
             $code = '00';
             $msg = "su contraseña se ha actualizado con exito";
+            historia('Se actualizo la contraseña del usuario '.$idUser);
             header("Refresh:1; URL=salir.php");
           }else {
             $code = '2';
+            historia('Error al actualizar la contraseña del usuario '.$idUser);
             $msg = "No es posible actualizar su contraseña";
           }
         }else {
@@ -555,18 +558,17 @@ if ($_POST['action'] == 'procesarVenta') {
 if ($_POST['action'] == 'guardarCorte') {
   $montoinicial = $_POST['montoinicial'];
   $usuario_id = $_SESSION['idUser'];
-  //VERIFICAMOS PRIMERO QUE NO ESTE ABIERTO UN CORTE
-  if(revisarCortesAbiertos() == 0){
-    $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado, Usuario) values ('$montoinicial', now(), '0', '$usuario_id')");
-    mysqli_close($conexion);
-    if ($query_del) {
-      echo 'ok';
-    }else {
-      $data = 0;
-    }
-  }else{
-    echo 'ERROR: Existe un corte de caja abierto. (Primero debe cerrar el disponible para crear otro).';
+   
+  $query_del = mysqli_query($conexion, "INSERT INTO cortecaja(MontoInicial,FechaApertura,Estado, Usuario) values ('$montoinicial', now(), '0', '$usuario_id')");
+  mysqli_close($conexion);
+  if ($query_del) {
+    historia('Se creo un nuevo corte de caja');
+    echo 'ok';
+  }else {
+    historia('Error al crear el nuevo corte de caja');
+    $data = 0;
   }
+
   exit;
 }
 
@@ -581,7 +583,8 @@ if ($_POST['action'] == 'cerrarCorte') {
   //VERIFICAMOS PRIMERO QUE haya ventas
 
   if($montofinal == '' or $montofinal == 0){
-    echo 'Error: no hay ventas aun';
+    echo '1';
+    historia('Se intento cerrar caja sin ventas');
   }else{
     $sql = "UPDATE cortecaja SET MontoFinal = ".$montofinal.", FechaCierre = now(), TotalVentas = ".$totalventas.", MontoTotal = ".$montototal.", Estado = 1 WHERE Id = ".$id."";
     //echo $sql;
@@ -589,8 +592,10 @@ if ($_POST['action'] == 'cerrarCorte') {
     $query_del = mysqli_query($conexion, $sql);
     mysqli_close($conexion);
     if ($query_del) {
+      historia('Se hizo un cierre de corte de caja');
       echo 'ok';
     }else {
+      historia('Error al intentar hacer el cierre de corte de caja');
       $data = 0;
     }
   }
@@ -617,7 +622,10 @@ if ($_POST['action'] == 'addAbono') {
   if ($query_insert) {
     $codCliente = mysqli_insert_id($conexion);
     $msg = $codCliente;
+    historia('Se registro un nuevo abono para la factura '.$nofactura.' por la cantidad de '.$pago);
+
   }else {
+    historia('Error al registrar un nuevo abono para la factura '.$nofactura.' por la cantidad de '.$pago);
     $msg = 'error';
   }
   mysqli_close($conexion);
@@ -640,30 +648,35 @@ if ($_POST['action'] == 'guardarAjuste') {
     //SI NO EXISTE REGISTRO DE HOY, ES NUEVO
      //SI ES MENOR A CERO SE VA A QUITAR DEL STOCK
     if($agregar < 0){
-      echo 'entro a insert restando salidas';
+      //echo 'entro a insert restando salidas';
       $existencia  = $cantidad - abs($agregar);
       $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, salidas, usuario) VALUES ('$cod_pro','$name', now(), '$agregar', '$usuario_id')";
-      echo $sql;
+      //echo $sql;
         $query = mysqli_query($conexion, $sql);
         if ($query) {
           echo actualizarExistenciasenProducto($cod_pro, $existencia);
           echo 'ok';
+          historia('Se hizo un ajuste de inventario del producto '.$cod_pro);
         }else {
+          historia('Error al actualizar el inventario en la primer entrada del dia del producto '.$cod_pro);
           $data = 0;
+
         }
         
         
     }else{
-      echo 'entro a insert sumando entradas';
+      //echo 'entro a insert sumando entradas';
       $existencia  = $cantidad + ($agregar);
       $sql="INSERT INTO ajuste_inventario(codproducto, descripcion, fecha, entradas, usuario) VALUES ('$cod_pro','$name',now(), '$agregar', '$usuario_id')";
-      echo $sql;
+      //echo $sql;
   
       $query = mysqli_query($conexion, $sql);
       if ($query) {
         echo actualizarExistenciasenProducto($cod_pro, $existencia);
         echo 'ok';
+        historia('Se hizo un ajuste de inventario del producto '.$cod_pro);
       }else {
+        historia('Error al actualizar el inventario en la primer entrada del dia del producto '.$cod_pro);
         $data = 0;
       }
     }
@@ -675,31 +688,35 @@ if ($_POST['action'] == 'guardarAjuste') {
     $salidasAnt = salidasQueTenia($id);
    
     if($agregar < 0){
-      echo 'entro a actualizar restando salidas';
+      //echo 'entro a actualizar restando salidas';
       $entradas = $entradasAnt;
       $salidas  = $salidasAnt + ($agregar);
       $existencia  = $cantidad - abs($agregar);
       $sql="UPDATE ajuste_inventario SET entradas = '$entradas', salidas = '$salidas' WHERE id = '$id'";
-      echo $sql;
+      //echo $sql;
       $query = mysqli_query($conexion, $sql);
       if ($query) {
         echo actualizarExistenciasenProducto($cod_pro, $existencia);
+        historia('Se actualizo el ajuste de inventario del producto '.$cod_pro);
         echo 'ok';
       }else {
+        historia('Error al actualizar el inventario del producto '.$cod_pro);
         $data = 0;
       }
     }else{
-      echo 'entro a actualizar sumando entradas';
+      //echo 'entro a actualizar sumando entradas';
       $entradas = $entradasAnt + ($agregar);
-      $salidas  = $salidasAnt + ($agregar);
+      $salidas  = $salidasAnt;
       $existencia  = $cantidad + ($agregar);
       $sql="UPDATE ajuste_inventario SET entradas ='$entradas', salidas = '$salidas' WHERE id = '$id'";
-      echo $sql;
+      //echo $sql;
       $query = mysqli_query($conexion, $sql);
       if ($query) {
         echo actualizarExistenciasenProducto($cod_pro, $existencia);
+        historia('Se actualizo el ajuste de inventario del producto '.$cod_pro);
         echo 'ok';
       }else {
+        historia('Error al actualizar el inventario del producto '.$cod_pro);
         $data = 0;
       }
     }

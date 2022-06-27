@@ -1,24 +1,14 @@
 <?php include_once "includes/header.php"; ?>
-
-
-
-
 <?php
-
-$alert = '<div class="alert alert-primary" role="alert">
-            Categoría eliminada con éxito
-        </div>';
-
     if(isset($_GET['ideliminar'])){
         require("../conexion.php");
         $id = $_GET['ideliminar'];
-        $query_delete = mysqli_query($conexion, "DELETE FROM cat_departamento WHERE iddepartamento = $id");
-        mysqli_close($conexion);
-        echo $alert;
+        $query_delete = mysqli_query($conexion, "DELETE FROM cat_secciones WHERE idseccion = $id");
+        //mysqli_close($conexion);
+		historia('Se elimino la seccion '.$id);
+		mensajeicono('Se ha eliminado con éxito la sección!', 'lista_sec.php','','exito');
+
     }
-
-
-
 ?>
 
 <!-- Begin Page Content -->
@@ -56,7 +46,8 @@ $alert = '<div class="alert alert-primary" role="alert">
 									<td><?php echo $data['seccion']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
-										<form action="lista_sec.php?ideliminar=<?php echo $data['idseccion']; ?>" method="post" class="confirmar d-inline">
+										<form action="lista_sec.php" method="get" class="confirmar d-inline">
+											<input type='hidden' id='ideliminar' name='ideliminar'	value='<?php echo $data['idseccion']; ?>'>
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>

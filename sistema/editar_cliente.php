@@ -21,7 +21,8 @@ if (!empty($_POST)) {
     }
 
     if ($resul >= 1) {
-      $alert = '<div class="alert alert-danger" role="alert">El dni ya existe</div>';
+      mensajeicono('El identificador del cliente ya existe.', 'lista_cliente.php','','info');
+
     } else {
       if ($dni == '') {
         $dni = 0;
@@ -29,9 +30,11 @@ if (!empty($_POST)) {
       $sql_update = mysqli_query($conexion, "UPDATE cliente SET dni = $dni, nombre = '$nombre' , telefono = '$telefono', direccion = '$direccion' WHERE idcliente = $idcliente");
 
       if ($sql_update) {
-        $alert = '<div class="alert alert-success" role="alert">Cliente Actualizado correctamente</div>';
+        historia('Se ha actualizado el cliente '.$dni);
+        mensajeicono('Se ha actualizado el cliente con éxito!', 'lista_cliente.php','','exito');
       } else {
-        $alert = '<div class="alert alert-danger" role="alert">Error al Actualizar el Cliente</div>';
+        historia('Error al actualizar el cliente '.$dni);
+        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_cliente.php','','error');
       }
     }
   }

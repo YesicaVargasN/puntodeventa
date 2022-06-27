@@ -76,7 +76,7 @@
 					<tbody>
 						<?php
 						require "../conexion.php";
-						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura, estado ,idtipoventa,totalventa FROM factura ORDER BY nofactura DESC");
+						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura ORDER BY nofactura DESC");
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
 
