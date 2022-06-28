@@ -48,7 +48,8 @@
 						require "../conexion.php";
 
                         $sql="SELECT numcredito, creditos.fecha,totalventa as total,totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo,fechavencimiento,estado,nombre 
-                        FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente" ;
+                        FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
+                        WHERE creditos.estado!=2" ;
 						$query = mysqli_query($conexion,$sql);
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
@@ -60,15 +61,19 @@
 									<td><?php echo $dato['numcredito']; ?></td>                                   
 						            <td><?php echo  date_format( date_create($dato['fecha']), 'd/m/Y  H:i:s'); ?></td>
                                     <td><?php echo $dato['nombre']; ?></td>
-									<td><?php echo $dato['total']; ?></td>
-                                    <td><?php echo $dato['adeudo']; ?></td>
+									<td><?php echo  '$'.number_format($dato['total'], 2, '.', ','); ?></td>
+                                    <td><?php echo  '$'.number_format($dato['adeudo'], 2, '.', ',') ?></td>
                                     <td><?php echo date_format( date_create($dato['fechavencimiento']), 'd/m/Y');?></td>
                                     <td>
                                         <?php if( $dato['estado'] =='1')
                                     {
                                     echo '<span class="badge bg-success" style="color:white;">Activo</span>';
-                                    }else{
-                                     echo '   <span class="badge bg-danger" style="color:white;">Liquidada</span>';
+                                    }else if  ( $dato['estado'] =='0')
+                                    {
+                                     echo '   <span class="badge bg-danger" style="color:white;">Liquidado</span>';
+                                    }else
+                                    {
+                                        echo '   <span class="badge bg-danger" style="color:white;">Cancelado</span>';
                                     }
                                     ?>
                                   </td>
@@ -76,6 +81,9 @@
                                     <button id="abrirAbonos" name="abrirAbonos" type="button" id="abrir" class="btn btn-primary" data-toggle="modal" data-target="#mostrarCredito">
                                     Abrir
                                 </button>
+                                <form action="eliminar_credito.php?id=<?php echo $dato['numcredito']; ?>" method="post" class="cancelar d-inline">
+											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+										</form>
         
                                 <!-- Modal -->
                                 <div class="modal fade" id="mostrarCredito" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -100,30 +108,35 @@
                                                             <th>Total</th>
                                                             <th>Pago</th>
                                                             <th>Adeudo</th>
-                                                            <th>Acciones</th>
+                                                          
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
                                                         require "../conexion.php";
-                                                        $sql="SELECT *  FROM abonos where nofactura=".$dato['nofactura'];
+                                                        $sql=" SELECT numcredito, creditos.fecha,totalventa as total, (select totalfactura from factura where numcredito=creditos.numcredito) as pago,
+                                                        totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo, 
+                                                         fechavencimiento,estado,nombre   FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
+                                                        WHERE creditos.estado=1 and  creditos.numcredito = '". $dato['numcredito']."'" ;
                                                         $query1 = mysqli_query($conexion, $sql);
                                                         mysqli_close($conexion);
                                                         $cli1 = mysqli_num_rows($query1);
-
+                                                        $cont=0;
                                                         if ($cli1 > 0) {
+                                                            $cont=$cont+1;
                                                             while ($dato1 = mysqli_fetch_array($query1)) {
                                                         ?>
                                                                 <tr>
-                                                                    <td><?php echo $dato1['nofactura']; ?></td>
+                                                                    <td><?php echo $cont; ?></td>
                                                                 
                                                                     <td><?php echo  date_format( date_create($dato1['fecha']), 'd/m/Y  H:i:s'); ?></td>
-                                                                    <td><?php echo $dato['nombre']; ?></td>
-                                                                    <td><?php echo $dato1['total']; ?></td>
-                                                                    <td><?php echo $dato1['pago']; ?></td>
-                                                                    <td><?php echo $dato1['adeudo']; ?></td>
+                                                                    <td><?php echo $dato1['nombre']; ?></td>
+                                                                    <td><?php echo '$'.number_format($dato1['total'], 2, '.', ','); ?></td>
+                                                                    <td><?php echo '$'.number_format($dato1['pago'], 2, '.', ','); ?></td>
+                                                                    <td><?php echo '$'.number_format($dato1['adeudo'], 2, '.', ','); ?></td>
                                                                     <td></td>
                                                                 </tr>
+                                                                
                                                         <?php }
                                                         } ?>
                                                     </tbody>

@@ -347,7 +347,7 @@ $('#add_product_venta').click(function(e) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '¡Ya no puede agegar mas productos, revasaria el stock exitente!',
+          text: '¡Ya no puede agregar mas productos, revasaria el stock exitente!',
           footer: ''
         });
         return;
@@ -440,6 +440,7 @@ $('#btn_facturar_venta').click(function(e) {
       text: 'Debe especificar el nombre de un cliente , el credito no puede ser a publico en general!',
       footer: ''
     })
+    $('#exampleModal').modal('hide');
     $('#idcliente').focus();
     return;
   }
@@ -578,7 +579,21 @@ $(".confirmar").submit(function(e) {
     }
   })
 })
-
+$(".cancelar").submit(function(e) {
+  e.preventDefault();
+  Swal.fire({
+    title: 'Esta seguro de cancelar?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'SI, Cancelar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.submit();
+    }
+  })
+})
 
 }); // fin ready
 
@@ -952,7 +967,7 @@ $('#pagar_con').keyup(function(e) {
   
     if(tipopago==1)
     {
-     
+      $('#btn_facturar_venta').slideUp();
           if (cambio >= 0 ) {       
           document.getElementById("cambio").value=MASK('', (cambio),'$##,###,##0.00',1);
           $('.alertCambio').html('<p style="color : red;"></p>');

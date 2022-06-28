@@ -381,28 +381,23 @@ function HayCajaAbierta(){
 function historia($descripcion){
 	include "../conexion.php";
 	$usuario_id = $_SESSION['idUser'];	
-	$fachaactual=date('Y-m-d h:i:s a', time());
 	$sql = "INSERT INTO historia
 	(user, fecha, descripcion)
 	VALUES
-	('$usuario_id', '$fachaactual', '$descripcion')";
-	echo $sql;
+	('$usuario_id', now(), '$descripcion')";
+	//echo $sql;
 	$query_insert = mysqli_query($conexion, $sql);
-	$error_message = mysqli_error($conexion);
-	if ($query_insert) {
+	
+	if ($query_insert) { 
+		
 	} 
 	else {
+
 	}
 
-
-
-    // if($error_message == ""){
-    //     echo "No error related to SQL query.";
-    // }else{
-    //     echo "Query Failed: ".$error_message;
-    // }
-		
 }
+		
+
 
 function nextDni(){
 	include "../conexion.php";

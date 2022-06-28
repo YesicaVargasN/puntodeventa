@@ -149,7 +149,7 @@ if ($result_data > 0) {
 					<div id="collapseCredito" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<!-- //<a class="collapse-item" href="nueva_venta.php">Creditos</a> -->
-							<a class="collapse-item" href="creditos.php">Creditos</a>
+							<a class="collapse-item" href="lista_creditos.php">Creditos</a>
 						</div>
 					</div>
 				 </li>
