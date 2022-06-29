@@ -416,5 +416,21 @@ function nextDni(){
 		 else {return FALSE;}
 	}
 }
-
+function obtenerDatosFacturaNva($id){
+	include "../conexion.php";
+	$sql="select * from factura where referencia like CONCAT('DEV.#','".$id."')";	
+	echo $sql;			
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+	{
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+				$link='factura/generaFactura.php?cl='. $f['codcliente'].'&f='. $f['nofactura'].'';	
+				return $link;
+			}
+		 else {return '';}
+	}
+}
 ?>

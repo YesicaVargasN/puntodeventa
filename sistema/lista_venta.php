@@ -124,6 +124,8 @@ if(isset($_FILES['archivo']['name'])){
 										<form action="eliminar_gastos.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
+										
+        
 									</td>
 										<?php } ?>
 								</tr>

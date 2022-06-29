@@ -102,6 +102,14 @@
 		$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
 		// $pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
 		}
+		if($tipo=='3')
+		{		$pdf->Ln();	
+		$pdf->SetFont('Arial', 'B', 7);
+		$pdf->Cell(15, 5, "Tipo Venta: ", 0, 0, 'L');
+		$pdf->SetFont('Arial', '', 7);
+		$pdf->Cell(20, 5, 'DEVOLUCION', 0, 0, 'L');
+		
+		}
 		if($tipo=='2')
 		{		$pdf->Ln();	
 		$pdf->SetFont('Arial', 'B', 7);
@@ -114,7 +122,8 @@
 		$pdf->Cell(25, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
 		}
 
-		$pdf->Cell(78, 5,'**********************************************************************', 0, 1, 'C');
+		$pdf->Cell(78, 5,'', 0, 1, 'C');
+		$pdf->Cell(78, 5,'********************************************************************************', 0, 1, 'C');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(75, 5, "Detalle de Productos", 0, 1, 'C');
 		$pdf->Cell(78, 5,'********************************************************************************', 0, 1, 'C');
@@ -144,10 +153,11 @@
 			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
 			$pdf->Cell(76, 5,  'Cambio: $' .number_format(($pagocon-$totalventa), 2, '.', ','), 0, 1, 'R');	
 		}
-		else /*VENTA CREDITO*/
+		
+		else if($tipo==2)/*VENTA CREDITO*/
 		{
 			
-			{   $pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+			   $pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 				
 				/*EVALUAMOS SI HAY MAS ABONOS, PARA MOSTRAR EL SALDO*/ 	
 				if(nabonos($result_venta['numcredito'])>1){
@@ -156,7 +166,16 @@
 				$pdf->Cell(76, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
 				$pdf->Cell(76, 5, 'Resta: $' . number_format(($saldo-$pagocon), 2, '.', ','), 0, 1, 'R');
 			
-			}
+			
+		}else /*VENTA DEVOLUCION*/
+		{
+			
+			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
+			$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');	
+		
+			
+			
 		}
 		
 

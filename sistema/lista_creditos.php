@@ -78,11 +78,11 @@
                                     ?>
                                   </td>
 									<td>
-                                    <button id="abrirAbonos" name="abrirAbonos" type="button" id="abrir" class="btn btn-primary" data-toggle="modal" data-target="#mostrarCredito">
-                                    Abrir
+                                    <button title="Abrir" id="abrirAbonos" name="abrirAbonos" type="button" id="abrir" class="btn btn-primary" data-toggle="modal" data-target="#mostrarCredito">
+                                    <i class="fa fa-arrow-right" ></i>
                                 </button>
                                 <form action="eliminar_credito.php?id=<?php echo $dato['numcredito']; ?>" method="post" class="cancelar d-inline">
-											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
 										</form>
         
                                 <!-- Modal -->

@@ -89,6 +89,9 @@
 									<td><?php echo $dato['totalfactura']; ?></td>
 									<td>
 										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
+										<form action="eliminar_venta.php?id=<?php echo $dato['nofactura']; ?>" method="post" class="cancelar d-inline">
+											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
+										</form>
 									</td>
 								</tr>
 						<?php }
