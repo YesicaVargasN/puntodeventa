@@ -13,11 +13,12 @@ if (!empty($_GET['id'])) {
 
         $sql1 = "CALL cancelar_credito('".$id."','".$usuario."') ";
 		echo $sql1;	
-		$query1 = mysqli_query($conexion, $sql1);
-        echo $query1;
+		//$query1 = mysqli_query($conexion, $sql1);
+        //echo $query1;
 		if ($query1) {
             historia('Se cancelo el credito numero #'.$id); 
             $link=obtenerDatosFacturaNva($id); 
+            echo "<script type='text/javascript'>   window.open('".$link."', '_blank'); </script>";
             mensajeicono('Se ha cancelado con éxito el credito!', 'lista_creditos.php','','exito');
 		}else {
             mensajeicono('Ocurrio un error al cancelar el credito!', 'lista_creditos.php','','error');

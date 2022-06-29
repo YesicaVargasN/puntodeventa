@@ -419,7 +419,7 @@ function nextDni(){
 function obtenerDatosFacturaNva($id){
 	include "../conexion.php";
 	$sql="select * from factura where referencia like CONCAT('DEV.#','".$id."')";	
-	echo $sql;			
+	//echo $sql;			
 	$rc= $conexion -> query($sql);
 	if($f = $rc -> fetch_array())
 	{

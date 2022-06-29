@@ -15,7 +15,7 @@ if (!empty($_GET['id'])) {
 		if ($query1) {
             historia('Se cancelo la factura #'.$id); 
             $link=obtenerDatosFacturaNva($id);
-            //echo "<script> window.open('".$link."', '_blank'); </script>";
+            echo "<script type='text/javascript'>   window.open('".$link."', '_blank'); </script>";
             mensajeicono('Se ha cancelado con éxito el la factura!','ventas.php','','exito');
 		
         
