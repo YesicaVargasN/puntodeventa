@@ -70,13 +70,14 @@
 							<th>Id</th>
 							<th>Fecha</th>
 							<th>Total</th>
+							<th>Estado</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						require "../conexion.php";
-						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura ORDER BY nofactura DESC");
+						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa, cancelado FROM factura ORDER BY nofactura DESC");
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
 
@@ -87,10 +88,23 @@
 									<td><?php echo $dato['nofactura']; ?></td>
 									<td><?php echo $dato['fecha']; ?></td>
 									<td><?php echo $dato['totalfactura']; ?></td>
+									<td><?php if($dato['cancelado']==0)
+									{ ?>
+										<center><span class="badge bg-success" style="color:white;">Activa</span></center>
+									<?php }?>
+									<?php if($dato['cancelado']==1)
+									{ ?>
+										<center><span class="badge bg-danger" style="color:white;">Cancelada</span></center>
+									<?php }?>
+									</td>
 									<td>
 										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
+										<?php if($dato['cancelado']==0)
+										{ ?>
 										<form action="eliminar_venta.php?id=<?php echo $dato['nofactura']; ?>" method="post" class="cancelar d-inline">
 											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
+											<?php }?>
+									
 										</form>
 									</td>
 								</tr>

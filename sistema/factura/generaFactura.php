@@ -172,10 +172,7 @@
 			
 			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
-			$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');	
-		
-			
-			
+			$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');			
 		}
 		
 
@@ -187,6 +184,11 @@
 		 		$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');
 
 		}	
+			 if($result_venta['cancelado']==1)
+			 {
+				$pdf->image("img/cancelado.jpg", 20,130, 45, 20, 'JPG');
+		}
+
 			
 		
 		$pdf->Ln();
