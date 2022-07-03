@@ -8,6 +8,9 @@ require_once('pdf/tcpdf.php');
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
 $suma = 0;
+$sumaiva = 0;
+$sumasub = 0;
+
 
 $sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
 from gastos g
@@ -43,6 +46,8 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $suma = $suma += $f['total'];
+        $sumaiva = $sumaiva += $f['iva'];
+        $sumasub = $sumasub += $f['subtotal'];
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -53,12 +58,14 @@ if ($r -> num_rows >0){
 $tabla = $tabla.'<br><br><br>
 <table  align = "center" >
     <tr>
-        <td>
-            
-        </td>
-        <td  bgcolor="#FCD2CB">
-            MONTO TOTAL GASTADO $'.number_format($suma, 2, '.', ',').'
-        </td>
+        <td></td>
+        <td></td>
+        <td><b>TOTALES</b></td>
+        <td bgcolor="#FCD2CB">$'.number_format($sumasub, 2, '.', ',').'</td>
+        <td bgcolor="#FCD2CB">$'.number_format($sumaiva, 2, '.', ',').'</td>
+        <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
+       
+        <td></td>
     </tr>
     
 </table>';

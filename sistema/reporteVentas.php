@@ -117,12 +117,13 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<br><br><br>
     <table  align = "center" >
         <tr>
-            <td>
-                
-            </td>
-            <td  bgcolor="#FCD2CB">
-                MONTO TOTAL RECUPERADO $'.number_format($suma, 2, '.', ',').'
-            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
+            <td></td>
+            <td></td>
         </tr>
         
     </table>';
