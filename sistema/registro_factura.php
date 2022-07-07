@@ -21,7 +21,7 @@ include "../conexion.php";
                     
                     <div class="form-group">
                         <label for="contacto">Fecha</label>
-                        <input type="date"  name="fecha" id="fecha" class="form-control" required>
+                        <input type="date"  name="fecha" id="fecha" class="form-control" value="<?php echo $fecha ?>" required>
                     </div>
 
                     <div class="form-group">
