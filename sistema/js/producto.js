@@ -1498,10 +1498,14 @@ $('#subtotal').keyup(function(e) {
   if(subtotal == ''){
     subtotal = 0;
   }
-  var iva = $('#iva').val();
-  if(iva == ''){
+  var res = (parseFloat(subtotal) *.16);
+  /*if(iva == ''){
     iva = 0;
-  }
+  }else{
+    iva = iva;
+  }*/
+  $('#iva').val(res);
+  var iva = $('#iva').val();
   suma = (parseFloat(subtotal) + parseFloat(iva));
   $('#total').val(suma);
 });

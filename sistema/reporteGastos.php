@@ -43,9 +43,9 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $suma = $suma += $f['total'];
+        $suma = $suma += abs($f['total']);
         $sumaiva = $sumaiva += $f['iva'];
         $sumasub = $sumasub += $f['subtotal'];
         $tabla = $tabla."</tr>";  
