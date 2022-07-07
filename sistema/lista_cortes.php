@@ -64,12 +64,13 @@
 	  $fechaCorte = fechaCorte();
 	  $montoinicial = montoInicial();
 	  $id = idCorteAbierto();
+	  //and idtipoventa = 1
 		$sql = "SELECT  SUM(total) Total, SUM(TotalVentas ) TotalVentas
 		FROM
 		(
 			SELECT SUM(f.totalfactura)  as total, count(f.nofactura) as TotalVentas
 				FROM factura f
-				WHERE f.fecha between '".$fechaCorte."' and now() and idtipoventa = 1
+				WHERE f.fecha between '".$fechaCorte."' and now() 
 				union all
 				SELECT SUM(pago) as total, count(nofactura) as TotalVentas 
 				FROM abonos WHERE fecha between '".$fechaCorte."' and now() 

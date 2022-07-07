@@ -32,7 +32,7 @@ if(isset($_FILES['archivo']['name'])){
 			//HACER el insert el factura para tomarlo en cuenta en los reportes
 			$sql = "INSERT INTO factura(nofactura,fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva) 
 			values ('', now(), '$usuario_id','$proveedor', '$total','4','1',0,'$total','Gasto','','','','','','$subtotal', '$iva')";
-			echo $sql;	
+			//echo $sql;	
 			$query_insert = mysqli_query($conexion, $sql);
         	if ($query_insert) {
 
