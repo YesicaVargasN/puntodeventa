@@ -22,9 +22,14 @@
         $sec = "";
       }
       
+     // $impuestos = addslashes(implode(", ", $_POST['check_lista']));
 
+      $impuesto=$_POST['impuesto'];
+      $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now())");
+$sql= "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha,idimpuesto,valor_impuesto) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now(),'$impuesto',' $valor_impuesto')";
+///echo $sql;     
+$query_insert = mysqli_query($conexion,$sql);
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
@@ -70,14 +75,7 @@ $.ajax({
          </div>
          <div class="card-body">
            <form action="" method="post" autocomplete="off">
-             <?php echo isset($alert) ? $alert : ''; ?>
-
-              
-
-
-
-
-
+             <?php echo isset($alert) ? $alert : ''; ?>          
              <div class="form-group">
                <label for="codigo">Código de Barras</label>
                <input type="text" placeholder="Ingrese código de barras" name="codigo" id="codigo" class="form-control">
@@ -110,18 +108,44 @@ $.ajax({
              </div>
              <div class="form-group">
                <label for="preciocosto">Precio Costo</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto">
-             </div>
-           
-             <div class="form-group">
-               <label for="precio">Precio Venta</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa">
-             </div>
-             <div class="form-group">
-               <label for="preciomayoreo">Precio Mayoreo</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo">
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto">
              </div>
 
+             <div class="form-group">
+               <label for="preciomayoreo">Precio Mayoreo</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo">
+             </div>
+            
+            
+           
+             <div class="form-group">
+               <label>Impuesto</label>
+               <?php
+               $sql=
+                $query_impuestos = mysqli_query($conexion, "SELECT idimpuesto, impuesto,taza FROM impuesto ORDER BY idimpuesto ASC");
+                $resultado_impuestos = mysqli_num_rows($query_impuestos);
+               
+                ?>
+
+             
+                 <?php
+                 echo $resultado_impuestos;
+                  if ($resultado_impuestos > 0) {
+                    while ($impuestos = mysqli_fetch_array($query_impuestos)) {
+                      // code...
+                  ?><div>
+                    <input class="form-check-input" type="radio" style="margin-left: 0px;" name="impuesto" id="<?php echo $impuestos['idimpuesto']; ?>" value="<?php echo $impuestos['idimpuesto']; ?>" aria-label="<?php echo $impuestos['impuesto']; ?>" >
+                    <label class="form-check-label" for="flexCheckDefault" style="margin-left: 20px;"><?php echo $impuestos['impuesto']; ?></label>
+                  </div>
+                 <?php
+                    }
+                  }
+                  ?>
+             </div>
+             <div class="form-group">
+               <label for="precio">Precio Venta</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa">
+             </div>
              <div class="form-group">
                <label for="cantidad">Cantidad</label>
                <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad">
@@ -170,6 +194,8 @@ $.ajax({
                   ?>
               </select>
              </div>
+
+             
 
             
 

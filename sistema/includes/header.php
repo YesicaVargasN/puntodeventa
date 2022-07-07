@@ -246,14 +246,22 @@ if ($result_data > 0) {
 					</div>
 				</li>
 				
-
-
 				<li class="nav-item">
-					<a class="nav-link" href="configuracion.php" aria-expanded="true">
-						<i class="fas fa-tools"></i>
-						<span>Configuración</span>
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFactura" aria-expanded="true" aria-controls="collapseUtilities">
+					<i class="fas fa-tools"></i>
+						<span>Configuracion</span>
+						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
+					<div id="collapseFactura" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="configuracion.php"">Configuracion</a>
+							<a class="collapse-item" href="lista_impuestos.php">Impuestos</a>
+						</div>
+					</div>
 				</li>
+				
+
+				
 
 			</ul>
 

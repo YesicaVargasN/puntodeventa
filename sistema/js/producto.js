@@ -367,7 +367,9 @@ $('#add_product_venta').click(function(e) {
       type: 'POST',
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
-      success: function(response) {        
+      success: function(response) {    
+        
+        console.log(response);
         if (response != 'error') {
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
@@ -1159,7 +1161,7 @@ jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
 
 function abrirModalAbono(numcredito,total,saldo)
 {
-  ;
+
   $('#tipoven').val(2); 
   $('#tipoven').change();
   $('#numcredito').val(numcredito); 
@@ -1291,8 +1293,6 @@ function NUM(s, dec) {
 $('#cod_pro').keyup(function(e) {
   e.preventDefault();
   var productos = $(this).val();
-
- 
   if (productos == "") {
     $('#txt_descripcion').html('-');
     $('#txt_existencia').html('-');
@@ -1362,6 +1362,7 @@ $('#cod_pro').keyup(function(e) {
  
 });
 
+
 // AJUSTE DE INVENTARIO
 $('#btn_guardarajuste').click(function(e) {
   e.preventDefault();
@@ -1369,9 +1370,7 @@ $('#btn_guardarajuste').click(function(e) {
   var name = $('#name').val();
   var cantidad = $('#cantidad').val();
   var agregar = $('#agregar').val();
-
   var action = 'guardarAjuste';
-
   if(cantidad == 0 && agregar < 0){
     $('#ajusteinventario').modal('hide');
     Swal.fire({
@@ -1385,14 +1384,12 @@ $('#btn_guardarajuste').click(function(e) {
     })
    
   }else{
-
     $.ajax({
       url: 'modal.php',
       type: 'POST',
       async: true,
       data: {action:action,cod_pro:cod_pro, name:name,cantidad:cantidad, agregar:agregar},
-      success: function(response) {
-        
+      success: function(response) {        
         if(response.includes('ok')==true){
           console.log(response);
           $('#ajusteinventario').modal('hide');
@@ -1404,16 +1401,10 @@ $('#btn_guardarajuste').click(function(e) {
           })
           .then(() => {
             location.reload();
-          })
-          
-        
-          //window.location='ajuste_inventario.php';
-          
-          
+          })      
 
         }else{
-          $('#ajusteinventario').modal('hide');
-          
+          $('#ajusteinventario').modal('hide');          
           Swal.fire({
             icon: 'error',
             title: 'Opss',
@@ -1423,17 +1414,16 @@ $('#btn_guardarajuste').click(function(e) {
           .then(() => {
             location.reload();
           })
-        }
-        
-      
+        }       
       },
       error: function(error) {
-
       }
     });
-}
-  
+}  
 });
+
+
+
 
 // canidad del producto
 $('#txt_cant_producto').keyup(function() {
@@ -1469,17 +1459,12 @@ $('#txt_cant_producto').keyup(function() {
         footer: ''
       });
       return;
-    }
-     
-     
-    },
+    }   
+   },
     error: function(error) {
   
     }
   });
-
-
-
 });
 
 
@@ -1520,19 +1505,6 @@ $('#iva').keyup(function(e) {
   suma = (parseFloat(subtotal) + parseFloat(iva));
   $('#total').val(suma);
 });
-
-/*function calcular_total(){
-  var suma = 0;
-  var subtotal = $('#subtotal').val();
-  var iva = $('#iva').val();
-  suma = (parseFloat(subtotal) + parseFloat(iva));
-  document.getElementById("total").value=MASK('', (suma),'$##,###,##0.00',1);
-  //$('#total').val(suma);
-  
-}*/
-
-
-
 
 
 function seleccionarCliente(dnicliente)
@@ -1596,8 +1568,46 @@ function seleccionarCliente(dnicliente)
     }
   });
 
-
-
-
-
 }
+
+
+  $("#preciocosto").keyup(function () {
+      var value = $(this).val();
+      $("#precioventa").val(value);
+  });
+
+  $(document).ready(function() {
+
+    $('input[type=radio][name=impuesto]').change(function() {
+
+     
+   
+    var impuesto = $(this).val();
+    var action = 'calularPrecioVenta';
+    var preciocosto=$('#preciocosto').val();
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,impuesto:impuesto,preciocosto:preciocosto},
+    success: function(response) {
+    //console.log(response);
+    var data = $.parseJSON(response);
+    console.log(data);
+      $('#precioventa').val(data);
+      
+    },
+    error: function(error) {
+
+    }
+  });
+
+});
+
+});
+
+
+
+  
+
+

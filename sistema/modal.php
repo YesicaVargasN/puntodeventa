@@ -84,22 +84,24 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $codproducto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
-    $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
-    $result_iva = mysqli_num_rows($query_iva);    
+    // $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
+    // $result_iva = mysqli_num_rows($query_iva);  
+    
+    //echo "CALL add_detalle_temp ($codproducto,$cantidad,'$token')";
     $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
     $result = mysqli_num_rows($query_detalle_temp);
 
     $detalleTabla = '';
     $sub_total = 0;
-    $iva = 0;
+    //$iva = 0;
     $total = 0;
     $arrayData = array();
     if ($result > 0) {
         
-    if ($result_iva > 0) {
-      $info_iva = mysqli_fetch_assoc($query_iva);
-      $iva = $info_iva['igv'];
-    }
+    // if ($result_iva > 0) {
+    //   $info_iva = mysqli_fetch_assoc($query_iva);
+    //   $iva = $info_iva['igv'];
+    // }
     while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
       $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
       $sub_total = round($sub_total + $precioTotal, 2);
@@ -408,7 +410,7 @@ if ($_POST['action'] == 'procesarVenta') {
 
   if ($result > 0) {
   $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
- // echo $sql;    
+  //echo $sql;    
   $query_procesar = mysqli_query($conexion, $sql,);
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {    
@@ -744,6 +746,31 @@ if ($_POST['action'] == 'nextIdcliente') {
       exit;
     }else{
       $data = "1";
+    }
+ 
+  exit;
+}
+
+
+// Calcular PrecioVenta
+if ($_POST['action'] == 'calularPrecioVenta') {
+  $impuesto = $_POST['impuesto'];
+  $preciocosto = $_POST['preciocosto'];
+  
+  $sql="select *  from impuesto where idimpuesto=".$impuesto;
+
+  //echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     $valor=floatval($preciocosto+($preciocosto*($data['taza']/100)));
+      echo number_format($valor, 2,'.', ',') ;
+     
+      exit;
+    }else{
+      $data = "0";
     }
  
   exit;

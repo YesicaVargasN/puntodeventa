@@ -23,8 +23,14 @@ if (!empty($_POST)) {
     }else{
       $sec = "";
     }
+    ///$impuestos = addslashes(implode(", ", $_POST['check_lista']));
+    $impuesto=$_POST['impuesto'];
+    $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
+
     $moduser = $_SESSION['idUser'];
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser' WHERE codproducto = $codproducto");
+    $sql="UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', impuesto='$impuesto', valor_impuesto='$valor_impuesto' WHERE codproducto = $codproducto";
+  echo $sql;
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', idimpuesto='$impuesto', valor_impuesto='$valor_impuesto' WHERE codproducto = $codproducto");
     if ($query_update) {
       historia('Se actualizo el producto '.$codproducto);
       mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
@@ -112,15 +118,39 @@ if (empty($_REQUEST['id'])) {
             </div>
             <div class="form-group">
               <label for="precio">Precio  Costo</label>
-              <input type="number" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto" value="<?php echo $data_producto['preciocosto']; ?>">
+              <input type="number" step="any" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto" value="<?php echo $data_producto['preciocosto']; ?>">
             </div>
             <div class="form-group">
                <label for="precio">Precio Venta</label>
-               <input type="number" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precio']; ?>">
+               <input type="number" step="any" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precio']; ?>">
              </div>
+             
+             <div class="form-group">
+               <label>Impuesto</label>
+               <?php
+               $sql=
+                $query_impuestos = mysqli_query($conexion, "SELECT idimpuesto, impuesto,taza FROM impuesto ORDER BY idimpuesto ASC");
+                $resultado_impuestos = mysqli_num_rows($query_impuestos);
+               
+                ?>            
+                 <?php
+                 echo $resultado_impuestos;
+                  if ($resultado_impuestos > 0) {
+                    while ($impuestos = mysqli_fetch_array($query_impuestos)) {
+                      // code...
+                  ?><div>
+                    <input class="form-check-input" type="radio" style="margin-left: 0px;" name="impuesto" id="<?php echo $impuestos['idimpuesto']; ?>" value="<?php echo $impuestos['idimpuesto']; ?>" aria-label="<?php echo $impuestos['impuesto']; ?>" >
+                    <label class="form-check-label" for="flexCheckDefault" style="margin-left: 20px;"><?php echo $impuestos['impuesto']; ?></label>
+                  </div>
+                 <?php
+                    }
+                  }
+                  ?>
+             </div>
+
              <div class="form-group">
                <label for="preciomayoreo">Precio Mayoreo</label>
-               <input type="number" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo" value="<?php echo $data_producto['preciomayoreo']; ?>">
+               <input type="number" step="any" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo" value="<?php echo $data_producto['preciomayoreo']; ?>">
              </div>
              <div class="form-group">
                <label for="cantidad">Cantidad</label>

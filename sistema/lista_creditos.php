@@ -12,16 +12,26 @@
 	<form action="reporteCreditos.php" method="post">
 	<div class="row">
 	
-		<div class="col-md-4">
-			<label for="producto">Desde</label>
-            <input type="date" name="desde" id="desde" class="form-control">
+		<div class="col-sm-3">
+			<label for="producto" class="text-black">Desde</label>
+            <input type="date" name="desde" id="desde" class="form-control" value="<?php echo date("Y-m-d");?>">
 		</div>
-		<div class="col-md-4">
-			<label for="producto">Hasta</label>
-            <input type="date" name="hasta" id="hasta" class="form-control">
+		<div class="col-sm-3">
+			<label for="producto"  class="text-black">Hasta</label>
+            <input type="date" name="hasta" id="hasta" class="form-control" value="<?php echo date("Y-m-d");?>">
 		</div>
-		<div class="col-md-4">
-			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+        <div class="col-sm-3">
+			<label for="estatus"  class="text-black">Estatus</label>
+            <select id="estatus" class="form-control" name="estatus" required="">
+                <option value="0">Sin Especificar</option>
+                <option value="1">Activo</option>
+                <option value="2">Liquidado</option>  
+                <option value="3">Cancelado</option>  
+            </select>
+		</div>
+		<div class="col-sm-2">
+       
+			<input type="submit" value="Generar Reporte" class="btn btn-primary" style="margin-top: 30px;">
 		</div>
 	
 	</div>

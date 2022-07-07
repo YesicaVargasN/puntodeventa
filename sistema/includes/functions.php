@@ -223,17 +223,14 @@
 		include "../../conexion.php";
 		$sql = "select count(*) as numabono from factura where numcredito=".$numcredito;					
 		$rc= $conexion -> query($sql);
-		if($f = $rc -> fetch_array())
-		{
-			// echo $sql;
-			$rc= $conexion -> query($sql);
-			if($f = $rc -> fetch_array())
-				{		
+		
+			if($f = $rc -> fetch_array())			
+				{	
 							
 					return $f['numabono'];
 				}
 			 else {return FALSE;}
-		}
+		
 	}
  
 
@@ -433,4 +430,27 @@ function obtenerDatosFacturaNva($id){
 		 else {return '';}
 	}
 }
+
+
+
+
+function montoimpuesto($precio,$impuesto)
+{
+	include "../conexion.php";
+$sql="select *  from impuesto where idimpuesto=".$impuesto;
+ $rc= $conexion -> query($sql);
+ $c=$c=0;
+
+ if ($rc -> num_rows >0) {
+	while($f = $rc -> fetch_array())
+	{
+		return ($precio*($f['taza']/100));
+	}
+	 
+}else{
+	return 0;
+}
+}
+
+
 ?>
