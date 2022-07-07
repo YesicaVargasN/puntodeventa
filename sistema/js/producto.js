@@ -1173,6 +1173,16 @@ function abrirModalAbono(numcredito,total,saldo)
         
 }
 
+$('#exampleModal').on('show.bs.modal', function () {
+  $('#tipoven').val(1); 
+  $('#tipoven').change();
+  $('#pagar_con').val('0.00');
+  $('#pagar_conC').val('0.00');
+  $('#tipopago').val(1); 
+  $('#tipopago').change();
+  $('#cambio').val('0.00');
+});
+
 //EVALUAMOS QUE TIPO DE PAGO SERÁ
 $('#tipopago').on('change', function() {
  
