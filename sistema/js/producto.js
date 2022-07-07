@@ -1615,7 +1615,7 @@ function seleccionarCliente(dnicliente)
   
 
 
-}
+
 
 $('#rand').click(function(e) {
   e.preventDefault();

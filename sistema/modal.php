@@ -765,8 +765,8 @@ if ($_POST['action'] == 'calularPrecioVenta') {
     $result = mysqli_num_rows($query);
     if ($result > 0) {
       $data = mysqli_fetch_assoc($query);     
-     $valor=floatval($preciocosto+($preciocosto*($data['taza']/100)));
-      echo number_format($valor, 2,'.', ',') ;
+     $valor=floatval (($preciocosto*($data['taza']))/100);
+      echo number_format($valor+$preciocosto, 2,'.', ',') ;
      
       exit;
     }else{

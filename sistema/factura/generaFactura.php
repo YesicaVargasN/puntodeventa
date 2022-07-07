@@ -34,11 +34,11 @@
 			$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
 		}
 
-		$sql2="select dt.codproducto,dt.cantidad,p.preciocosto,(p.preciocosto*dt.cantidad) as subtotal, im.impuesto, 
-		((p.preciocosto*dt.cantidad)*(im.taza/100))as valorimpuesto	
+		$sql2="select dt.codproducto,dt.cantidad,p.preciocosto,(p.preciocosto*dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
+		SUM(((p.preciocosto*dt.cantidad)*im.taza)/100) as valorimpuesto	
 		from detallefactura as dt inner join producto as p on p.codproducto=dt.codproducto
 		left join impuesto as im on im.idimpuesto =p.idimpuesto
-		where nofactura=".$noFactura;
+		where nofactura=".$noFactura." GROUP BY  im.idimpuesto";
 		//echo $sql2;
 		$impuestos = mysqli_query($conexion, $sql2);
 		
