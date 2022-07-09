@@ -9,6 +9,11 @@ $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
 $suma = 0;
 
+
+$desde = date("Y-m-d",strtotime($desde."- 1 day"));
+
+$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+
 $sql = 'select *
 from cortecaja c
 WHERE c.FechaApertura BETWEEN  "'.$desde.'" and "'.$hasta.'"';
