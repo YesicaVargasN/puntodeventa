@@ -30,7 +30,7 @@ $desde = date("Y-m-d",strtotime($desde."- 1 day"));
 
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 
-$suma = 0;
+
 echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
 if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
 
@@ -85,6 +85,9 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     WHERE f.fecha';
 }
 echo $sql;
+$suma = 0;
+$sumsub = 0;
+$sumiva = 0;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
@@ -113,6 +116,8 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
         $suma = $suma += $f['totalfactura'];
+        $sumsub = $sumsub += $f['subtotal'];
+        $sumiva = $sumiva += $f['iva'];
         $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
@@ -128,7 +133,9 @@ if ($r -> num_rows >0){
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
+            <td bgcolor="#FCD2CB">TOTALES</td>
+            <td bgcolor="#FCD2CB">$'.number_format($sumsub, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">$'.number_format($sumiva, 2, '.', ',').'</td>
             <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
             <td></td>
             <td></td>
