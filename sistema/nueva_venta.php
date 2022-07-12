@@ -265,10 +265,9 @@ if(HayCajaAbierta()==0)
 							<th>DNI</th>
 							<th>NOMBRE</th>
 							<th>TELEFONO</th>
-							<th>DIRECCIÓN</th>
-							<?php if ($_SESSION['rol'] == 1) { ?>
+							<th>DIRECCIÓN</th>						
 							<th></th>
-							<?php } ?>
+						
 						</tr>
 					</thead>
 					<tbody>
