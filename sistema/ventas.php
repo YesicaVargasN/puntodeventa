@@ -15,11 +15,11 @@
 	
 		<div class="col-md-4">
 			<label for="producto" style='color:#000;'>Desde</label>
-            <input type="date" name="desde" id="desde" class="form-control">
+            <input type="date" name="desde" id="desde" value='<?php echo $fecha ?>' class="form-control">
 		</div>
 		<div class="col-md-4">
 			<label for="producto" style='color:#000;'>Hasta</label>
-            <input type="date" name="hasta" id="hasta" class="form-control">
+            <input type="date" name="hasta" id="hasta" value='<?php echo $fecha ?>' class="form-control">
 		</div>
 		<!-- <div class="col-md-4">
 			<input type="submit" value="Generar Reporte" class="btn btn-primary">
@@ -34,6 +34,8 @@
 					<option value="0">SIN ESPECIFICAR</option>
 					<option value="1">CONTADO</option>
 					<option value="2">CRÉDITO</option>
+					<option value="3">DEVOLUCIÓN</option>
+					<option value="4">EGRESOS</option>
 				</select>
 			</div>
 		</div>
@@ -45,7 +47,7 @@
 					<option value="1">EFECTIVO</option>
 					<option value="2">TARJETA</option>
 					<option value="3">TRANSFERENCIA</option>
-					<option value="4">DEPOSITO</option>
+					<option value="4">DEPóSITO</option>
 				</select>
 			</div>
 		</div>
