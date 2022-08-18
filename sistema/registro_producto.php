@@ -14,6 +14,7 @@
       $preciocosto = $_POST['preciocosto'];
       $precio = $_POST['precioventa'];
       $preciomayoreo = $_POST['preciomayoreo'];
+      $cantmayoreo = $_POST['cantmayoreo'];
       $unidadmedida = $_POST['medida'];
       $categoria = $_POST['categoria'];
       if(isset($_POST['sec'])){
@@ -27,7 +28,7 @@
       $impuesto=$_POST['impuesto'];
       $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
 
-$sql= "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha,idimpuesto,valor_impuesto) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now(),'$impuesto',' $valor_impuesto')";
+$sql= "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha,idimpuesto,valor_impuesto, cant_mayoreo) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now(),'$impuesto',' $valor_impuesto', '$cantmayoreo')";
 ///echo $sql;     
 $query_insert = mysqli_query($conexion,$sql);
       if ($query_insert) {
@@ -115,6 +116,10 @@ $.ajax({
                <label for="preciomayoreo">Precio Mayoreo</label>
                <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo">
              </div>
+             <div class="form-group">
+               <label for="preciomayoreo">Cantidad Mayoreo</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="cantmayoreo" id="cantmayoreo">
+             </div>
             
             
            
@@ -147,7 +152,7 @@ $.ajax({
                <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa">
              </div>
              <div class="form-group">
-               <label for="cantidad">Cantidad</label>
+               <label for="cantidad">Existencia</label>
                <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad">
              </div>
 

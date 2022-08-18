@@ -12,8 +12,9 @@ if (!empty($_POST)) {
     $contacto = $_POST['contacto'];
     $telefono = $_POST['telefono'];
     $direccion = $_POST['direccion'];
+    $rfc = $_POST['rfc'];
 
-    $sql_update = mysqli_query($conexion, "UPDATE proveedor SET proveedor = '$proveedor', contacto = '$contacto' , telefono = $telefono, direccion = '$direccion' WHERE codproveedor = $idproveedor");
+    $sql_update = mysqli_query($conexion, "UPDATE proveedor SET proveedor = '$proveedor', contacto = '$contacto' , telefono = $telefono, direccion = '$direccion', rfc = '$rfc' WHERE codproveedor = $idproveedor");
 
     if ($sql_update) {
       historia('Se actualizo el proveedor '.$idproveedor);
@@ -45,6 +46,7 @@ if ($result_sql == 0) {
     $contacto = $data['contacto'];
     $telefono = $data['telefono'];
     $direccion = $data['direccion'];
+    $rfc = $data['rfc'];
   }
 }
 ?>
@@ -63,6 +65,10 @@ if ($result_sql == 0) {
           <?php echo isset($alert) ? $alert : ''; ?>
           <form class="" action="" method="post">
             <input type="hidden" name="id" value="<?php echo $idproveedor; ?>">
+            <div class="form-group">
+              <label for="proveedor">RFC</label>
+              <input type="text" placeholder="Ingrese RFC" name="rfc" class="form-control" id="rfc" value="<?php echo $rfc; ?>">
+            </div>
             <div class="form-group">
               <label for="proveedor">Proveedor</label>
               <input type="text" placeholder="Ingrese proveedor" name="proveedor" class="form-control" id="proveedor" value="<?php echo $proveedor; ?>">

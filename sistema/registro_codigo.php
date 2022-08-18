@@ -72,7 +72,7 @@ include "../conexion.php";
             }
         );
 
-        $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=90&codetype=Code39&print=true"/>');
+        $("#imagen").html('<img src="barcode\\barcode.php?text='+data+'&size=40&codetype=Code39&print=true"/>');
 
 
      /*   $.ajax({

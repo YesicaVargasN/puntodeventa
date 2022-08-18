@@ -15,6 +15,7 @@ if (!empty($_POST)) {
     $preciocosto = $_POST['preciocosto'];
     $precio = $_POST['precioventa'];
     $preciomayoreo = $_POST['preciomayoreo'];
+    $cantmayoreo = $_POST['cantmayoreo'];
     $cantidad = $_POST['cantidad'];
     $medida = $_POST['medida'];
     $categoria = $_POST['categoria'];
@@ -28,9 +29,9 @@ if (!empty($_POST)) {
     $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
 
     $moduser = $_SESSION['idUser'];
-    $sql="UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', impuesto='$impuesto', valor_impuesto='$valor_impuesto' WHERE codproducto = $codproducto";
-  echo $sql;
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', idimpuesto='$impuesto', valor_impuesto='$valor_impuesto' WHERE codproducto = $codproducto");
+    //$sql="UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', impuesto='$impuesto', valor_impuesto='$valor_impuesto', cant_mayoreo = '$cantmayoreo' WHERE codproducto = $codproducto";
+    //echo $sql;
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', idimpuesto='$impuesto', valor_impuesto='$valor_impuesto',cant_mayoreo = '$cantmayoreo'  WHERE codproducto = $codproducto");
     if ($query_update) {
       historia('Se actualizo el producto '.$codproducto);
       mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
@@ -53,7 +54,7 @@ if (empty($_REQUEST['id'])) {
     header("Location: lista_productos.php");
   }
 
-  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento, cs.idseccion, cs.seccion FROM producto p 
+  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento, cs.idseccion, cs.seccion, p.cant_mayoreo FROM producto p 
   left JOIN proveedor pr ON p.proveedor = pr.codproveedor 
   left join cat_departamento dpto on dpto.iddepartamento = p.categoria
   left join cat_unidadmedida med on med.idunidadmedida = p.unidadmedida
@@ -151,6 +152,10 @@ if (empty($_REQUEST['id'])) {
              <div class="form-group">
                <label for="preciomayoreo">Precio Mayoreo</label>
                <input type="number" step="any" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo" value="<?php echo $data_producto['preciomayoreo']; ?>">
+             </div>
+             <div class="form-group">
+               <label for="preciomayoreo">Cantidad Mayoreo</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="cantmayoreo" id="cantmayoreo" value="<?php echo $data_producto['cant_mayoreo']; ?>">
              </div>
              <div class="form-group">
                <label for="cantidad">Cantidad</label>

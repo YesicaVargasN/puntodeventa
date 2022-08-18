@@ -40,13 +40,15 @@ echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 0;
+$suma = 0;
+$suma = 2;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
     $tabla = $tabla.'<th ><b>CODIGO</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
-    $tabla = $tabla."<th><b>PRECIO COMPRA</b></th>";
-    $tabla = $tabla.'<th ><b>PRECIO COSTO</b></th>';
+    $tabla = $tabla."<th><b>PRECIO COSTO</b></th>";
+    $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
     $tabla = $tabla.'<th ><b>EXISTENCIA</b></th>';
     $tabla = $tabla.'<th ><b>CATEGORÍA</b></th>';
     $tabla = $tabla.'<th ><b>SECCIÓN</b></th>';
@@ -60,12 +62,13 @@ if ($r -> num_rows >0){
         }
         $tabla = $tabla.'<td>'.$f['codigo'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['preciocosto'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
        
             $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
-        
+        $suma += $f['preciocosto'];
+        $suma2 += $f['precio'];
         $tabla = $tabla.'<td>'.$f['nomseccion'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
@@ -75,10 +78,12 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<br><br><br>
     <table  align = "center" >
         <tr>
-            <td>
-                
-            </td>
-            <td  bgcolor="#FCD2CB">
+            <td> </td>
+            <td bgcolor="#FCD2CB"> TOTALES </td>
+            <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">$'.number_format($suma2, 2, '.', ',').'</td>
+            <td ></td>
+            <td colspan="2" bgcolor="#FCD2CB">
                 TOTAL DE PRODUCTOS MOSTRADOS '.$vuelta.'
             </td>
         </tr>
