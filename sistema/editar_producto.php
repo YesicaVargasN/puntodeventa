@@ -173,7 +173,7 @@ if (empty($_REQUEST['id'])) {
                <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="cantmayoreo" id="cantmayoreo" value="<?php echo $data_producto['cant_mayoreo']; ?>">
              </div>
              <div class="form-group">
-               <label for="cantidad">Cantidad</label>
+               <label for="cantidad">Existencia</label>
                <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad" value="<?php echo $data_producto['existencia']; ?>">
              </div>
              <div class="form-group">
