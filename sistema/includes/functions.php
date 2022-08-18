@@ -444,7 +444,8 @@ $sql="select *  from impuesto where idimpuesto=".$impuesto;
  if ($rc -> num_rows >0) {
 	while($f = $rc -> fetch_array())
 	{
-		return ($precio*($f['taza']/100));
+		
+		return $precio-($precio/(($f['taza']/100)+1));
 	}
 	 
 }else{

@@ -19,6 +19,7 @@ if (!empty($_POST)) {
     $cantidad = $_POST['cantidad'];
     $medida = $_POST['medida'];
     $categoria = $_POST['categoria'];
+    $preciosiniva = $_POST['preciosiniva'];
     if(isset($_POST['sec'])){
       $sec = $_POST['sec'];
     }else{
@@ -26,12 +27,12 @@ if (!empty($_POST)) {
     }
     ///$impuestos = addslashes(implode(", ", $_POST['check_lista']));
     $impuesto=$_POST['impuesto'];
-    $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
-
+    $valor_impuesto=montoimpuesto($precio,$impuesto);
+    $preciosiniva=$precio-$valor_impuesto;
     $moduser = $_SESSION['idUser'];
     //$sql="UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', impuesto='$impuesto', valor_impuesto='$valor_impuesto', cant_mayoreo = '$cantmayoreo' WHERE codproducto = $codproducto";
     //echo $sql;
-    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', idimpuesto='$impuesto', valor_impuesto='$valor_impuesto',cant_mayoreo = '$cantmayoreo'  WHERE codproducto = $codproducto");
+    $query_update = mysqli_query($conexion, "UPDATE producto SET codigo = '$codigo', descripcion = '$producto', proveedor= '$proveedor', precio = '$precio', existencia = '$cantidad', preciocosto = '$preciocosto', preciomayoreo = '$preciomayoreo', unidadmedida = '$medida', categoria = '$categoria', seccion = '$sec', modifico='$moduser', idimpuesto='$impuesto', valor_impuesto='$valor_impuesto',cant_mayoreo = '$cantmayoreo', preciosiniva='$preciosiniva' WHERE codproducto = $codproducto");
     if ($query_update) {
       historia('Se actualizo el producto '.$codproducto);
       mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
@@ -54,11 +55,12 @@ if (empty($_REQUEST['id'])) {
     header("Location: lista_productos.php");
   }
 
-  $sql = "SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento, cs.idseccion, cs.seccion, p.cant_mayoreo FROM producto p 
+  $sql = "  SELECT p.codproducto, p.codigo, p.descripcion, p.precio, pr.codproveedor, pr.proveedor, p.existencia, p.preciocosto, p.preciomayoreo, med.nombrecorto, dpto.departamento, med.idunidadmedida, dpto.iddepartamento, cs.idseccion, cs.seccion, p.cant_mayoreo,p.idimpuesto FROM producto p 
   left JOIN proveedor pr ON p.proveedor = pr.codproveedor 
   left join cat_departamento dpto on dpto.iddepartamento = p.categoria
   left join cat_unidadmedida med on med.idunidadmedida = p.unidadmedida
   left join cat_secciones cs on cs.idseccion = p.seccion
+	left join impuesto im on im.idimpuesto=p.idimpuesto
   WHERE p.codproducto = $id_producto";
   //echo $sql;
   $query_producto = mysqli_query($conexion, $sql);
@@ -90,7 +92,7 @@ if (empty($_REQUEST['id'])) {
             </div>
             <div class="form-group">
               <label for="producto">Producto</label>
-              <input type="text" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
+              <input type="text" maxlength="38" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
             </div>
             <div class="form-group">
               <label for="nombre">Proveedor</label>
@@ -125,7 +127,10 @@ if (empty($_REQUEST['id'])) {
                <label for="precio">Precio Venta</label>
                <input type="number" step="any" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa" value="<?php echo $data_producto['precio']; ?>">
              </div>
-             
+             <div class="form-group" style="display:none">
+               <label sfor="preciosiniva">Precio Sin IVA</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="preciosiniva" id="preciosiniva">
+             </div>
              <div class="form-group">
                <label>Impuesto</label>
                <?php
@@ -135,17 +140,27 @@ if (empty($_REQUEST['id'])) {
                
                 ?>            
                  <?php
-                 echo $resultado_impuestos;
+             
                   if ($resultado_impuestos > 0) {
                     while ($impuestos = mysqli_fetch_array($query_impuestos)) {
-                      // code...
+                     
+                       
                   ?><div>
-                    <input class="form-check-input" type="radio" style="margin-left: 0px;" name="impuesto" id="<?php echo $impuestos['idimpuesto']; ?>" value="<?php echo $impuestos['idimpuesto']; ?>" aria-label="<?php echo $impuestos['impuesto']; ?>" >
-                    <label class="form-check-label" for="flexCheckDefault" style="margin-left: 20px;"><?php echo $impuestos['impuesto']; ?></label>
+                   <?php
+                  if($impuestos['idimpuesto']==$data_producto['idimpuesto'])
+                  { echo  '<input class="form-check-input" type="radio" style="margin-left: 0px;" name="impuesto" id="'. $impuestos['idimpuesto'].'" value="'. $impuestos['idimpuesto'] .'" aria-label="'.$impuestos['impuesto'].'" checked >
+                    <label class="form-check-label" for="flexCheckDefault" style="margin-left: 20px;">'.$impuestos['impuesto'].'</label> ';                 
+                  }else
+                  {
+                    echo  '<input class="form-check-input" type="radio" style="margin-left: 0px;" name="impuesto" id="'. $impuestos['idimpuesto'].'" value="'. $impuestos['idimpuesto'] .'" aria-label="'.$impuestos['impuesto'].'"  >
+                    <label class="form-check-label" for="flexCheckDefault" style="margin-left: 20px;">'.$impuestos['impuesto'] .'</label> ';      
+                  }
+                  ?>
+                  
                   </div>
                  <?php
-                    }
                   }
+                }
                   ?>
              </div>
 
@@ -221,7 +236,7 @@ if (empty($_REQUEST['id'])) {
             
             <?php
             $sql = "SELECT * FROM cat_secciones WHERE iddepartamento = ".$data_producto['iddepartamento']."";
-            echo $sql;
+            //echo $sql;
             $query_medida = mysqli_query($conexion, $sql);
             $resultado_medida = mysqli_num_rows($query_medida);
             mysqli_close($conexion);

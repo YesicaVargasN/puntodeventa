@@ -3,10 +3,7 @@ include_once "includes/header.php";
 include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
-    if (empty($_POST['impuesto']) || empty($_POST['taza']) ) {
-        mensajeicono('El campo impuesto y porcentaje  son obligatorios.', 'registro_impuesto.php','','info');
-
-    } else {
+    
         $impuesto = $_POST['impuesto'];
         $taza = $_POST['taza'];
 
@@ -24,7 +21,7 @@ if (!empty($_POST)) {
 
         }
         
-    }
+    
 }
 mysqli_close($conexion);
 ?>
@@ -42,11 +39,11 @@ mysqli_close($conexion);
                     <?php echo isset($alert) ? $alert : ''; ?>
                     <div class="form-group">
                         <label for="mmeida">Impuesto</label>
-                        <input type="text" placeholder="Ingrese nombre del impuesto" name="impuesto" id="impuesto" class="form-control">
+                        <input type="text" required  placeholder="Ingrese nombre del impuesto" name="impuesto" id="impuesto" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="nombrecorto">Porcentaje</label>
-                        <input type="text" placeholder="Ingrese el porcentaje que tendra el impuesto" name="taza" id="taza" class="form-control" onkeypress="mayus(this);">
+                        <input type="text" required placeholder="Ingrese el porcentaje que tendra el impuesto" name="taza" id="taza" class="form-control" onkeypress="mayus(this);">
                     </div>
                    
                     <input type="submit" value="Guardar Impuesto" class="btn btn-primary">

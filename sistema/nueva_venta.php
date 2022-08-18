@@ -170,7 +170,7 @@ if(HayCajaAbierta()==0)
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="pagar_con"  class="font-weight-bold">Pagar</label>
-                                    <input id="pagar_con" name="pagar_con" class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                    <input id="pagar_con" name="pagar_con" required class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>
                             <div class="col-md-4" id="divCambio" >
@@ -187,19 +187,19 @@ if(HayCajaAbierta()==0)
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodalC" class="font-weight-bold">Total</label>
-                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
+                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  readonly >
                             </div>
                             </div>
                             <div class="col-md-4" id="divSaldo">
                                 <div class="form-group">
                                     <label for="saldo" class="font-weight-bold">Saldo</label>
-                                    <input id="saldo" class="form-control"  type="text" placeholder="0.00"  value="" disabled onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                    <input id="saldo" class="form-control"  type="text" placeholder="0.00"  value="" readonly onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>  
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="pagar_conC" class="font-weight-bold">Pago</label>
-                                    <input id="pagar_conC" name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                    <input id="pagar_conC" required name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>                            
                             <div class="col-md-4" id="divFechaVencimiento">
@@ -211,7 +211,7 @@ if(HayCajaAbierta()==0)
                             <div class="col-md-4" id="divcredito">
                                 <div class="form-group">
                                     <label for="numcredito" class="font-weight-bold">NumCredito</label>  
-                                    <input id="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" disabled="">
+                                    <input id="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" readonly>
                                 </div>
                             </div>                    
                             

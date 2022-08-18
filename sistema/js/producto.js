@@ -164,6 +164,7 @@ $('#dni_cliente').keyup(function(e) {
           async: true,
           data: {action:action,cliente:cl},
           success: function(response) {
+            console.log(response);
             var info = $.parseJSON(response);
             $('#divCreditos').html(info.detalle);
           },
@@ -450,9 +451,11 @@ $('#btn_facturar_venta').click(function(e) {
 
   if( tipoventa==1 )
   { 
-    pago = document.getElementById("pagar_con").value;
+    pago = document.getElementById("pagar_con").value;    
     fechaven = new Date();
     total=document.getElementById("totalmodal").value;
+
+    
   }
   else
   {
@@ -462,7 +465,20 @@ $('#btn_facturar_venta').click(function(e) {
     } 
     numcredito = document.getElementById("numcredito").value; 
    
+ if(pago<=0 || pago=='')
+ {
  
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Debe especificar el monto con el que esta pagando!',
+      footer: ''
+    })
+    $('#exampleModal').modal('hide');
+    
+    return;
+  
+ }
   if (rows > 0) {
     $.ajax({
       url: 'modal.php',
@@ -955,7 +971,7 @@ $('#txt_cod_pro').keyup(function(e) {
 
 $('#pagar_con').keyup(function(e) {
   e.preventDefault();
-  if (e.which == 13) {  
+  //if (e.which == 13) {  
 
     pagar_con = document.getElementById("pagar_con").value.replace('$',''); //Quitamos el signo de pesos 
     total = document.getElementById("totalmodal").value.replace('$','');//Quitamos el signo de pesos 
@@ -976,18 +992,19 @@ $('#pagar_con').keyup(function(e) {
           $('#btn_facturar_venta').slideDown();      
           } else {
             document.getElementById("pagar_con").value=pagar_con;        
-           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Error la cantidad a pagar debe ser mayor o igual al total!',
-            footer: ''
-          })
-          $('#exampleModal').modal('hide');
+          //  Swal.fire({
+          //   icon: 'error',
+          //   title: 'Oops...',
+          //   text: 'Error la cantidad a pagar debe ser mayor o igual al total!',
+          //   footer: ''
+          // })
+          //$('#exampleModal').modal('hide');
+          $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
            $('#btn_facturar_venta').slideUp();    
             document.getElementById('pagar_con').focus();
             
           }
-    } 
+    //} 
   
 }
 });
@@ -996,6 +1013,8 @@ $('#pagar_con').keyup(function(e) {
 
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipoven').on('change', function() {
+  $('.alertCambio').html('');  
+  $('#btn_facturar_venta').slideDown();
   if(this.value=='1')
   { 
     $('#ventacredito').slideUp();
@@ -1139,7 +1158,7 @@ $('#btn_cerrarcorte').click(function(e) {
           text: 'Hubo un error, favor de intentarlo nuevamente.',
           footer: ''
         })
-        .then(() => {
+        .then(() => {abono
           location.reload();
         })
       }
@@ -1173,16 +1192,10 @@ function abrirModalAbono(numcredito,total,saldo)
         
 }
 
-$('#exampleModal').on('show.bs.modal', function () {
-  $('#tipoven').val(1); 
-  $('#tipoven').change();
-  $('#pagar_con').val('0.00');
-  $('#pagar_conC').val('0.00');
-  $('#tipopago').val(1); 
-  $('#tipopago').change();
-  $('#cambio').val('0.00');
-});
 
+jQuery('#exampleModal').on('hidden.bs.modal', function (e) {
+   location.reload();  
+});
 //EVALUAMOS QUE TIPO DE PAGO SERÁ
 $('#tipopago').on('change', function() {
  
@@ -1597,18 +1610,18 @@ function seleccionarCliente(dnicliente)
      
    
     var impuesto = $(this).val();
-    var action = 'calularPrecioVenta';
-    var preciocosto=$('#preciocosto').val();
+    var action = 'calularPrecioSinIva';
+    var precioventa=$('#precioventa').val();
   $.ajax({
     url: 'modal.php',
     type: "POST",
     async: true,
-    data: {action:action,impuesto:impuesto,preciocosto:preciocosto},
+    data: {action:action,impuesto:impuesto,precioventa:precioventa},
     success: function(response) {
     //console.log(response);
     var data = $.parseJSON(response);
-    console.log(data);
-      $('#precioventa').val(data);
+    //console.log(data);
+      $('#preciosiniva').val(data);
       
     },
     error: function(error) {
@@ -1648,3 +1661,6 @@ $('#rand').click(function(e) {
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+// $('#exampleModal').on('hidden.bs.modal', function (e) {           
+//   location.reload();  
+// });
