@@ -17,6 +17,7 @@
       $cantmayoreo = $_POST['cantmayoreo'];
       $unidadmedida = $_POST['medida'];
       $categoria = $_POST['categoria'];
+      $preciosiniva=$_POST['preciosiniva'];
       if(isset($_POST['sec'])){
         $sec = $_POST['sec'];
       }else{
@@ -26,11 +27,11 @@
      // $impuestos = addslashes(implode(", ", $_POST['check_lista']));
 
       $impuesto=$_POST['impuesto'];
-      $valor_impuesto=montoimpuesto($preciocosto,$impuesto);
-
-$sql= "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha,idimpuesto,valor_impuesto, cant_mayoreo) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now(),'$impuesto',' $valor_impuesto', '$cantmayoreo')";
-///echo $sql;     
-$query_insert = mysqli_query($conexion,$sql);
+      $valor_impuesto=montoimpuesto($precio,$impuesto);
+      $preciosiniva=$precio-$valor_impuesto;
+      $sql= "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha,idimpuesto,valor_impuesto, cant_mayoreo,preciosiniva) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now(),'$impuesto',' $valor_impuesto', '$cantmayoreo','$preciosiniva')";
+      ///echo $sql;     
+      $query_insert = mysqli_query($conexion,$sql);
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
@@ -83,7 +84,7 @@ $.ajax({
              </div>
              <div class="form-group">
                <label for="producto">Producto</label>
-               <input type="text" placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
+               <input type="text" maxlength="38"  placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
              </div>
              
              <div class="form-group">
@@ -150,6 +151,10 @@ $.ajax({
              <div class="form-group">
                <label for="precio">Precio Venta</label>
                <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa">
+             </div>
+             <div class="form-group">
+               <label for="preciosiniva">Precio Sin IVA</label>
+               <input type="text" step="any" placeholder="Ingrese precio" class="form-control" name="preciosiniva" id="preciosiniva">
              </div>
              <div class="form-group">
                <label for="cantidad">Existencia</label>

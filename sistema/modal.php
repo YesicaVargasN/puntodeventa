@@ -254,7 +254,8 @@ if ($_POST['action'] == 'searchClienteCredito') {
             $detalleTabla .='<td><span class="badge bg-danger" style="color:white;">Liquidada</span></td>';
           }
           $detalleTabla .='<td>
-          <a href="#" class="btn btn-primary" id="abonar" class="btn btn-primary" data-toggle="modal" onclick="abrirModalAbono('.$data['numcredito'].','.$data['total'].','.$data['adeudo'].');"><i class="fa fa-credit-card"></i> Abonar</a>
+          <a href="#" class="btn btn-primary" id="abonar" class="btn btn-primary" data-toggle="modal" onclick="abrirModalAbono(\''.$data['numcredito'].'\',\''.$data['total'].'\',\''.$data['adeudo'].'\');"><i class="fa fa-credit-card"></i> Abonar</a>
+
           </td>
       </tr>';
  
@@ -753,9 +754,9 @@ if ($_POST['action'] == 'nextIdcliente') {
 
 
 // Calcular PrecioVenta
-if ($_POST['action'] == 'calularPrecioVenta') {
+if ($_POST['action'] == 'calularPrecioSinIva') {
   $impuesto = $_POST['impuesto'];
-  $preciocosto = $_POST['preciocosto'];
+  $precioventa = $_POST['precioventa'];
   
   $sql="select *  from impuesto where idimpuesto=".$impuesto;
 
@@ -764,9 +765,10 @@ if ($_POST['action'] == 'calularPrecioVenta') {
     mysqli_close($conexion);
     $result = mysqli_num_rows($query);
     if ($result > 0) {
-      $data = mysqli_fetch_assoc($query);     
-     $valor=floatval (($preciocosto*($data['taza']))/100);
-      echo number_format($valor+$preciocosto, 2,'.', ',') ;
+      $data = mysqli_fetch_assoc($query); 
+
+     $valor=floatval ((($data['taza']/100)+1));
+      echo number_format(($precioventa/$valor), 2,'.', ',') ;
      
       exit;
     }else{

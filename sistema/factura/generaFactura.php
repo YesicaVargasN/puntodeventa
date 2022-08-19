@@ -34,8 +34,15 @@
 			$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
 		}
 
-		$sql2="select dt.codproducto,dt.cantidad,p.preciocosto,(p.preciocosto*dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
-		SUM(((p.preciocosto*dt.cantidad)*im.taza)/100) as valorimpuesto	
+		// $sql2="select dt.codproducto,dt.cantidad,p.preciocosto,(p.preciosiniva*dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
+		// ROUND(SUM(((p.preciosiniva*dt.cantidad)*im.taza)/100),1) as valorimpuesto	
+		// from detallefactura as dt inner join producto as p on p.codproducto=dt.codproducto
+		// left join impuesto as im on im.idimpuesto =p.idimpuesto
+		// where nofactura=".$noFactura." GROUP BY  im.idimpuesto";
+
+		$sql2="select dt.codproducto,dt.cantidad,p.precio,(ROUND((precio/(((im.taza)/100)+1)),2) *dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
+		ROUND((precio/(((im.taza)/100)+1)),2) as preciosiniva,
+		ROUND(SUM(((ROUND((precio/(((im.taza)/100)+1)),2) *dt.cantidad)*im.taza)/100),2) as valorimpuesto	
 		from detallefactura as dt inner join producto as p on p.codproducto=dt.codproducto
 		left join impuesto as im on im.idimpuesto =p.idimpuesto
 		where nofactura=".$noFactura." GROUP BY  im.idimpuesto";
@@ -144,7 +151,7 @@
 		$pdf->Cell(15, 5, 'Total', 0, 1, 'L');
 		$pdf->SetFont('Arial', '', 7);
 		while ($row = mysqli_fetch_assoc($productos)) {
-			$pdf->Cell(42, 5, utf8_decode($row['descripcion']), 0, 0, 'L');
+			$pdf->Cell(42, 5, utf8_decode($row['descripcion']), 0,0, 'L');
 			$pdf->Cell(8, 5, $row['cantidad'], 0, 0, 'L');
 			$pdf->Cell(15, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
 			$importe = number_format($row['cantidad'] * $row['precio'], 2, '.', ',');

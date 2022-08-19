@@ -3,11 +3,12 @@
     if(isset($_GET['ideliminar'])){
         require("../conexion.php");
         $id = $_GET['ideliminar'];
-        $query_delete = mysqli_query($conexion, "DELETE FROM impuestos WHERE idimpuesto = $id");
-		historia('Se elimino con exito el impuesto '.$id);
-		mysqli_close($conexion);
+		
+        $query_delete = mysqli_query($conexion, "DELETE  FROM impuesto WHERE idimpuesto = $id");		
+		historia('Se elimino con exito el impuesto '.$id);		
 		mensajeicono('Se ha eliminado con éxito el impuesto!', 'lista_impuestos.php','','exito');
-    }
+		mysqli_close($conexion);
+}
 ?>
 
 <!-- Begin Page Content -->
