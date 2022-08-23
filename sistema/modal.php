@@ -5,21 +5,45 @@ include("includes/functions.php");
 session_start();
 //print_r($_POST);
 if (!empty($_POST)) {
-  // Extraer datos del producto
-  if ($_POST['action'] == 'infoProducto') {
-      $data = "";
-    $producto_id = $_POST['producto'];
-    $query = mysqli_query($conexion, "SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codigo = $producto_id");
+  // // Extraer datos del producto
+  // if ($_POST['action'] == 'infoProducto') {
+  //     $data = "";
+  //   $producto_id = $_POST['producto'];
+  //   $query = mysqli_query($conexion, "SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codigo = $producto_id");
 
-    $result = mysqli_num_rows($query);
-    if ($result > 0) {
-      $data = mysqli_fetch_assoc($query);
-      echo json_encode($data,JSON_UNESCAPED_UNICODE);
-      exit;
-    }else {
-      $data = 0;
-    }
-  }
+  //   $result = mysqli_num_rows($query);
+  //   if ($result > 0) {
+  //     $data = mysqli_fetch_assoc($query);
+  //     echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  //     exit;
+  //   }else {
+  //     $data = 0;
+  //   }
+  // }
+
+// Extraer datos del producto
+if ($_POST['action'] == 'infoProducto') {
+  $data = "";
+$producto_id = $_POST['producto'];
+
+  $sql="SELECT codproducto, descripcion, precio, existencia, precio as newprecio,cant_mayoreo, preciomayoreo FROM producto WHERE codigo = '".$producto_id."'";
+
+//echo $sql;
+$query = mysqli_query($conexion, $sql);
+
+$result = mysqli_num_rows($query);
+if ($result > 0) {
+  $data = mysqli_fetch_assoc($query);
+  echo json_encode($data,JSON_UNESCAPED_UNICODE);
+  exit;
+}else {
+  $data = 0;
+}
+}
+
+
+
+
 // Eliminar Producto
   if ($_POST['action'] == 'delProduct') {
     if (empty($_POST['producto_id']) || !is_numeric($_POST['producto_id'])) {
@@ -75,53 +99,68 @@ if ($_POST['action'] == 'addCliente') {
   echo $msg;
   exit;
 }
+
 // agregar producto a detalle temporal
 if ($_POST['action'] == 'addProductoDetalle') {
   if (empty($_POST['producto']) || empty($_POST['cantidad'])){
     echo 'error';
   }else {    
-
+  
     $codproducto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
-    // $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
-    // $result_iva = mysqli_num_rows($query_iva);  
-    
-    //echo "CALL add_detalle_temp ($codproducto,$cantidad,'$token')";
-    $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
+    $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
+    $result_iva = mysqli_num_rows($query_iva); 
+    $sql="CALL add_detalle_temp ('$codproducto',$cantidad,'$token')";
+// echo $sql;
+    $query_detalle_temp = mysqli_query($conexion, $sql);
     $result = mysqli_num_rows($query_detalle_temp);
-
     $detalleTabla = '';
     $sub_total = 0;
-    //$iva = 0;
+    $iva = 0;
     $total = 0;
     $arrayData = array();
     if ($result > 0) {
         
-    // if ($result_iva > 0) {
-    //   $info_iva = mysqli_fetch_assoc($query_iva);
-    //   $iva = $info_iva['igv'];
-    // }
+    if ($result_iva > 0) {
+      $info_iva = mysqli_fetch_assoc($query_iva);
+      $iva = $info_iva['igv'];
+    }
     while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+
+    
+      $precioTotal = round($data['cantidad'] * $data['preciomayoreo'], 2);
+       
+   
+    
       $sub_total = round($sub_total + $precioTotal, 2);
       $total = round($total + $precioTotal, 2);
+  
+      $detalleTabla .= '<tr>
+      <td>'.$data['codproducto'].'</td>
+      <td colspan="2">'.$data['descripcion'].'</td>
+      <td class="text-center">'.$data['cantidad'].'</td>';  
 
-        $detalleTabla .='<tr>
-            <td>'.$data['codproducto'].'</td>
-            <td colspan="2">'.$data['descripcion'].'</td>
-            <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
-            <td>
-                <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
-            </td>
-        </tr>';
+      $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+      if(($data['cantidad']>=$data['cant_mayoreo']) and $data['cant_mayoreo']>0)
+      {
+        $detalleTabla .= '<td class="text-center">'.$data['preciomayoreo'].'</td>'; 
+      }else
+      {
+        $detalleTabla .= '<td class="text-center">-</td>';
+      }
+          
+
+      $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
+      <td>
+          <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+      </td>
+  </tr>';
     }
     $total = round($sub_total, 2);
     $detalleTotales ='<tr>
-        <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+        <td colspan="6" class="textright">Total S/.</td>
+        <td class="text-center">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
   
     $arrayData['detalle'] = $detalleTabla;
@@ -132,10 +171,71 @@ if ($_POST['action'] == 'addProductoDetalle') {
     echo 'error';
   }
   mysqli_close($conexion);
-
+  
   }
   exit;
-}
+  }
+// // agregar producto a detalle temporal
+// if ($_POST['action'] == 'addProductoDetalle') {
+//   if (empty($_POST['producto']) || empty($_POST['cantidad'])){
+//     echo 'error';
+//   }else {    
+
+//     $codproducto = $_POST['producto'];
+//     $cantidad = $_POST['cantidad'];
+//     $token = md5($_SESSION['idUser']);
+//     // $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
+//     // $result_iva = mysqli_num_rows($query_iva);  
+    
+//     //echo "CALL add_detalle_temp ($codproducto,$cantidad,'$token')";
+//     $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
+//     $result = mysqli_num_rows($query_detalle_temp);
+
+//     $detalleTabla = '';
+//     $sub_total = 0;
+//     //$iva = 0;
+//     $total = 0;
+//     $arrayData = array();
+//     if ($result > 0) {
+        
+//     // if ($result_iva > 0) {
+//     //   $info_iva = mysqli_fetch_assoc($query_iva);
+//     //   $iva = $info_iva['igv'];
+//     // }
+//     while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
+//       $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+//       $sub_total = round($sub_total + $precioTotal, 2);
+//       $total = round($total + $precioTotal, 2);
+
+//         $detalleTabla .='<tr>
+//             <td>'.$data['codproducto'].'</td>
+//             <td colspan="2">'.$data['descripcion'].'</td>
+//             <td class="textcenter">'.$data['cantidad'].'</td>
+//             <td class="textright">'.$data['precio_venta'].'</td>
+//             <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+//             <td>
+//                 <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+//             </td>
+//         </tr>';
+//     }
+//     $total = round($sub_total, 2);
+//     $detalleTotales ='<tr>
+//         <td colspan="5" class="textright">Total S/.</td>
+//         <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+//     </tr>';
+  
+//     $arrayData['detalle'] = $detalleTabla;
+//     $arrayData['totales'] = $detalleTotales;
+//     $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
+//     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
+//   }else {
+//     echo 'error';
+//   }
+//   mysqli_close($conexion);
+
+//   }
+//   exit;
+// }
 // extrae datos del detalle tem
 if ($_POST['action'] == 'searchForDetalle') {
 
@@ -145,7 +245,7 @@ if ($_POST['action'] == 'searchForDetalle') {
     $token = md5($_SESSION['idUser']);
 
     $query = mysqli_query($conexion, "SELECT tmp.correlativo, tmp.token_user,
-      sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion
+      sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion,tmp.preciomayoreo,p.cant_mayoreo
       FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
       where token_user = '$token' 		GROUP BY tmp.codproducto" );
     $result = mysqli_num_rows($query);
@@ -166,16 +266,34 @@ if ($_POST['action'] == 'searchForDetalle') {
       $iva = $info_iva['igv'];
     }
     while ($data = mysqli_fetch_assoc($query)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
-      $sub_total = round($sub_total + $precioTotal, 2);
-      $total = round($total + $precioTotal, 2);
+     // $precioTotal = round($data['cantidad'] * $data['preciomayoreo'], 2);
+     
+   
 
         $detalleTabla .= '<tr>
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+            <td class="textright">'.$data['precio_venta'].'</td>';
+            if(($data['cantidad']>=$data['cant_mayoreo']) and $data['cant_mayoreo']>0)
+            {
+              $detalleTabla .= '<td class="text-center">'.$data['preciomayoreo'].'</td>'; 
+            }else
+            {
+              $detalleTabla .= '<td class="text-center">-</td>';
+            }
+            if(($data['cantidad']>=$data['cant_mayoreo']) and $data['cant_mayoreo']>0)
+            {
+              $precioTotal = round($data['cantidad'] * $data['preciomayoreo'], 2);
+            }else
+            {
+              $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+            }
+            $sub_total = round($sub_total + $precioTotal, 2);
+            $total = round($total + $precioTotal, 2);
+
+           // <td class="textright">'.$data['preciomayoreo'].'</td>
+             $detalleTabla .= '<td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -183,7 +301,7 @@ if ($_POST['action'] == 'searchForDetalle') {
     }
     $total = round($sub_total, 2);
     $detalleTotales = '<tr>
-        <td colspan="5" class="textright">Total S/.</td>
+        <td colspan="6" class="textright">Total S/.</td>
         <td class="textright">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
 
@@ -291,14 +409,14 @@ if ($_POST['action'] == 'delProductoDetalle') {
   }else {
     $id_detalle = $_POST['id_detalle'];
     $token = md5($_SESSION['idUser']);
-
-
+  
+  
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
     $result_iva = mysqli_num_rows($query_iva);
-
+  
     $query_detalle_tmp = mysqli_query($conexion, "CALL del_detalle_temp($id_detalle,'$token')");
     $result = mysqli_num_rows($query_detalle_tmp);
-
+  
     $detalleTabla = '';
     $sub_total = 0;
     $iva = 0;
@@ -311,43 +429,65 @@ if ($_POST['action'] == 'delProductoDetalle') {
       $iva = $info_iva['igv'];
     }
     while ($data = mysqli_fetch_assoc($query_detalle_tmp)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+      $precioTotal = round($data['cantidad'] * $data['precio'], 2);
       $sub_total = round($sub_total + $precioTotal, 2);
       $total = round($total + $precioTotal, 2);
-
+  
         $detalleTabla .= '<tr>
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
-            <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
-            <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+            <td class="text-center">'.$data['cantidad'].'</td>';
+  
+            $precioTotal = round($data['cantidad'] * $data['preciomayoreo'], 2);
+          
+            $sub_total = round($sub_total + $precioTotal, 2);
+            $total = round($total + $precioTotal, 2);
+        
+            $detalleTabla .= '<tr>
+            <td>'.$data['codproducto'].'</td>
+            <td colspan="2">'.$data['descripcion'].'</td>
+            <td class="text-center">'.$data['cantidad'].'</td>';
+        
+              $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+            
+              if(($data['cantidad']>=$data['cant_mayoreo']) and $data['cant_mayoreo']>0)
+              {
+                $detalleTabla .= '<td class="text-center">'.$data['preciomayoreo'].'</td>'; 
+              }else
+              {
+                $detalleTabla .= '<td class="text-center">-</td>';
+              }
+           
+            $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
-                <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');">Eliminar</a>
+                <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
         </tr>';
+    
     }
     $impuesto = round($sub_total / $iva, 2);
     $tl_sniva = round($sub_total - $impuesto, 2);
     $total = round($tl_sniva + $impuesto, 2);
-
+  
     $detalleTotales = '<tr>
-        <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+        <td colspan="6" class="textright">Total S/.</td>
+        <td class="text-center">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
-
+  
     $arrayData['detalle'] = $detalleTabla;
     $arrayData['totales'] = $detalleTotales;
     $arrayData['totalmodal'] = number_format($total, 2, '.', ',');
-
+  
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
   }else {
     $data = 0;
   }
   mysqli_close($conexion);
-
+  
   }
   exit;
-}
+  }
+
 // Anular Ventas
 if ($_POST['action'] == 'anularVenta') {
     $data = "";
@@ -726,7 +866,7 @@ if ($_POST['action'] == 'productoDetalleValida') {
       echo $data["cantidad"];
        exit;
      }else{
-       $data = "";
+       $data = "0";
      }
 }
 exit;
@@ -777,4 +917,25 @@ if ($_POST['action'] == 'calularPrecioSinIva') {
  
   exit;
 }
+
+
+// Siguiente numero del producto
+if ($_POST['action'] == 'preciomayoreo') {
+  $codcubo = $_POST['idcubo'];
+  $sql = "select * from producto where codcubo = '$codcubo' ";
+  // echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     echo $data["mayoreo"];
+      exit;
+    }else{
+      $data = "0";
+    }
+  
+  exit;
+  }
+  
  ?>

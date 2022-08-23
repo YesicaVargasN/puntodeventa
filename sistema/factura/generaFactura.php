@@ -27,11 +27,11 @@
 
 		if($result_venta['numcredito']!= '' and $result_venta['numcredito']!=0)
 		{
-			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio,p.preciomayoreo, p.cant_mayoreo FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}else{
-			$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
+			$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio,p.preciomayoreo, p.cant_mayoreo FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
 		}
 
 		// $sql2="select dt.codproducto,dt.cantidad,p.preciocosto,(p.preciosiniva*dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
@@ -40,12 +40,14 @@
 		// left join impuesto as im on im.idimpuesto =p.idimpuesto
 		// where nofactura=".$noFactura." GROUP BY  im.idimpuesto";
 
-		$sql2="select dt.codproducto,dt.cantidad,p.precio,(ROUND((precio/(((im.taza)/100)+1)),2) *dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
+		$sql2="select dt.codproducto,dt.cantidad,p.precio,(ROUND((dt.precio_siniva),2) *dt.cantidad) as subtotal, im.impuesto,  im.idimpuesto,
 		ROUND((precio/(((im.taza)/100)+1)),2) as preciosiniva,
-		ROUND(SUM(((ROUND((precio/(((im.taza)/100)+1)),2) *dt.cantidad)*im.taza)/100),2) as valorimpuesto	
+		ROUND((ROUND(dt.precio_siniva,2) *dt.cantidad)*(im.taza/100),2) as valorimpuesto	
 		from detallefactura as dt inner join producto as p on p.codproducto=dt.codproducto
 		left join impuesto as im on im.idimpuesto =p.idimpuesto
 		where nofactura=".$noFactura." GROUP BY  im.idimpuesto";
+
+		
 		//echo $sql2;
 		$impuestos = mysqli_query($conexion, $sql2);
 		
@@ -145,17 +147,36 @@
 		$pdf->Cell(78, 5,'********************************************************************************', 0, 1, 'C');
 		$pdf->SetTextColor(0, 0, 0);
 		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(42, 5, 'Nombre', 0, 0, 'L');
-		$pdf->Cell(8, 5, 'Cant', 0, 0, 'L');
-		$pdf->Cell(15, 5, 'Precio', 0, 0, 'L');
-		$pdf->Cell(15, 5, 'Total', 0, 1, 'L');
+		$pdf->Cell(37, 5, 'Nombre', 0, 0, 'L');
+		$pdf->Cell(7, 5, 'Cant', 0, 0, 'R');
+		$pdf->Cell(11, 5, 'Precio', 0, 0, 'R');
+		$pdf->Cell(11, 5, 'P.May', 0, 0, 'R');
+		$pdf->Cell(11, 5, 'Total', 0, 1, 'R');
 		$pdf->SetFont('Arial', '', 7);
 		while ($row = mysqli_fetch_assoc($productos)) {
-			$pdf->Cell(42, 5, utf8_decode($row['descripcion']), 0,0, 'L');
-			$pdf->Cell(8, 5, $row['cantidad'], 0, 0, 'L');
-			$pdf->Cell(15, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
+			$pdf->Cell(37, 5, utf8_decode($row['descripcion']), 0,0, 'L');
+			$pdf->Cell(7, 5, $row['cantidad'], 0, 0, 'R');
+			$pdf->Cell(11, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'R');
 			$importe = number_format($row['cantidad'] * $row['precio'], 2, '.', ',');
-			$pdf->Cell(15, 5, '$'.$importe, 0, 1, 'L');
+		
+			if(($row['cantidad']>=$row['cant_mayoreo']) and $row['cant_mayoreo']>0)
+			{
+				$pdf->Cell(11, 5, '$'.$row['preciomayoreo'], 0, 0, 'R');
+			}else
+			{
+				$pdf->Cell(11, 5, '-', 0, 0, 'R');
+			}
+			
+			if(($row['cantidad']>=$row['cant_mayoreo']) and $row['cant_mayoreo']>0)
+			{
+				$importe = number_format($row['cantidad'] * $row['preciomayoreo'], 2, '.', ',');
+			}else
+			{
+				$importe = number_format($row['cantidad'] * $row['precio'], 2, '.', ',');
+			}
+			
+
+			$pdf->Cell(11, 5, '$'.$importe, 0, 1, 'R');
 		}
 		$pdf->Ln();
 		$pdf->SetFont('Arial', 'B', 8);

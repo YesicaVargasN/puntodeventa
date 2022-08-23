@@ -92,7 +92,7 @@ if (empty($_REQUEST['id'])) {
             </div>
             <div class="form-group">
               <label for="producto">Producto</label>
-              <input type="text" maxlength="38" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
+              <input type="text" maxlength="35" class="form-control" placeholder="Ingrese nombre del producto" name="producto" id="producto" value="<?php echo $data_producto['descripcion']; ?>">
             </div>
             <div class="form-group">
               <label for="nombre">Proveedor</label>

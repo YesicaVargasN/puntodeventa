@@ -84,7 +84,7 @@ $.ajax({
              </div>
              <div class="form-group">
                <label for="producto">Producto</label>
-               <input type="text" maxlength="38"  placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
+               <input type="text" maxlength="35"  placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
              </div>
              
              <div class="form-group">
