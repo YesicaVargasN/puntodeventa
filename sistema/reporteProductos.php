@@ -42,6 +42,11 @@ $tabla = "";
 $vuelta = 0;
 $suma = 0;
 $suma = 2;
+$sumaiva = 0;
+$sumaieps = 0;
+$suma0 = 0;
+$sumaexento = 0;
+$sumpro = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
@@ -49,6 +54,10 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
     $tabla = $tabla."<th><b>PRECIO COSTO</b></th>";
     $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
+    $tabla = $tabla.'<th ><b>IVA</b></th>';
+    $tabla = $tabla.'<th ><b>IEPS</b></th>';
+    $tabla = $tabla.'<th ><b>TASA 0</b></th>';
+    $tabla = $tabla.'<th ><b>EXENTO</b></th>';
     $tabla = $tabla.'<th ><b>EXISTENCIA</b></th>';
     $tabla = $tabla.'<th ><b>CATEGORÍA</b></th>';
     $tabla = $tabla.'<th ><b>SECCIÓN</b></th>';
@@ -64,11 +73,28 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['preciocosto'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
+        if($f['idimpuesto']==1){
+            $tabla = $tabla.'<td>$'.number_format($f['valor_impuesto'], 2, '.', ',').'</td><td>$0.00</td><td>$0.00</td><td>$0.00</td>';
+            $sumaiva += $f['valor_impuesto'];
+        }else if($f['idimpuesto']==2){
+            $tabla = $tabla.'<td>$0.00</td><td>$'.number_format($f['valor_impuesto'], 2, '.', ',').'</td><td>$0.00</td><td>$0.00</td>';
+            $sumaieps += $f['valor_impuesto'];
+        }else if($f['idimpuesto']==5){
+            $tabla = $tabla.'<td>$0.00</td><td>$0.00</td><td>$'.number_format($f['valor_impuesto'], 2, '.', ',').'</td><td>$0.00</td>';
+            $suma0 += $f['valor_impuesto'];
+        }else if($f['idimpuesto']==6){
+            $tabla = $tabla.'<td>$0.00</td><td>$0.00</td><td>$0.00</td><td>$'.number_format($f['valor_impuesto'], 2, '.', ',').'</td>';
+            $sumaexento += $f['valor_impuesto'];
+        }else{
+            $tabla = $tabla.'<td>$0.00</td><td>$0.00</td><td>$0.00</td><td>$0.00</td>';
+
+        }
         $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
-       
+        $sumpro += $f['existencia'];
             $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
         $suma += $f['preciocosto'];
         $suma2 += $f['precio'];
+        
         $tabla = $tabla.'<td>'.$f['nomseccion'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
@@ -82,10 +108,13 @@ if ($r -> num_rows >0){
             <td bgcolor="#FCD2CB"> TOTALES </td>
             <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
             <td bgcolor="#FCD2CB">$'.number_format($suma2, 2, '.', ',').'</td>
-            <td ></td>
-            <td colspan="2" bgcolor="#FCD2CB">
-                TOTAL DE PRODUCTOS MOSTRADOS '.$vuelta.'
-            </td>
+            <td bgcolor="#FCD2CB">$'.number_format($sumaiva, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">$'.number_format($sumaieps, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">$'.number_format($suma0, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">$'.number_format($sumaexento, 2, '.', ',').'</td>
+            <td bgcolor="#FCD2CB">'.$sumpro.'</td>
+            <td></td>
+            <td></td>
         </tr>
         
     </table>';

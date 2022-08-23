@@ -29,7 +29,7 @@ include "../conexion.php";
                     <?php
                         $query_proveedor = mysqli_query($conexion, "SELECT codproveedor, proveedor FROM proveedor ORDER BY proveedor ASC");
                         $resultado_proveedor = mysqli_num_rows($query_proveedor);
-                        mysqli_close($conexion);
+                        
                     ?>
 
                     <select id="proveedor" name="proveedor" class="form-control">
@@ -51,8 +51,21 @@ include "../conexion.php";
                     </div>
                     <div class="form-group">
                         <label for="contacto">IVA</label>
-                        <input type="text" placeholder="Ingrese el IVA de la factura"  name="iva" id="iva" class="form-control" required>
+                        <input type="text" placeholder="Ingrese el subtotal de la factura" name="iva" id="iva" class="form-control" required>
                     </div>
+                    <div class="form-group">
+                        <label for="contacto">IEPS</label>
+                        <input type="text" placeholder="Ingrese el subtotal de la factura" name="ieps" id="ieps" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contacto">TASA 0%</label>
+                        <input type="text" placeholder="Ingrese el subtotal de la factura" name="tasa" id="tasa" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contacto">EXENTO</label>
+                        <input type="text" placeholder="Ingrese el subtotal de la factura" name="exento" id="exento" class="form-control" required>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="contacto">Total</label>
                         <input type="text" placeholder="Ingrese el total de la factura" name="total" id="total" class="form-control" required>
