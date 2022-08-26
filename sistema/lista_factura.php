@@ -15,20 +15,23 @@ if(isset($_FILES['archivo']['name'])){
 	$proveedor = $_POST['proveedor'];
 	$subtotal = $_POST['subtotal'];
 	$iva = $_POST['iva'];
+	$ieps = $_POST['ieps'];
+	$tasa = $_POST['tasa'];
+	$exento = $_POST['exento'];
 	$total = $_POST['total'];
 	$fecha = $_POST['fecha'];
 	$descripcion = $_POST['descripcion'];
 	$usuario_id = $_SESSION['idUser'];
 
 	$total = 0 - $total ;
-	if (move_uploaded_file($tmp, $subir_archivo)) {
+		move_uploaded_file($tmp, $subir_archivo);
 		//si se guarda en la carpeta hay que guardar en la bd
 		$numarchivo = narchivo(FALSE); 
-		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion, idusuariosube) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."', '".$usuario_id."')";
+		$sql = "INSERT INTO gastos(archivo,fecha,activo,narchivo, proveedor, subtotal, iva, total, descripcion, idusuariosube, ieps, tasa, exento) values ('$doc', '$fecha', '1','$numarchivo', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."', '".$usuario_id."', '".$ieps."', '".$tasa."', '".$exento."')";
 		//echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
-
+			$numarchivo = narchivo(TRUE); 
 			//HACER el insert el factura para tomarlo en cuenta en los reportes
 			$sql = "INSERT INTO factura(nofactura,fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva) 
 			values ('', now(), '$usuario_id','$proveedor', '$total','4','1',0,'$total','Gasto','','','','','','$subtotal', '$iva')";
@@ -47,17 +50,7 @@ if(isset($_FILES['archivo']['name'])){
 			historia('Error al intentar ingresar un nuevo gasto '.$numarchivo.'_'.$doc);
 			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
         }
-    }
-		//echo "El archivo es válido y se cargó correctamente.<br><br>";
-		//echo"<a href='".$subir_archivo."' target='_blank'><img src='".$subir_archivo."' width='150'></a>";
-	 else {
-		/*$alert = '<div class="alert alert-danger" role="alert">
-		La subida ha fallado
-	 </div>';*/
-	 historia('Error al intentar subir el archivo del nuevo gasto '.$numarchivo.'_'.$doc);
-	 mensajeicono('Hubo un error en la subida del archivo, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
-		
-	}
+  
 		
 	//echo $alert;
 }
@@ -136,6 +129,7 @@ if(isset($_FILES['archivo']['name'])){
 									<td><a href='descargar.php?nombre=<?php echo $data['narchivo'].'_'.$data['archivo']; ?>' target='_self' title='Haga click aqui para descargar'><?php echo $data['archivo']; ?></a></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
+										<a href="editar_gasto.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
 										<form action="eliminar_gastos.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>

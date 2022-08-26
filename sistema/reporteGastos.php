@@ -12,6 +12,10 @@ $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
 $sumaiva = 0;
 $sumasub = 0;
+$sumaiva = 0;
+$sumaieps = 0;
+$suma0 = 0;
+$sumaexento = 0;
 
 
 $sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
@@ -30,6 +34,9 @@ if ($r -> num_rows >0){
     $tabla = $tabla."<th><b>FECHA</b></th>";
     $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
     $tabla = $tabla.'<th ><b>IVA</b></th>';
+    $tabla = $tabla.'<th ><b>IEPS</b></th>';
+    $tabla = $tabla.'<th ><b>TASA 0</b></th>';
+    $tabla = $tabla.'<th ><b>EXENTO</b></th>';
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
     $tabla = $tabla."</tr>";
@@ -45,11 +52,18 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format(abs($f['ieps']), 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format(abs($f['tasa']), 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format(abs($f['exento']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $suma = $suma += abs($f['total']);
-        $sumaiva = $sumaiva += $f['iva'];
         $sumasub = $sumasub += $f['subtotal'];
+        $sumaiva = $sumaiva += $f['iva'];
+        $sumaieps = $sumaieps += $f['ieps'];
+        $suma0 = $suma0 += $f['tasa'];
+        $sumaexento = $sumaexento += $f['exento'];
+       
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -60,11 +74,14 @@ if ($r -> num_rows >0){
 $tabla = $tabla.'<br><br><br>
 <table  align = "center" >
     <tr>
+        
         <td></td>
-        <td></td>
-        <td><b>TOTALES</b></td>
+        <td colspan ="2" bgcolor="#FCD2CB"><b>TOTALES</b></td>
         <td bgcolor="#FCD2CB">$'.number_format($sumasub, 2, '.', ',').'</td>
         <td bgcolor="#FCD2CB">$'.number_format($sumaiva, 2, '.', ',').'</td>
+        <td bgcolor="#FCD2CB">$'.number_format($sumaieps, 2, '.', ',').'</td>
+        <td bgcolor="#FCD2CB">$'.number_format($suma0, 2, '.', ',').'</td>
+        <td bgcolor="#FCD2CB">$'.number_format($sumaexento, 2, '.', ',').'</td>
         <td bgcolor="#FCD2CB">$'.number_format($suma, 2, '.', ',').'</td>
        
         <td></td>

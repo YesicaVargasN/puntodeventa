@@ -1499,7 +1499,7 @@ jQuery('#ajusteinventario').on('hidden.bs.modal', function (e) {
   //jQuery(this).find('.alertAddProduct').empty();
 });
 
-$('#subtotal').keyup(function(e) {
+/*$('#subtotal').keyup(function(e) {
   e.preventDefault();
   var suma = 0;
   var subtotal = $('#subtotal').val();
@@ -1507,11 +1507,7 @@ $('#subtotal').keyup(function(e) {
     subtotal = 0;
   }
   var res = (parseFloat(subtotal) *.16);
-  /*if(iva == ''){
-    iva = 0;
-  }else{
-    iva = iva;
-  }*/
+
   $('#iva').val(res);
   var iva = $('#iva').val();
   suma = (parseFloat(subtotal) + parseFloat(iva));
@@ -1531,7 +1527,7 @@ $('#iva').keyup(function(e) {
   }
   suma = (parseFloat(subtotal) + parseFloat(iva));
   $('#total').val(suma);
-});
+});*/
 
 
 function seleccionarCliente(dnicliente)
